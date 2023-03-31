@@ -1,6 +1,6 @@
-using Bookful.dao.user;
 using Bookful.domain.exception;
 using Bookful.service.user;
+using Bookful.util;
 
 namespace Bookful
 {
@@ -96,7 +96,10 @@ namespace Bookful
         {
             try
             {
-                userService.Registration(loginInput.Text, passwordInput.Text);
+                if (ValidationUtils.ValidateLogin(loginInput.Text) & ValidationUtils.ValidatePassword(passwordInput.Text))
+                {
+                    userService.Registration(loginInput.Text, passwordInput.Text);
+                }
             }
             catch (CommonException ex)
             {

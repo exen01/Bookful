@@ -10,5 +10,7 @@ namespace Bookful.domain.constant
     {
         USER_NOT_FOUND,
         USER_ALREADY_EXISTS,
+        WRONG_LOGIN,
+        WRONG_PASSWORD
     }
 }
