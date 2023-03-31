@@ -1,10 +1,20 @@
+using Bookful.dao.user;
+using Bookful.domain.exception;
+using Bookful.service.user;
+
 namespace Bookful
 {
-    public partial class Registration : Form
+    public partial class RegistrationForm : Form
     {
-        public Registration()
+        private UserService userService;
+        private TextBox loginInput;
+        private TextBox passwordInput;
+
+        public RegistrationForm()
         {
             InitializeComponent();
+
+            userService = new UserService();
 
             var loginLabel = new Label()
             {
@@ -12,7 +22,7 @@ namespace Bookful
                 Dock = DockStyle.Left,
             };
 
-            var loginInput = new TextBox()
+            loginInput = new TextBox()
             {
                 Dock = DockStyle.Fill,
             };
@@ -23,15 +33,34 @@ namespace Bookful
                 Dock = DockStyle.Fill,
             };
 
-            var passwordInput = new TextBox()
+            passwordInput = new TextBox()
             {
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                UseSystemPasswordChar = true
             };
 
             var registrationButton = new Button()
             {
                 Text = "Зарегистрироваться",
                 Dock = DockStyle.Fill
+            };
+            registrationButton.Click += Registration;
+
+            var showPassword = new CheckBox()
+            {
+                Dock = DockStyle.Fill,
+                Text = "Show Password",
+            };
+            showPassword.CheckedChanged += (object sender, EventArgs args) =>
+            {
+                if (showPassword.Checked)
+                {
+                    passwordInput.UseSystemPasswordChar = false;
+                }
+                else
+                {
+                    passwordInput.UseSystemPasswordChar = true;
+                }
             };
 
             var tableLayout = new TableLayoutPanel();
@@ -54,6 +83,7 @@ namespace Bookful
             tableLayout.Controls.Add(loginInput, 1, 2);
             tableLayout.Controls.Add(passwordLabel, 1, 3);
             tableLayout.Controls.Add(passwordInput, 1, 4);
+            tableLayout.Controls.Add(showPassword, 2, 4);
             tableLayout.Controls.Add(registrationButton, 1, 5);
             tableLayout.Controls.Add(new Panel(), 2, 6);
 
@@ -61,6 +91,21 @@ namespace Bookful
             Controls.Add(tableLayout);
 
         }
+
+        private void Registration(object sender, EventArgs args)
+        {
+            try
+            {
+                userService.Registration(loginInput.Text, passwordInput.Text);
+            }
+            catch (CommonException ex)
+            {
+                MessageBox.Show(ex.UserMessage);
+            }
+
+        }
+
+
 
     }
 }

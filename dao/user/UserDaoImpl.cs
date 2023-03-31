@@ -1,10 +1,12 @@
-﻿using Bookful.domain.dto;
+﻿using Bookful.domain.constant;
+using Bookful.domain.dto;
+using Bookful.domain.exception;
 using Bookful.util.db;
 using MySql.Data.MySqlClient;
 
 namespace Bookful.dao.user
 {
-    public class UserDaoImpl : UserDao
+    public class UserDaoImpl : IUserDao
     {
         /// <summary>
         /// Экземпляр подключения к БД
@@ -19,7 +21,7 @@ namespace Bookful.dao.user
         {
             if (connection.IsConnect())
             {
-                string query = string.Format("INSERT INTo user(login, password) VALUES({0},{1})", user.Login, user.Password);
+                string query = string.Format("INSERT INTo user(login, password) VALUES('{0}','{1}')", user.Login, user.Password);
                 var cmd = new MySqlCommand(query, connection.Connection);
                 cmd.ExecuteNonQuery();
             }
@@ -34,10 +36,23 @@ namespace Bookful.dao.user
         {
             if (connection.IsConnect())
             {
-                string query = string.Format("SELECT EXISTS (SELECT * FROM user WHERE login = {0})", login);
+                int result;
+                string query = string.Format("SELECT EXISTS (SELECT * FROM user WHERE login = '{0}')", login);
                 var cmd = new MySqlCommand(query, connection.Connection);
                 var reader = cmd.ExecuteReader();
-                return reader.GetInt32(0) != 0;
+
+                if (reader.Read())
+                {
+                    result = reader.GetInt32(0);
+                    reader.Close();
+                    return result != 0;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+
             }
             else
             {

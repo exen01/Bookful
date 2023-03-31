@@ -2,7 +2,7 @@
 
 namespace Bookful.dao.user
 {
-    public interface UserDao
+    public interface IUserDao
     {
         /// <summary>
         /// Проверка существующего логина
