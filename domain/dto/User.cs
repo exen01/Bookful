@@ -6,16 +6,7 @@
         private string login;
         private string password;
 
-        public User()
-        {
-        }
-
-        public User(long id, string login, string password)
-        {
-            this.id = id;
-            this.login = login;
-            this.password = password;
-        }
+        public User() { }
 
         public long Id { get => id; set => id = value; }
         public string Login { get => login; set => login = value; }
