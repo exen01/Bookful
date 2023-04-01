@@ -8,9 +8,9 @@ namespace Bookful.service.user
     {
         private readonly IUserDao userDao;
 
-        public UserService()
+        public UserService(IUserDao userDao)
         {
-            this.userDao = new UserDaoImpl();
+            this.userDao = userDao;
         }
 
         public void Registration(string login, string password)

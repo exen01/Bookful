@@ -11,7 +11,12 @@ namespace Bookful.dao.user
         /// <summary>
         /// Экземпляр подключения к БД
         /// </summary>
-        private DBConnection connection = DBConnection.Instance();
+        private DBConnection connection;
+
+        public UserDaoImpl(DBConnection connection)
+        {
+            this.connection = connection;
+        }
 
         /// <summary>
         /// Вставка данных пользователя в базу данных

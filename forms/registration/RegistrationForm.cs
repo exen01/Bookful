@@ -1,6 +1,8 @@
+using Bookful.dao.user;
 using Bookful.domain.exception;
 using Bookful.service.user;
 using Bookful.util;
+using Bookful.util.db;
 
 namespace Bookful
 {
@@ -14,7 +16,8 @@ namespace Bookful
         {
             InitializeComponent();
 
-            userService = new UserService();
+            var userDao = new UserDaoImpl(DBConnection.Instance());
+            userService = new UserService(userDao);
 
             var loginLabel = new Label()
             {
@@ -107,8 +110,5 @@ namespace Bookful
             }
 
         }
-
-
-
     }
 }
