@@ -4,8 +4,10 @@ namespace Bookful.dao.book
 {
     public interface IBookDao
     {
-        void InsertNewBook(Book book);
+        void AddBook(Book book);
         void DeleteBook(int bookId);
         List<Book> GetAllBooks();
+        Book? GetBookById(int id);
+        void UpdateBook(Book book);
     }
 }

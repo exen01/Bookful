@@ -8,18 +8,23 @@ namespace Bookful.domain.dto
 {
     public class Book
     {
-        private int id;
-        private string title;
-        private string description;
-        private string publishingHouse;
-        private string publicationDate;
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public string Description { get; set; }
+        public string PublishingHouse { get; set; }
+        public string PublicationDate { get; set; }
 
         public Book() { }
 
-        public int Id { get => id; set => id = value; }
-        public string Title { get => title; set => title = value; }
-        public string Description { get => description; set => description = value; }
-        public string PublishingHouse { get => publishingHouse; set => publishingHouse = value; }
-        public string PublicationDate { get => publicationDate; set => publicationDate = value; }
+        public Book(int id, string title, string author, string description, string publishingHouse, string publicationDate)
+        {
+            Id = id;
+            Title = title;
+            Author = author;
+            Description = description;
+            PublishingHouse = publishingHouse;
+            PublicationDate = publicationDate;
+        }
     }
 }
