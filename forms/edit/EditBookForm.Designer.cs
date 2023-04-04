@@ -1,6 +1,6 @@
-﻿namespace Bookful.forms.main
+﻿namespace Bookful.forms.edit
 {
-    partial class MainForm
+    partial class EditBookForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SuspendLayout();
-            // 
-            // MainForm
-            // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Name = "MainForm";
-            Text = "Main";
-            Load += MainForm_Load;
-            ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Text = "EditBookForm";
         }
 
         #endregion
