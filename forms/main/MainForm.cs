@@ -2,15 +2,6 @@
 using Bookful.forms.edit;
 using Bookful.service.book;
 using Bookful.util.db;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
@@ -73,8 +64,9 @@ namespace Bookful.forms.main
 
             var booksAddButton = new ToolStripMenuItem()
             {
-                Text = "Add",
+                Text = "Добавить книгу",
             };
+            booksAddButton.Click += BooksAddButton_Click;
 
             var booksRefreshButton = new ToolStripMenuItem()
             {
@@ -124,6 +116,22 @@ namespace Bookful.forms.main
             Controls.Add(tableLayout);
         }
 
+        private void BooksAddButton_Click(object? sender, EventArgs e)
+        {
+            Book book = new Book();
+            // Открываем форму для создания книги
+            EditBookForm editBookForm = new EditBookForm(book, true);
+            // Если пользователь нажал "Добавить"
+            if (editBookForm.ShowDialog() == DialogResult.OK)
+            {
+                // Добавляем книгу в источнике данных
+                bookService.AddBook(book);
+
+                // Обновляем отображение списка книг в DataGridView
+                booksDataGrid.DataSource = bookService.GetAllBooks();
+            }
+        }
+
         private void BooksDataGrid_CellContentClick(object? sender, DataGridViewCellEventArgs e)
         {
             // Проверяем, что нажата кнопка в колонке "Удалить"
@@ -149,7 +157,7 @@ namespace Bookful.forms.main
                 Book book = bookService.GetBookById(bookId);
 
                 // Открываем форму для изменения книги
-                EditBookForm editBookForm = new EditBookForm(book);
+                EditBookForm editBookForm = new EditBookForm(book, false);
 
                 // Если пользователь нажал "Сохранить"
                 if (editBookForm.ShowDialog() == DialogResult.OK)
@@ -162,6 +170,8 @@ namespace Bookful.forms.main
                 }
             }
         }
+
+
 
         private void BooksRefreshButton_Click(object? sender, EventArgs e)
         {
@@ -178,16 +188,6 @@ namespace Bookful.forms.main
             booksDataGrid.Columns["PublishingHouse"].HeaderText = "Издательство";
             booksDataGrid.Columns["PublicationDate"].HeaderText = "Дата публикации";
 
-            // Создаем колонку с кнопками удаления
-            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-            deleteButtonColumn.HeaderText = "Удалить";
-            deleteButtonColumn.Name = "DeleteButton";
-            deleteButtonColumn.UseColumnTextForButtonValue = true;
-            deleteButtonColumn.Text = "Удалить";
-
-            // Добавляем колонку в DataGridView
-            booksDataGrid.Columns.Add(deleteButtonColumn);
-
             // Создаем колонку с кнопками редактирования
             DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
             editButtonColumn.HeaderText = "Изменить";
@@ -198,7 +198,15 @@ namespace Bookful.forms.main
             // Добавляем колонку в DataGridView
             booksDataGrid.Columns.Add(editButtonColumn);
 
+            // Создаем колонку с кнопками удаления
+            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+            deleteButtonColumn.HeaderText = "Удалить";
+            deleteButtonColumn.Name = "DeleteButton";
+            deleteButtonColumn.UseColumnTextForButtonValue = true;
+            deleteButtonColumn.Text = "Удалить";
 
+            // Добавляем колонку в DataGridView
+            booksDataGrid.Columns.Add(deleteButtonColumn);
         }
     }
 }

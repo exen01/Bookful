@@ -95,6 +95,8 @@ namespace Bookful.dao.book
                         PublicationDate = reader.GetString("publication_date")
                     };
 
+                    reader.Close();
+
                     return book;
                 }
             }
@@ -116,6 +118,7 @@ namespace Bookful.dao.book
                 cmd.Parameters.AddWithValue("@description", book.Description);
                 cmd.Parameters.AddWithValue("@publishingHouse", book.PublishingHouse);
                 cmd.Parameters.AddWithValue("@publicationDate", book.PublicationDate);
+                cmd.Parameters.AddWithValue("@id", book.Id);
 
                 cmd.ExecuteNonQuery();
             }
