@@ -8,7 +8,6 @@ namespace Bookful.forms.main
     public partial class MainForm : Form
     {
         private IBookService bookService;
-        private DataGridView booksDataGrid;
 
         public MainForm()
         {
@@ -16,120 +15,9 @@ namespace Bookful.forms.main
 
             bookService = new BookServiceImpl(DBConnection.Instance());
 
-            // боковое меню
-            var groupBox = new GroupBox()
-            {
-                Text = "Быстрые действия",
-                Dock = DockStyle.Fill,
-            };
-
-            var button = new Button()
-            {
-                Text = "Create new user",
-                Dock = DockStyle.Top,
-                AutoSize = true,
-            };
-
-            var button1 = new Button()
-            {
-                Text = "asdasdasd",
-                Dock = DockStyle.Top,
-                AutoSize = true,
-            };
-
-            groupBox.Controls.AddRange(new Control[] { button, button1 });
-
-            // основные вкладки
-            var tabControl = new TabControl()
-            {
-                Dock = DockStyle.Fill,
-            };
-
-            // вкладка каталога книг
-            var bookCatalog = new TabPage()
-            {
-                Text = "Каталог книг"
-            };
-
-            var bookCatalogLayout = new TableLayoutPanel()
-            {
-                Dock = DockStyle.Fill,
-            };
-
-            var booksToolBar = new MenuStrip()
-            {
-                //Dock = DockStyle.Fill,
-                Stretch = true,
-            };
-
-            var booksAddButton = new ToolStripMenuItem()
-            {
-                Text = "Добавить книгу",
-            };
-            booksAddButton.Click += BooksAddButton_Click;
-
-            var booksRefreshButton = new ToolStripMenuItem()
-            {
-                Text = "Обновить",
-            };
-            booksRefreshButton.Click += BooksRefreshButton_Click;
-
-            booksToolBar.Items.AddRange(new ToolStripItem[] { booksAddButton, booksRefreshButton });
-
-            booksDataGrid = new DataGridView()
-            {
-                Dock = DockStyle.Fill,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                ReadOnly = true,
-            };
-
             var books = bookService.GetAllBooks();
             booksDataGrid.DataSource = books;
             booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
-
-            bookCatalogLayout.Controls.Add(booksToolBar, 0, 0);
-            bookCatalogLayout.Controls.Add(booksDataGrid, 0, 1);
-
-            bookCatalog.Controls.Add(bookCatalogLayout);
-
-            // вкладка читателей
-            var readers = new TabPage()
-            {
-                Text = "Читатели"
-            };
-
-            // вкладка выданных книг
-            var issuedBooks = new TabPage()
-            {
-                Text = "Выданные книги"
-            };
-
-            tabControl.Controls.AddRange(new Control[] { bookCatalog, readers, issuedBooks });
-
-            var tableLayout = new TableLayoutPanel();
-            tableLayout.RowStyles.Clear();
-
-            tableLayout.Controls.Add(groupBox, 0, 0);
-            tableLayout.Controls.Add(tabControl, 1, 0);
-
-            tableLayout.Dock = DockStyle.Fill;
-            Controls.Add(tableLayout);
-        }
-
-        private void BooksAddButton_Click(object? sender, EventArgs e)
-        {
-            Book book = new Book();
-            // Открываем форму для создания книги
-            EditBookForm editBookForm = new EditBookForm(book, true);
-            // Если пользователь нажал "Добавить"
-            if (editBookForm.ShowDialog() == DialogResult.OK)
-            {
-                // Добавляем книгу в источнике данных
-                bookService.AddBook(book);
-
-                // Обновляем отображение списка книг в DataGridView
-                booksDataGrid.DataSource = bookService.GetAllBooks();
-            }
         }
 
         private void BooksDataGrid_CellContentClick(object? sender, DataGridViewCellEventArgs e)
@@ -171,14 +59,6 @@ namespace Bookful.forms.main
             }
         }
 
-
-
-        private void BooksRefreshButton_Click(object? sender, EventArgs e)
-        {
-            var books = bookService.GetAllBooks();
-            booksDataGrid.DataSource = books;
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             booksDataGrid.Columns["Id"].HeaderText = "ID книги";
@@ -207,6 +87,44 @@ namespace Bookful.forms.main
 
             // Добавляем колонку в DataGridView
             booksDataGrid.Columns.Add(deleteButtonColumn);
+        }
+
+        private void refreshBooksButton_Click(object sender, EventArgs e)
+        {
+            var books = bookService.GetAllBooks();
+            booksDataGrid.DataSource = books;
+        }
+
+        private void addBookButton_Click(object sender, EventArgs e)
+        {
+            Book book = new Book();
+            // Открываем форму для создания книги
+            EditBookForm editBookForm = new EditBookForm(book, true);
+            // Если пользователь нажал "Добавить"
+            if (editBookForm.ShowDialog() == DialogResult.OK)
+            {
+                // Добавляем книгу в источнике данных
+                bookService.AddBook(book);
+
+                // Обновляем отображение списка книг в DataGridView
+                booksDataGrid.DataSource = bookService.GetAllBooks();
+            }
+        }
+
+        private void searchBooksButton_Click(object sender, EventArgs e)
+        {
+            string searchText = searchBooksInput.Text;
+            List<Book> books = bookService.SearchBooks(searchText);
+            booksDataGrid.DataSource = books;
+        }
+
+        private void searchBooksInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Вызываем метод поиска при нажатии клавиши Enter
+                searchBooksButton_Click(sender, e);
+            }
         }
     }
 }

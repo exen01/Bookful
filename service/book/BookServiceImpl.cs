@@ -47,5 +47,10 @@ namespace Bookful.service.book
         {
             bookDao.DeleteBook(id);
         }
+
+        public List<Book> SearchBooks(string searchText)
+        {
+            return bookDao.SearchBooks(searchText);
+        }
     }
 }

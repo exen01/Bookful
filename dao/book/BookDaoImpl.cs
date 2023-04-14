@@ -104,6 +104,37 @@ namespace Bookful.dao.book
             return null;
         }
 
+        public List<Book> SearchBooks(string searchText)
+        {
+            List<Book> books = new List<Book>();
+            if (this.connection.IsConnect())
+            {
+                string query = "SELECT * FROM book WHERE title LIKE @searchText";
+                var cmd = new MySqlCommand(query, connection.Connection);
+
+                cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Book book = new Book()
+                        {
+                            Id = reader.GetInt32("id"),
+                            Title = reader.GetString("title"),
+                            Author = reader.GetString("author"),
+                            Description = reader.GetString("description"),
+                            PublishingHouse = reader.GetString("publishing_house"),
+                            PublicationDate = reader.GetString("publication_date")
+                        };
+
+                        books.Add(book);
+                    }
+                }
+            }
+
+            return books;
+        }
+
         public void UpdateBook(Book book)
         {
             if (this.connection.IsConnect())

@@ -14,5 +14,6 @@ namespace Bookful.service.book
         Book GetBookById(int id);
         void UpdateBook(Book book);
         void DeleteBook(int id);
+        List<Book> SearchBooks(string searchText);
     }
 }
