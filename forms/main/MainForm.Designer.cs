@@ -41,12 +41,22 @@
             searchBooksInput = new TextBox();
             searchBooksButton = new Button();
             authorsListTab = new TabPage();
+            readingRoomsListTab = new TabPage();
+            readingRoomsTableLayout = new TableLayoutPanel();
+            readingRoomsDataGrid = new DataGridView();
+            readingRoomsToolBar = new MenuStrip();
+            addReadingRoomButton = new ToolStripMenuItem();
+            refreshReadingRoomsButton = new ToolStripMenuItem();
             tabControl.SuspendLayout();
             booksListTab.SuspendLayout();
             bookListLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)booksDataGrid).BeginInit();
             booksToolBar.SuspendLayout();
             searchBooksLayout.SuspendLayout();
+            readingRoomsListTab.SuspendLayout();
+            readingRoomsTableLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)readingRoomsDataGrid).BeginInit();
+            readingRoomsToolBar.SuspendLayout();
             SuspendLayout();
             // 
             // quickActionsBox
@@ -64,6 +74,7 @@
             tabControl.Controls.Add(issuedBooksTab);
             tabControl.Controls.Add(booksListTab);
             tabControl.Controls.Add(authorsListTab);
+            tabControl.Controls.Add(readingRoomsListTab);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(161, 0);
             tabControl.Name = "tabControl";
@@ -103,7 +114,7 @@
             bookListLayout.Location = new Point(3, 3);
             bookListLayout.Name = "bookListLayout";
             bookListLayout.RowCount = 2;
-            bookListLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            bookListLayout.RowStyles.Add(new RowStyle());
             bookListLayout.RowStyles.Add(new RowStyle());
             bookListLayout.RowStyles.Add(new RowStyle());
             bookListLayout.Size = new Size(625, 411);
@@ -135,8 +146,8 @@
             // addBookButton
             // 
             addBookButton.Name = "addBookButton";
-            addBookButton.Size = new Size(132, 24);
-            addBookButton.Text = "Добавить книгу";
+            addBookButton.Size = new Size(90, 24);
+            addBookButton.Text = "Добавить";
             addBookButton.Click += addBookButton_Click;
             // 
             // refreshBooksButton
@@ -192,6 +203,69 @@
             authorsListTab.Text = "Авторы";
             authorsListTab.UseVisualStyleBackColor = true;
             // 
+            // readingRoomsListTab
+            // 
+            readingRoomsListTab.Controls.Add(readingRoomsTableLayout);
+            readingRoomsListTab.Location = new Point(4, 29);
+            readingRoomsListTab.Name = "readingRoomsListTab";
+            readingRoomsListTab.Size = new Size(631, 417);
+            readingRoomsListTab.TabIndex = 3;
+            readingRoomsListTab.Text = "Читальные залы";
+            readingRoomsListTab.UseVisualStyleBackColor = true;
+            // 
+            // readingRoomsTableLayout
+            // 
+            readingRoomsTableLayout.AutoSize = true;
+            readingRoomsTableLayout.ColumnCount = 1;
+            readingRoomsTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            readingRoomsTableLayout.Controls.Add(readingRoomsDataGrid, 0, 2);
+            readingRoomsTableLayout.Controls.Add(readingRoomsToolBar, 0, 1);
+            readingRoomsTableLayout.Dock = DockStyle.Fill;
+            readingRoomsTableLayout.Location = new Point(0, 0);
+            readingRoomsTableLayout.Name = "readingRoomsTableLayout";
+            readingRoomsTableLayout.RowCount = 3;
+            readingRoomsTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            readingRoomsTableLayout.RowStyles.Add(new RowStyle());
+            readingRoomsTableLayout.RowStyles.Add(new RowStyle());
+            readingRoomsTableLayout.Size = new Size(631, 417);
+            readingRoomsTableLayout.TabIndex = 0;
+            // 
+            // readingRoomsDataGrid
+            // 
+            readingRoomsDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            readingRoomsDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            readingRoomsDataGrid.Dock = DockStyle.Fill;
+            readingRoomsDataGrid.Location = new Point(3, 51);
+            readingRoomsDataGrid.Name = "readingRoomsDataGrid";
+            readingRoomsDataGrid.RowHeadersWidth = 51;
+            readingRoomsDataGrid.RowTemplate.Height = 29;
+            readingRoomsDataGrid.Size = new Size(625, 363);
+            readingRoomsDataGrid.TabIndex = 0;
+            // 
+            // readingRoomsToolBar
+            // 
+            readingRoomsToolBar.Dock = DockStyle.Fill;
+            readingRoomsToolBar.ImageScalingSize = new Size(20, 20);
+            readingRoomsToolBar.Items.AddRange(new ToolStripItem[] { addReadingRoomButton, refreshReadingRoomsButton });
+            readingRoomsToolBar.Location = new Point(0, 20);
+            readingRoomsToolBar.Name = "readingRoomsToolBar";
+            readingRoomsToolBar.Size = new Size(631, 28);
+            readingRoomsToolBar.TabIndex = 1;
+            readingRoomsToolBar.Text = "menuStrip1";
+            // 
+            // addReadingRoomButton
+            // 
+            addReadingRoomButton.Name = "addReadingRoomButton";
+            addReadingRoomButton.Size = new Size(90, 24);
+            addReadingRoomButton.Text = "Добавить";
+            // 
+            // refreshReadingRoomsButton
+            // 
+            refreshReadingRoomsButton.Name = "refreshReadingRoomsButton";
+            refreshReadingRoomsButton.Size = new Size(144, 24);
+            refreshReadingRoomsButton.Text = "Обновить список";
+            refreshReadingRoomsButton.Click += refreshReadingRoomsButton_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -213,6 +287,13 @@
             booksToolBar.PerformLayout();
             searchBooksLayout.ResumeLayout(false);
             searchBooksLayout.PerformLayout();
+            readingRoomsListTab.ResumeLayout(false);
+            readingRoomsListTab.PerformLayout();
+            readingRoomsTableLayout.ResumeLayout(false);
+            readingRoomsTableLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)readingRoomsDataGrid).EndInit();
+            readingRoomsToolBar.ResumeLayout(false);
+            readingRoomsToolBar.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -231,5 +312,11 @@
         private TableLayoutPanel searchBooksLayout;
         private TextBox searchBooksInput;
         private Button searchBooksButton;
+        private TabPage readingRoomsListTab;
+        private TableLayoutPanel readingRoomsTableLayout;
+        private DataGridView readingRoomsDataGrid;
+        private MenuStrip readingRoomsToolBar;
+        private ToolStripMenuItem addReadingRoomButton;
+        private ToolStripMenuItem refreshReadingRoomsButton;
     }
 }

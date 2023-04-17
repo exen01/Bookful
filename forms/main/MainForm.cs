@@ -1,6 +1,7 @@
 ﻿using Bookful.domain.dto;
 using Bookful.forms.edit;
 using Bookful.service.book;
+using Bookful.service.readingRoom;
 using Bookful.util.db;
 
 namespace Bookful.forms.main
@@ -8,16 +9,22 @@ namespace Bookful.forms.main
     public partial class MainForm : Form
     {
         private IBookService bookService;
+        private IReadingRoomService readingRoomService;
+        private DBConnection connection = DBConnection.Instance();
 
         public MainForm()
         {
             InitializeComponent();
 
-            bookService = new BookServiceImpl(DBConnection.Instance());
+            bookService = new BookServiceImpl(connection);
+            readingRoomService = new ReadingRoomServiceImpl(connection);
 
             var books = bookService.GetAllBooks();
             booksDataGrid.DataSource = books;
             booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
+
+            /*var readingRooms = readingRoomService.GetAllReadingRooms();
+            readingRoomsDataGrid.DataSource = readingRooms;*/
         }
 
         private void BooksDataGrid_CellContentClick(object? sender, DataGridViewCellEventArgs e)
@@ -125,6 +132,17 @@ namespace Bookful.forms.main
                 // Вызываем метод поиска при нажатии клавиши Enter
                 searchBooksButton_Click(sender, e);
             }
+        }
+
+        private void refreshReadingRoomsButton_Click(object sender, EventArgs e)
+        {
+            var readingRooms = readingRoomService.GetAllReadingRooms();
+            readingRoomsDataGrid.DataSource = readingRooms;
+
+            readingRoomsDataGrid.Columns["Id"].HeaderText = "ID зала";
+            readingRoomsDataGrid.Columns["Number"].HeaderText = "Номер";
+            readingRoomsDataGrid.Columns["Specialization"].HeaderText = "Специализация";
+            readingRoomsDataGrid.Columns["SeatsCount"].HeaderText = "Кол-во мест";
         }
     }
 }
