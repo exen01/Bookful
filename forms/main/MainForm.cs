@@ -138,11 +138,101 @@ namespace Bookful.forms.main
         {
             var readingRooms = readingRoomService.GetAllReadingRooms();
             readingRoomsDataGrid.DataSource = readingRooms;
+        }
 
+        private void addReadingRoomButton_Click(object sender, EventArgs e)
+        {
+            ReadingRoom readingRoom = new ReadingRoom();
+            EditReadingRoomForm editReadingRoomForm = new EditReadingRoomForm(readingRoom, true);
+            if (editReadingRoomForm.ShowDialog() == DialogResult.OK)
+            {
+                readingRoomService.AddReadingRoom(readingRoom);
+
+                readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+            }
+        }
+
+        private void readingRoomsDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Проверяем, что нажата кнопка в колонке "Удалить"
+            if (e.ColumnIndex == readingRoomsDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
+            {
+                int readingRoomId = (int)readingRoomsDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
+                bool result = readingRoomService.DeleteReadingRoomById(readingRoomId);
+
+                if (result)
+                {
+                    //MessageBox.Show("Читальный зал удален успешно.", "Успешное удаление");
+                    readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка при удалении читального зала.", "Ошибка удаления");
+                    // Вывести сообщение об ошибке или выполнить другие действия
+                }
+            }
+
+            // Проверяем, что нажата кнопка в колонке "Изменить"
+            if (e.ColumnIndex == readingRoomsDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
+            {
+                int readingRoomId = (int)readingRoomsDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
+
+                ReadingRoom readingRoom = readingRoomService.GetReadingRoomById(readingRoomId);
+
+                EditReadingRoomForm editReadingRoomForm = new EditReadingRoomForm(readingRoom, false);
+
+                // Если пользователь нажал "Сохранить"
+                if (editReadingRoomForm.ShowDialog() == DialogResult.OK)
+                {
+                    bool result = readingRoomService.UpdateReadingRoom(readingRoom);
+
+                    if (result)
+                    {
+                        //MessageBox.Show("Читальный зал обновлен успешно.", "Успешное обновление");
+                        readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка при обновлении читального зала.", "Ошибка обновления");
+                        // Вывести сообщение об ошибке или выполнить другие действия
+                    }
+
+                }
+            }
+        }
+
+        private void readingRoomsDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
             readingRoomsDataGrid.Columns["Id"].HeaderText = "ID зала";
             readingRoomsDataGrid.Columns["Number"].HeaderText = "Номер";
             readingRoomsDataGrid.Columns["Specialization"].HeaderText = "Специализация";
             readingRoomsDataGrid.Columns["SeatsCount"].HeaderText = "Кол-во мест";
+
+            if (!readingRoomsDataGrid.Columns.Contains("EditButton"))
+            {
+                // Создаем колонку с кнопками редактирования
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+                editButtonColumn.HeaderText = "Изменить";
+                editButtonColumn.Name = "EditButton";
+                editButtonColumn.UseColumnTextForButtonValue = true;
+                editButtonColumn.Text = "Изменить";
+
+                // Добавляем колонку в DataGridView
+                readingRoomsDataGrid.Columns.Add(editButtonColumn);
+            }
+
+            if (!readingRoomsDataGrid.Columns.Contains("DeleteButton"))
+            {
+                // Создаем колонку с кнопками удаления
+                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+                deleteButtonColumn.HeaderText = "Удалить";
+                deleteButtonColumn.Name = "DeleteButton";
+                deleteButtonColumn.UseColumnTextForButtonValue = true;
+                deleteButtonColumn.Text = "Удалить";
+
+                // Добавляем колонку в DataGridView
+                readingRoomsDataGrid.Columns.Add(deleteButtonColumn);
+            }
         }
     }
 }

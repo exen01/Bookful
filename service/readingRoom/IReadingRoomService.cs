@@ -1,9 +1,4 @@
 ﻿using Bookful.domain.dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bookful.service.readingRoom
 {
@@ -14,5 +9,7 @@ namespace Bookful.service.readingRoom
         ReadingRoom? GetReadingRoomById(int id);
         bool UpdateReadingRoom(ReadingRoom readingRoom);
         bool DeleteReadingRoomById(int id);
+        ReadingRoom? GetReadingRoomByNumber(int number);
+        bool IsReadingRoomNumberUnique(int number);
     }
 }

@@ -47,6 +47,9 @@
             readingRoomsToolBar = new MenuStrip();
             addReadingRoomButton = new ToolStripMenuItem();
             refreshReadingRoomsButton = new ToolStripMenuItem();
+            searchReadingRoomsLayout = new TableLayoutPanel();
+            searchReadingRoomsButton = new Button();
+            searchReadingRoomsInput = new TextBox();
             tabControl.SuspendLayout();
             booksListTab.SuspendLayout();
             bookListLayout.SuspendLayout();
@@ -57,6 +60,7 @@
             readingRoomsTableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)readingRoomsDataGrid).BeginInit();
             readingRoomsToolBar.SuspendLayout();
+            searchReadingRoomsLayout.SuspendLayout();
             SuspendLayout();
             // 
             // quickActionsBox
@@ -220,11 +224,12 @@
             readingRoomsTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             readingRoomsTableLayout.Controls.Add(readingRoomsDataGrid, 0, 2);
             readingRoomsTableLayout.Controls.Add(readingRoomsToolBar, 0, 1);
+            readingRoomsTableLayout.Controls.Add(searchReadingRoomsLayout, 0, 0);
             readingRoomsTableLayout.Dock = DockStyle.Fill;
             readingRoomsTableLayout.Location = new Point(0, 0);
             readingRoomsTableLayout.Name = "readingRoomsTableLayout";
             readingRoomsTableLayout.RowCount = 3;
-            readingRoomsTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            readingRoomsTableLayout.RowStyles.Add(new RowStyle());
             readingRoomsTableLayout.RowStyles.Add(new RowStyle());
             readingRoomsTableLayout.RowStyles.Add(new RowStyle());
             readingRoomsTableLayout.Size = new Size(631, 417);
@@ -235,19 +240,22 @@
             readingRoomsDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             readingRoomsDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             readingRoomsDataGrid.Dock = DockStyle.Fill;
-            readingRoomsDataGrid.Location = new Point(3, 51);
+            readingRoomsDataGrid.Location = new Point(3, 81);
             readingRoomsDataGrid.Name = "readingRoomsDataGrid";
+            readingRoomsDataGrid.ReadOnly = true;
             readingRoomsDataGrid.RowHeadersWidth = 51;
             readingRoomsDataGrid.RowTemplate.Height = 29;
             readingRoomsDataGrid.Size = new Size(625, 363);
             readingRoomsDataGrid.TabIndex = 0;
+            readingRoomsDataGrid.CellContentClick += readingRoomsDataGrid_CellContentClick;
+            readingRoomsDataGrid.DataBindingComplete += readingRoomsDataGrid_DataBindingComplete;
             // 
             // readingRoomsToolBar
             // 
             readingRoomsToolBar.Dock = DockStyle.Fill;
             readingRoomsToolBar.ImageScalingSize = new Size(20, 20);
             readingRoomsToolBar.Items.AddRange(new ToolStripItem[] { addReadingRoomButton, refreshReadingRoomsButton });
-            readingRoomsToolBar.Location = new Point(0, 20);
+            readingRoomsToolBar.Location = new Point(0, 50);
             readingRoomsToolBar.Name = "readingRoomsToolBar";
             readingRoomsToolBar.Size = new Size(631, 28);
             readingRoomsToolBar.TabIndex = 1;
@@ -258,6 +266,7 @@
             addReadingRoomButton.Name = "addReadingRoomButton";
             addReadingRoomButton.Size = new Size(90, 24);
             addReadingRoomButton.Text = "Добавить";
+            addReadingRoomButton.Click += addReadingRoomButton_Click;
             // 
             // refreshReadingRoomsButton
             // 
@@ -265,6 +274,41 @@
             refreshReadingRoomsButton.Size = new Size(144, 24);
             refreshReadingRoomsButton.Text = "Обновить список";
             refreshReadingRoomsButton.Click += refreshReadingRoomsButton_Click;
+            // 
+            // searchReadingRoomsLayout
+            // 
+            searchReadingRoomsLayout.AutoSize = true;
+            searchReadingRoomsLayout.ColumnCount = 2;
+            searchReadingRoomsLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            searchReadingRoomsLayout.ColumnStyles.Add(new ColumnStyle());
+            searchReadingRoomsLayout.Controls.Add(searchReadingRoomsButton, 1, 0);
+            searchReadingRoomsLayout.Controls.Add(searchReadingRoomsInput, 0, 0);
+            searchReadingRoomsLayout.Dock = DockStyle.Fill;
+            searchReadingRoomsLayout.Location = new Point(3, 3);
+            searchReadingRoomsLayout.Name = "searchReadingRoomsLayout";
+            searchReadingRoomsLayout.RowCount = 1;
+            searchReadingRoomsLayout.RowStyles.Add(new RowStyle());
+            searchReadingRoomsLayout.Size = new Size(625, 44);
+            searchReadingRoomsLayout.TabIndex = 2;
+            // 
+            // searchReadingRoomsButton
+            // 
+            searchReadingRoomsButton.AutoSize = true;
+            searchReadingRoomsButton.Dock = DockStyle.Fill;
+            searchReadingRoomsButton.Location = new Point(522, 3);
+            searchReadingRoomsButton.Name = "searchReadingRoomsButton";
+            searchReadingRoomsButton.Size = new Size(100, 38);
+            searchReadingRoomsButton.TabIndex = 0;
+            searchReadingRoomsButton.Text = "Поиск";
+            searchReadingRoomsButton.UseVisualStyleBackColor = true;
+            // 
+            // searchReadingRoomsInput
+            // 
+            searchReadingRoomsInput.Dock = DockStyle.Fill;
+            searchReadingRoomsInput.Location = new Point(3, 3);
+            searchReadingRoomsInput.Name = "searchReadingRoomsInput";
+            searchReadingRoomsInput.Size = new Size(513, 27);
+            searchReadingRoomsInput.TabIndex = 1;
             // 
             // MainForm
             // 
@@ -294,6 +338,8 @@
             ((System.ComponentModel.ISupportInitialize)readingRoomsDataGrid).EndInit();
             readingRoomsToolBar.ResumeLayout(false);
             readingRoomsToolBar.PerformLayout();
+            searchReadingRoomsLayout.ResumeLayout(false);
+            searchReadingRoomsLayout.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -318,5 +364,8 @@
         private MenuStrip readingRoomsToolBar;
         private ToolStripMenuItem addReadingRoomButton;
         private ToolStripMenuItem refreshReadingRoomsButton;
+        private TableLayoutPanel searchReadingRoomsLayout;
+        private Button searchReadingRoomsButton;
+        private TextBox searchReadingRoomsInput;
     }
 }

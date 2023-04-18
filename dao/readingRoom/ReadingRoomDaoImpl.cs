@@ -115,6 +115,34 @@ namespace Bookful.dao.readingRoom
             return readingRoom;
         }
 
+        public ReadingRoom? GetReadingRoomByNumber(int number)
+        {
+            ReadingRoom? readingRoom = null;
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT * FROM reading_room WHERE room_number = @number";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@number", number);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        readingRoom = new ReadingRoom()
+                        {
+                            Id = reader.GetInt32("id"),
+                            Number = reader.GetInt32("room_number"),
+                            Specialization = reader.GetString("specialization"),
+                            SeatsCount = reader.GetInt32("number_of_seats")
+                        };
+                    }
+                }
+            }
+
+            return readingRoom;
+        }
+
         public bool UpdateReadingRoom(ReadingRoom readingRoom)
         {
             bool result = false;
@@ -126,6 +154,7 @@ namespace Bookful.dao.readingRoom
                 command.Parameters.AddWithValue("@number", readingRoom.Number);
                 command.Parameters.AddWithValue("@specialization", readingRoom.Specialization);
                 command.Parameters.AddWithValue("@number_of_seats", readingRoom.SeatsCount);
+                command.Parameters.AddWithValue("@id", readingRoom.Id);
 
                 int rowsAffected = command.ExecuteNonQuery();
 

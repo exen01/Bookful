@@ -15,6 +15,11 @@ namespace Bookful.service.readingRoom
 
         public bool AddReadingRoom(ReadingRoom readingRoom)
         {
+            if (!IsReadingRoomNumberUnique(readingRoom.Number))
+            {
+                return false;
+            }
+
             return readingRoomDao.AddReadingRoom(readingRoom);
         }
 
@@ -38,8 +43,25 @@ namespace Bookful.service.readingRoom
             return result;
         }
 
+        public ReadingRoom GetReadingRoomByNumber(int number)
+        {
+            return readingRoomDao.GetReadingRoomByNumber(number);
+        }
+
+        public bool IsReadingRoomNumberUnique(int number)
+        {
+            // Проверка на уникальность номера читального зала
+            ReadingRoom existingReadingRoom = readingRoomDao.GetReadingRoomByNumber(number);
+            return existingReadingRoom == null; // Если читальный зал с таким номером не найден, то номер уникален
+        }
+
         public bool UpdateReadingRoom(ReadingRoom readingRoom)
         {
+            if (!IsReadingRoomNumberUnique(readingRoom.Number))
+            {
+                return false;
+            }
+
             return readingRoomDao.UpdateReadingRoom(readingRoom);
         }
     }
