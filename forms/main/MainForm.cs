@@ -134,6 +134,21 @@ namespace Bookful.forms.main
             }
         }
 
+        private void searchReadingRoomsButton_Click(object sender, EventArgs e)
+        {
+            string searchText = searchReadingRoomsInput.Text;
+            List<ReadingRoom> readingRooms = readingRoomService.SearchReadingRooms(searchText);
+            readingRoomsDataGrid.DataSource = readingRooms;
+        }
+
+        private void searchReadingRoomsInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                searchReadingRoomsButton_Click(sender, e);
+            }
+        }
+
         private void refreshReadingRoomsButton_Click(object sender, EventArgs e)
         {
             var readingRooms = readingRoomService.GetAllReadingRooms();
@@ -234,5 +249,7 @@ namespace Bookful.forms.main
                 readingRoomsDataGrid.Columns.Add(deleteButtonColumn);
             }
         }
+
+
     }
 }

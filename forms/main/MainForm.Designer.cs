@@ -301,6 +301,7 @@
             searchReadingRoomsButton.TabIndex = 0;
             searchReadingRoomsButton.Text = "Поиск";
             searchReadingRoomsButton.UseVisualStyleBackColor = true;
+            searchReadingRoomsButton.Click += searchReadingRoomsButton_Click;
             // 
             // searchReadingRoomsInput
             // 
@@ -309,6 +310,7 @@
             searchReadingRoomsInput.Name = "searchReadingRoomsInput";
             searchReadingRoomsInput.Size = new Size(513, 27);
             searchReadingRoomsInput.TabIndex = 1;
+            searchReadingRoomsInput.KeyDown += searchReadingRoomsInput_KeyDown;
             // 
             // MainForm
             // 
@@ -321,6 +323,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Main";
+            WindowState = FormWindowState.Maximized;
             Load += MainForm_Load;
             tabControl.ResumeLayout(false);
             booksListTab.ResumeLayout(false);

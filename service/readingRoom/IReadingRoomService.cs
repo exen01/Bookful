@@ -11,5 +11,6 @@ namespace Bookful.service.readingRoom
         bool DeleteReadingRoomById(int id);
         ReadingRoom? GetReadingRoomByNumber(int number);
         bool IsReadingRoomNumberUnique(int number);
+        List<ReadingRoom> SearchReadingRooms(string searchText);
     }
 }

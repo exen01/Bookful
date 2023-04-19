@@ -55,6 +55,11 @@ namespace Bookful.service.readingRoom
             return existingReadingRoom == null; // Если читальный зал с таким номером не найден, то номер уникален
         }
 
+        public List<ReadingRoom> SearchReadingRooms(string searchText)
+        {
+            return readingRoomDao.SearchReadingRooms(searchText);
+        }
+
         public bool UpdateReadingRoom(ReadingRoom readingRoom)
         {
             if (!IsReadingRoomNumberUnique(readingRoom.Number))
