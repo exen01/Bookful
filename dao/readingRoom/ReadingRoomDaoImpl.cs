@@ -143,6 +143,50 @@ namespace Bookful.dao.readingRoom
             return readingRoom;
         }
 
+        public int GetReadingRoomIdByNumber(int number)
+        {
+            int id = -1;
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT id FROM reading_room WHERE room_number = @room_number";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@room_number", id);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        number = reader.GetInt32("room_number");
+                    }
+                }
+            }
+
+            return id;
+        }
+
+        public int GetReadingRoomNumberById(int id)
+        {
+            int number = -1;
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT room_number FROM reading_room WHERE id = @id";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@id", id);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        number = reader.GetInt32("room_number");
+                    }
+                }
+            }
+
+            return number;
+        }
+
         public List<ReadingRoom> SearchReadingRooms(string searchText)
         {
             List<ReadingRoom> readingRooms = new List<ReadingRoom>();

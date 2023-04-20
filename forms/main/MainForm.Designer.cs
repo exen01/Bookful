@@ -40,7 +40,15 @@
             searchBooksLayout = new TableLayoutPanel();
             searchBooksInput = new TextBox();
             searchBooksButton = new Button();
-            authorsListTab = new TabPage();
+            readersListTab = new TabPage();
+            readersTableLayout = new TableLayoutPanel();
+            readersDataGrid = new DataGridView();
+            readersToolBar = new MenuStrip();
+            addReaderButton = new ToolStripMenuItem();
+            refreshReadersButton = new ToolStripMenuItem();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            searchReadersButton = new Button();
+            searchReadersInput = new TextBox();
             readingRoomsListTab = new TabPage();
             readingRoomsTableLayout = new TableLayoutPanel();
             readingRoomsDataGrid = new DataGridView();
@@ -56,6 +64,11 @@
             ((System.ComponentModel.ISupportInitialize)booksDataGrid).BeginInit();
             booksToolBar.SuspendLayout();
             searchBooksLayout.SuspendLayout();
+            readersListTab.SuspendLayout();
+            readersTableLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)readersDataGrid).BeginInit();
+            readersToolBar.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             readingRoomsListTab.SuspendLayout();
             readingRoomsTableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)readingRoomsDataGrid).BeginInit();
@@ -77,7 +90,7 @@
             // 
             tabControl.Controls.Add(issuedBooksTab);
             tabControl.Controls.Add(booksListTab);
-            tabControl.Controls.Add(authorsListTab);
+            tabControl.Controls.Add(readersListTab);
             tabControl.Controls.Add(readingRoomsListTab);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(161, 0);
@@ -197,15 +210,107 @@
             searchBooksButton.UseVisualStyleBackColor = true;
             searchBooksButton.Click += searchBooksButton_Click;
             // 
-            // authorsListTab
+            // readersListTab
             // 
-            authorsListTab.Location = new Point(4, 29);
-            authorsListTab.Name = "authorsListTab";
-            authorsListTab.Padding = new Padding(3);
-            authorsListTab.Size = new Size(631, 417);
-            authorsListTab.TabIndex = 2;
-            authorsListTab.Text = "Авторы";
-            authorsListTab.UseVisualStyleBackColor = true;
+            readersListTab.Controls.Add(readersTableLayout);
+            readersListTab.Location = new Point(4, 29);
+            readersListTab.Name = "readersListTab";
+            readersListTab.Padding = new Padding(3);
+            readersListTab.Size = new Size(631, 417);
+            readersListTab.TabIndex = 2;
+            readersListTab.Text = "Читатели";
+            readersListTab.UseVisualStyleBackColor = true;
+            // 
+            // readersTableLayout
+            // 
+            readersTableLayout.ColumnCount = 1;
+            readersTableLayout.ColumnStyles.Add(new ColumnStyle());
+            readersTableLayout.Controls.Add(readersDataGrid, 0, 2);
+            readersTableLayout.Controls.Add(readersToolBar, 0, 1);
+            readersTableLayout.Controls.Add(tableLayoutPanel1, 0, 0);
+            readersTableLayout.Dock = DockStyle.Fill;
+            readersTableLayout.Location = new Point(3, 3);
+            readersTableLayout.Name = "readersTableLayout";
+            readersTableLayout.RowCount = 3;
+            readersTableLayout.RowStyles.Add(new RowStyle());
+            readersTableLayout.RowStyles.Add(new RowStyle());
+            readersTableLayout.RowStyles.Add(new RowStyle());
+            readersTableLayout.Size = new Size(625, 411);
+            readersTableLayout.TabIndex = 0;
+            // 
+            // readersDataGrid
+            // 
+            readersDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            readersDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            readersDataGrid.Dock = DockStyle.Fill;
+            readersDataGrid.Location = new Point(3, 81);
+            readersDataGrid.Name = "readersDataGrid";
+            readersDataGrid.ReadOnly = true;
+            readersDataGrid.RowHeadersWidth = 51;
+            readersDataGrid.RowTemplate.Height = 29;
+            readersDataGrid.Size = new Size(619, 327);
+            readersDataGrid.TabIndex = 1;
+            readersDataGrid.CellContentClick += readersDataGrid_CellContentClick;
+            readersDataGrid.CellFormatting += readersDataGrid_CellFormatting;
+            readersDataGrid.DataBindingComplete += readersDataGrid_DataBindingComplete;
+            // 
+            // readersToolBar
+            // 
+            readersToolBar.ImageScalingSize = new Size(20, 20);
+            readersToolBar.Items.AddRange(new ToolStripItem[] { addReaderButton, refreshReadersButton });
+            readersToolBar.Location = new Point(0, 50);
+            readersToolBar.Name = "readersToolBar";
+            readersToolBar.Size = new Size(625, 28);
+            readersToolBar.TabIndex = 2;
+            readersToolBar.Text = "readersToolBar";
+            // 
+            // addReaderButton
+            // 
+            addReaderButton.Name = "addReaderButton";
+            addReaderButton.Size = new Size(90, 24);
+            addReaderButton.Text = "Добавить";
+            addReaderButton.Click += addReaderButton_Click;
+            // 
+            // refreshReadersButton
+            // 
+            refreshReadersButton.Name = "refreshReadersButton";
+            refreshReadersButton.Size = new Size(144, 24);
+            refreshReadersButton.Text = "Обновить список";
+            refreshReadersButton.Click += refreshReadersButton_Click;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.AutoSize = true;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.Controls.Add(searchReadersButton, 1, 0);
+            tableLayoutPanel1.Controls.Add(searchReadersInput, 0, 0);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(3, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.Size = new Size(619, 44);
+            tableLayoutPanel1.TabIndex = 3;
+            // 
+            // searchReadersButton
+            // 
+            searchReadersButton.AutoSize = true;
+            searchReadersButton.Location = new Point(516, 3);
+            searchReadersButton.Name = "searchReadersButton";
+            searchReadersButton.Size = new Size(100, 38);
+            searchReadersButton.TabIndex = 0;
+            searchReadersButton.Text = "Поиск";
+            searchReadersButton.UseVisualStyleBackColor = true;
+            // 
+            // searchReadersInput
+            // 
+            searchReadersInput.Dock = DockStyle.Fill;
+            searchReadersInput.Location = new Point(3, 3);
+            searchReadersInput.Name = "searchReadersInput";
+            searchReadersInput.Size = new Size(507, 27);
+            searchReadersInput.TabIndex = 1;
             // 
             // readingRoomsListTab
             // 
@@ -221,7 +326,7 @@
             // 
             readingRoomsTableLayout.AutoSize = true;
             readingRoomsTableLayout.ColumnCount = 1;
-            readingRoomsTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            readingRoomsTableLayout.ColumnStyles.Add(new ColumnStyle());
             readingRoomsTableLayout.Controls.Add(readingRoomsDataGrid, 0, 2);
             readingRoomsTableLayout.Controls.Add(readingRoomsToolBar, 0, 1);
             readingRoomsTableLayout.Controls.Add(searchReadingRoomsLayout, 0, 0);
@@ -334,6 +439,14 @@
             booksToolBar.PerformLayout();
             searchBooksLayout.ResumeLayout(false);
             searchBooksLayout.PerformLayout();
+            readersListTab.ResumeLayout(false);
+            readersTableLayout.ResumeLayout(false);
+            readersTableLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)readersDataGrid).EndInit();
+            readersToolBar.ResumeLayout(false);
+            readersToolBar.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             readingRoomsListTab.ResumeLayout(false);
             readingRoomsListTab.PerformLayout();
             readingRoomsTableLayout.ResumeLayout(false);
@@ -352,7 +465,7 @@
         private TabControl tabControl;
         private TabPage issuedBooksTab;
         private TabPage booksListTab;
-        private TabPage authorsListTab;
+        private TabPage readersListTab;
         private TableLayoutPanel bookListLayout;
         private DataGridView booksDataGrid;
         private MenuStrip booksToolBar;
@@ -370,5 +483,13 @@
         private TableLayoutPanel searchReadingRoomsLayout;
         private Button searchReadingRoomsButton;
         private TextBox searchReadingRoomsInput;
+        private TableLayoutPanel readersTableLayout;
+        private DataGridView readersDataGrid;
+        private MenuStrip readersToolBar;
+        private ToolStripMenuItem addReaderButton;
+        private ToolStripMenuItem refreshReadersButton;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button searchReadersButton;
+        private TextBox searchReadersInput;
     }
 }

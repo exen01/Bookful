@@ -11,5 +11,7 @@ namespace Bookful.dao.readingRoom
         bool DeleteReadingRoomById(int id);
         ReadingRoom GetReadingRoomByNumber(int number);
         List<ReadingRoom> SearchReadingRooms(string searchText);
+        int GetReadingRoomNumberById(int id);
+        int GetReadingRoomIdByNumber(int number);
     }
 }

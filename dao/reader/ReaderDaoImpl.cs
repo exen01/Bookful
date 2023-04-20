@@ -27,7 +27,7 @@ namespace Bookful.dao.reader
                 command.Parameters.AddWithValue("@last_name", reader.LastName);
                 command.Parameters.AddWithValue("@library_card_number", reader.LibraryCardNumber);
                 command.Parameters.AddWithValue("@reading_room_id", reader.ReadingRoomId);
-                command.Parameters.AddWithValue("@registration_date", reader.RegistrationDate);
+                command.Parameters.AddWithValue("@registration_date", reader.RegistrationDate.ToString("yyyy-MM-dd"));
 
                 int rowsAffected = command.ExecuteNonQuery();
 
@@ -115,7 +115,7 @@ namespace Bookful.dao.reader
                             LastName = mysqlReader.GetString("last_name"),
                             LibraryCardNumber = mysqlReader.GetInt32("library_card_number"),
                             ReadingRoomId = mysqlReader.GetInt32("reading_room_id"),
-                            RegistrationDate = DateOnly.Parse(mysqlReader.GetDateTime("registration_date").Date.ToString())
+                            RegistrationDate = DateOnly.FromDateTime(mysqlReader.GetDateTime("registration_date"))
                         };
                     }
                 }
@@ -146,7 +146,7 @@ namespace Bookful.dao.reader
                             LastName = mysqlReader.GetString("last_name"),
                             LibraryCardNumber = mysqlReader.GetInt32("library_card_number"),
                             ReadingRoomId = mysqlReader.GetInt32("reading_room_id"),
-                            RegistrationDate = DateOnly.Parse(mysqlReader.GetDateTime("registration_date").Date.ToString())
+                            RegistrationDate = DateOnly.FromDateTime(mysqlReader.GetDateTime("registration_date"))
                         };
                     }
                 }

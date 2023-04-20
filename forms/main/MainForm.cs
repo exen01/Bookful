@@ -1,8 +1,11 @@
 ﻿using Bookful.domain.dto;
 using Bookful.forms.edit;
+using Bookful.forms.edit.reader;
 using Bookful.service.book;
+using Bookful.service.reader;
 using Bookful.service.readingRoom;
 using Bookful.util.db;
+using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
@@ -10,6 +13,7 @@ namespace Bookful.forms.main
     {
         private IBookService bookService;
         private IReadingRoomService readingRoomService;
+        private IReaderService readerService;
         private DBConnection connection = DBConnection.Instance();
 
         public MainForm()
@@ -18,10 +22,14 @@ namespace Bookful.forms.main
 
             bookService = new BookServiceImpl(connection);
             readingRoomService = new ReadingRoomServiceImpl(connection);
+            readerService = new ReaderServiceImpl(connection);
 
             var books = bookService.GetAllBooks();
             booksDataGrid.DataSource = books;
             booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
+
+            /*var readers = readerService.GetAllReaders();
+            readersDataGrid.DataSource = readers;*/
 
             /*var readingRooms = readingRoomService.GetAllReadingRooms();
             readingRoomsDataGrid.DataSource = readingRooms;*/
@@ -68,7 +76,13 @@ namespace Bookful.forms.main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            booksDataGrid.Columns["Id"].HeaderText = "ID книги";
+            //booksDataGrid.Columns["Id"].HeaderText = "ID книги";
+            var idColumn = booksDataGrid.Columns["Id"];
+            if (idColumn != null)
+            {
+                idColumn.Visible = false;
+            }
+
             booksDataGrid.Columns["Title"].HeaderText = "Название";
             booksDataGrid.Columns["Author"].HeaderText = "Автор";
             booksDataGrid.Columns["Description"].HeaderText = "Описание";
@@ -81,6 +95,7 @@ namespace Bookful.forms.main
             editButtonColumn.Name = "EditButton";
             editButtonColumn.UseColumnTextForButtonValue = true;
             editButtonColumn.Text = "Изменить";
+            editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
             // Добавляем колонку в DataGridView
             booksDataGrid.Columns.Add(editButtonColumn);
@@ -91,6 +106,7 @@ namespace Bookful.forms.main
             deleteButtonColumn.Name = "DeleteButton";
             deleteButtonColumn.UseColumnTextForButtonValue = true;
             deleteButtonColumn.Text = "Удалить";
+            deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
             // Добавляем колонку в DataGridView
             booksDataGrid.Columns.Add(deleteButtonColumn);
@@ -218,7 +234,13 @@ namespace Bookful.forms.main
 
         private void readingRoomsDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            readingRoomsDataGrid.Columns["Id"].HeaderText = "ID зала";
+            //readingRoomsDataGrid.Columns["Id"].HeaderText = "ID зала";
+            var idColumn = readingRoomsDataGrid.Columns["Id"];
+            if (idColumn != null)
+            {
+                idColumn.Visible = false;
+            }
+
             readingRoomsDataGrid.Columns["Number"].HeaderText = "Номер";
             readingRoomsDataGrid.Columns["Specialization"].HeaderText = "Специализация";
             readingRoomsDataGrid.Columns["SeatsCount"].HeaderText = "Кол-во мест";
@@ -231,6 +253,7 @@ namespace Bookful.forms.main
                 editButtonColumn.Name = "EditButton";
                 editButtonColumn.UseColumnTextForButtonValue = true;
                 editButtonColumn.Text = "Изменить";
+                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
                 // Добавляем колонку в DataGridView
                 readingRoomsDataGrid.Columns.Add(editButtonColumn);
@@ -244,12 +267,129 @@ namespace Bookful.forms.main
                 deleteButtonColumn.Name = "DeleteButton";
                 deleteButtonColumn.UseColumnTextForButtonValue = true;
                 deleteButtonColumn.Text = "Удалить";
+                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
                 // Добавляем колонку в DataGridView
                 readingRoomsDataGrid.Columns.Add(deleteButtonColumn);
             }
         }
 
+        private void refreshReadersButton_Click(object sender, EventArgs e)
+        {
+            var readers = readerService.GetAllReaders();
+            readersDataGrid.DataSource = readers;
+        }
 
+        private void readersDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var idColumn = readersDataGrid.Columns["Id"];
+            if (idColumn != null)
+            {
+                idColumn.Visible = false;
+            }
+
+            readersDataGrid.Columns["FirstName"].HeaderText = "Имя";
+            readersDataGrid.Columns["LastName"].HeaderText = "Фамилия";
+            readersDataGrid.Columns["LibraryCardNumber"].HeaderText = "Номер читательского билета";
+            readersDataGrid.Columns["ReadingRoomId"].HeaderText = "Номер читального зала";
+            readersDataGrid.Columns["RegistrationDate"].HeaderText = "Дата регистрации";
+
+            if (!readersDataGrid.Columns.Contains("EditButton"))
+            {
+                // Создаем колонку с кнопками редактирования
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+                editButtonColumn.HeaderText = "Изменить";
+                editButtonColumn.Name = "EditButton";
+                editButtonColumn.UseColumnTextForButtonValue = true;
+                editButtonColumn.Text = "Изменить";
+                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+                // Добавляем колонку в DataGridView
+                readersDataGrid.Columns.Add(editButtonColumn);
+            }
+
+            if (!readersDataGrid.Columns.Contains("DeleteButton"))
+            {
+                // Создаем колонку с кнопками удаления
+                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+                deleteButtonColumn.HeaderText = "Удалить";
+                deleteButtonColumn.Name = "DeleteButton";
+                deleteButtonColumn.UseColumnTextForButtonValue = true;
+                deleteButtonColumn.Text = "Удалить";
+                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+                // Добавляем колонку в DataGridView
+                readersDataGrid.Columns.Add(deleteButtonColumn);
+            }
+        }
+
+        private void readersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (readersDataGrid.Columns[e.ColumnIndex].Name == "ReadingRoomId")
+            {
+                int readingRoomId = Convert.ToInt32(e.Value);
+                e.Value = readingRoomService.GetReadingRoomNumberById(readingRoomId);
+            }
+        }
+
+        private void addReaderButton_Click(object sender, EventArgs e)
+        {
+            Reader reader = new Reader();
+
+            EditReaderForm editReaderForm = new EditReaderForm(reader, true, readingRoomService);
+            if (editReaderForm.ShowDialog() == DialogResult.OK)
+            {
+                readerService.AddReader(reader);
+
+                readersDataGrid.DataSource = readerService.GetAllReaders();
+            }
+        }
+
+        private void readersDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Проверяем, что нажата кнопка в колонке "Удалить"
+            if (e.ColumnIndex == readersDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
+            {
+                int readerId = (int)readersDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
+                bool result = readerService.DeleteReaderById(readerId);
+
+                if (result)
+                {
+                    readersDataGrid.DataSource = readerService.GetAllReaders();
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка при удалении читателя.", "Ошибка удаления");
+                    // Вывести сообщение об ошибке или выполнить другие действия
+                }
+            }
+
+            // Проверяем, что нажата кнопка в колонке "Изменить"
+            if (e.ColumnIndex == readersDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
+            {
+                int readerId = (int)readersDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
+
+                Reader reader = readerService.GetReaderById(readerId);
+
+                EditReaderForm editReaderForm = new EditReaderForm(reader, false, readingRoomService);
+
+                // Если пользователь нажал "Сохранить"
+                if (editReaderForm.ShowDialog() == DialogResult.OK)
+                {
+                    bool result = readerService.UpdateReader(reader);
+
+                    if (result)
+                    {
+                        readersDataGrid.DataSource = readerService.GetAllReaders();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка при обновлении читального зала.", "Ошибка обновления");
+                        // Вывести сообщение об ошибке или выполнить другие действия
+                    }
+
+                }
+            }
+        }
     }
 }

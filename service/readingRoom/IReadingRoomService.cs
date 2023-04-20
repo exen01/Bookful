@@ -12,5 +12,6 @@ namespace Bookful.service.readingRoom
         ReadingRoom? GetReadingRoomByNumber(int number);
         bool IsReadingRoomNumberUnique(int number);
         List<ReadingRoom> SearchReadingRooms(string searchText);
+        int GetReadingRoomNumberById(int id);
     }
 }

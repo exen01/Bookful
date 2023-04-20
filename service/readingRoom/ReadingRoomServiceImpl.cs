@@ -48,6 +48,11 @@ namespace Bookful.service.readingRoom
             return readingRoomDao.GetReadingRoomByNumber(number);
         }
 
+        public int GetReadingRoomNumberById(int id)
+        {
+            return readingRoomDao.GetReadingRoomNumberById(id);
+        }
+
         public bool IsReadingRoomNumberUnique(int number)
         {
             // Проверка на уникальность номера читального зала
