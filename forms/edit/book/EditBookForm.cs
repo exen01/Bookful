@@ -1,12 +1,13 @@
 ﻿using Bookful.domain.dto;
-using Bookful.service.book;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Bookful.forms.edit
 {
-    public partial class EditBookForm : Form
+    public partial class EditBookForm : MaterialForm
     {
+        private MaterialSkinManager materialSkinManager;
         private Book book;
-        private IBookService bookService;
 
         public EditBookForm(Book book, bool isNewBook)
         {
@@ -20,9 +21,17 @@ namespace Bookful.forms.edit
             }
             else
             {
+                Text = String.Format("Редактирование книги {0}", book.Title);
+
                 this.book = book;
                 InitializeForm();
             }
+
+            // Создаем и настраиваем менеджер оформления MaterialSkin
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
         private void InitializeForm()
