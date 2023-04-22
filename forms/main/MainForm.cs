@@ -5,16 +5,19 @@ using Bookful.service.book;
 using Bookful.service.reader;
 using Bookful.service.readingRoom;
 using Bookful.util.db;
+using MaterialSkin;
+using MaterialSkin.Controls;
 using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
-    public partial class MainForm : Form
+    public partial class MainForm : MaterialForm
     {
         private IBookService bookService;
         private IReadingRoomService readingRoomService;
         private IReaderService readerService;
         private DBConnection connection = DBConnection.Instance();
+        private MaterialSkinManager materialSkinManager;
 
         public MainForm()
         {
@@ -27,6 +30,17 @@ namespace Bookful.forms.main
             var books = bookService.GetAllBooks();
             booksDataGrid.DataSource = books;
             booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
+
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(
+                Primary.BlueGrey800, // Основной цвет (Primary)
+                Primary.BlueGrey900, // Основной цвет (Primary) в активном состоянии
+                Primary.BlueGrey500, // Основной цвет (Primary) в подсвеченном состоянии
+                Accent.LightBlue200, // Акцентный цвет (Accent)
+                TextShade.WHITE // Цвет текста (TextShade)
+            );
 
             /*var readers = readerService.GetAllReaders();
             readersDataGrid.DataSource = readers;*/
