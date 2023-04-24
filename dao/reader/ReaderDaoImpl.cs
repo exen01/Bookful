@@ -155,6 +155,29 @@ namespace Bookful.dao.reader
             return reader;
         }
 
+        public string GetReaderFullNameById(int id)
+        {
+            string fullName = "";
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT first_name, last_name FROM reader WHERE id = @id";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+
+                command.Parameters.AddWithValue("@id", id);
+
+                using (MySqlDataReader mysqlReader = command.ExecuteReader())
+                {
+                    if (mysqlReader.Read())
+                    {
+                        fullName = string.Format("{0} {1}", mysqlReader.GetString("first_name"), mysqlReader.GetString("last_name"));
+                    }
+                }
+            }
+
+            return fullName;
+        }
+
         public bool UpdateReader(Reader reader)
         {
             bool result = false;

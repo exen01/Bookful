@@ -10,5 +10,6 @@ namespace Bookful.dao.book
         Book? GetBookById(int id);
         void UpdateBook(Book book);
         List<Book> SearchBooks(string searchText);
+        string GetBookNameAndYearById(int id);
     }
 }

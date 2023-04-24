@@ -60,6 +60,14 @@ namespace Bookful.forms.main
             searchBooksInput = new MaterialTextBox();
             searchBooksButton = new MaterialButton();
             issuedBooksTab = new TabPage();
+            issuedBooksTableLayout = new TableLayoutPanel();
+            issuedBooksDataGrid = new DataGridView();
+            issuedBooksToolBar = new MenuStrip();
+            addIssueBookButton = new ToolStripMenuItem();
+            refreshIssueBooksButton = new ToolStripMenuItem();
+            searchIssueBooksTableLayout = new TableLayoutPanel();
+            searchIssueBooksInput = new MaterialTextBox();
+            searchIssueBooksButton = new MaterialButton();
             tabControl = new TabControl();
             quickActionsBox = new GroupBox();
             readingRoomsListTab.SuspendLayout();
@@ -77,6 +85,11 @@ namespace Bookful.forms.main
             ((System.ComponentModel.ISupportInitialize)booksDataGrid).BeginInit();
             booksToolBar.SuspendLayout();
             searchBooksLayout.SuspendLayout();
+            issuedBooksTab.SuspendLayout();
+            issuedBooksTableLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)issuedBooksDataGrid).BeginInit();
+            issuedBooksToolBar.SuspendLayout();
+            searchIssueBooksTableLayout.SuspendLayout();
             tabControl.SuspendLayout();
             SuspendLayout();
             // 
@@ -467,6 +480,7 @@ namespace Bookful.forms.main
             // 
             // issuedBooksTab
             // 
+            issuedBooksTab.Controls.Add(issuedBooksTableLayout);
             issuedBooksTab.Location = new Point(4, 29);
             issuedBooksTab.Name = "issuedBooksTab";
             issuedBooksTab.Padding = new Padding(3);
@@ -474,6 +488,115 @@ namespace Bookful.forms.main
             issuedBooksTab.TabIndex = 0;
             issuedBooksTab.Text = "Выданные книги";
             issuedBooksTab.UseVisualStyleBackColor = true;
+            // 
+            // issuedBooksTableLayout
+            // 
+            issuedBooksTableLayout.AutoSize = true;
+            issuedBooksTableLayout.ColumnCount = 1;
+            issuedBooksTableLayout.ColumnStyles.Add(new ColumnStyle());
+            issuedBooksTableLayout.Controls.Add(issuedBooksDataGrid, 0, 2);
+            issuedBooksTableLayout.Controls.Add(issuedBooksToolBar, 0, 1);
+            issuedBooksTableLayout.Controls.Add(searchIssueBooksTableLayout, 0, 0);
+            issuedBooksTableLayout.Dock = DockStyle.Fill;
+            issuedBooksTableLayout.Location = new Point(3, 3);
+            issuedBooksTableLayout.Name = "issuedBooksTableLayout";
+            issuedBooksTableLayout.RowCount = 3;
+            issuedBooksTableLayout.RowStyles.Add(new RowStyle());
+            issuedBooksTableLayout.RowStyles.Add(new RowStyle());
+            issuedBooksTableLayout.RowStyles.Add(new RowStyle());
+            issuedBooksTableLayout.Size = new Size(619, 344);
+            issuedBooksTableLayout.TabIndex = 0;
+            // 
+            // issuedBooksDataGrid
+            // 
+            issuedBooksDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            issuedBooksDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            issuedBooksDataGrid.Dock = DockStyle.Fill;
+            issuedBooksDataGrid.Location = new Point(3, 93);
+            issuedBooksDataGrid.Name = "issuedBooksDataGrid";
+            issuedBooksDataGrid.RowHeadersWidth = 51;
+            issuedBooksDataGrid.RowTemplate.Height = 29;
+            issuedBooksDataGrid.Size = new Size(613, 248);
+            issuedBooksDataGrid.TabIndex = 0;
+            issuedBooksDataGrid.CellFormatting += issuedBooksDataGrid_CellFormatting;
+            issuedBooksDataGrid.DataBindingComplete += issuedBooksDataGrid_DataBindingComplete;
+            // 
+            // issuedBooksToolBar
+            // 
+            issuedBooksToolBar.ImageScalingSize = new Size(20, 20);
+            issuedBooksToolBar.Items.AddRange(new ToolStripItem[] { addIssueBookButton, refreshIssueBooksButton });
+            issuedBooksToolBar.Location = new Point(0, 62);
+            issuedBooksToolBar.Name = "issuedBooksToolBar";
+            issuedBooksToolBar.Size = new Size(619, 28);
+            issuedBooksToolBar.TabIndex = 1;
+            issuedBooksToolBar.Text = "menuStrip1";
+            // 
+            // addIssueBookButton
+            // 
+            addIssueBookButton.Name = "addIssueBookButton";
+            addIssueBookButton.Size = new Size(90, 24);
+            addIssueBookButton.Text = "Добавить";
+            // 
+            // refreshIssueBooksButton
+            // 
+            refreshIssueBooksButton.Name = "refreshIssueBooksButton";
+            refreshIssueBooksButton.Size = new Size(144, 24);
+            refreshIssueBooksButton.Text = "Обновить список";
+            // 
+            // searchIssueBooksTableLayout
+            // 
+            searchIssueBooksTableLayout.AutoScroll = true;
+            searchIssueBooksTableLayout.AutoSize = true;
+            searchIssueBooksTableLayout.ColumnCount = 2;
+            searchIssueBooksTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            searchIssueBooksTableLayout.ColumnStyles.Add(new ColumnStyle());
+            searchIssueBooksTableLayout.Controls.Add(searchIssueBooksInput, 0, 0);
+            searchIssueBooksTableLayout.Controls.Add(searchIssueBooksButton, 1, 0);
+            searchIssueBooksTableLayout.Dock = DockStyle.Fill;
+            searchIssueBooksTableLayout.Location = new Point(3, 3);
+            searchIssueBooksTableLayout.Name = "searchIssueBooksTableLayout";
+            searchIssueBooksTableLayout.RowCount = 1;
+            searchIssueBooksTableLayout.RowStyles.Add(new RowStyle());
+            searchIssueBooksTableLayout.Size = new Size(613, 56);
+            searchIssueBooksTableLayout.TabIndex = 2;
+            // 
+            // searchIssueBooksInput
+            // 
+            searchIssueBooksInput.AnimateReadOnly = false;
+            searchIssueBooksInput.BorderStyle = BorderStyle.None;
+            searchIssueBooksInput.Depth = 0;
+            searchIssueBooksInput.Dock = DockStyle.Fill;
+            searchIssueBooksInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            searchIssueBooksInput.LeadingIcon = null;
+            searchIssueBooksInput.Location = new Point(3, 3);
+            searchIssueBooksInput.MaxLength = 50;
+            searchIssueBooksInput.MouseState = MaterialSkin.MouseState.OUT;
+            searchIssueBooksInput.Multiline = false;
+            searchIssueBooksInput.Name = "searchIssueBooksInput";
+            searchIssueBooksInput.Size = new Size(527, 50);
+            searchIssueBooksInput.TabIndex = 0;
+            searchIssueBooksInput.Text = "";
+            searchIssueBooksInput.TrailingIcon = null;
+            // 
+            // searchIssueBooksButton
+            // 
+            searchIssueBooksButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            searchIssueBooksButton.Density = MaterialButton.MaterialButtonDensity.Default;
+            searchIssueBooksButton.Depth = 0;
+            searchIssueBooksButton.Dock = DockStyle.Fill;
+            searchIssueBooksButton.HighEmphasis = true;
+            searchIssueBooksButton.Icon = null;
+            searchIssueBooksButton.Location = new Point(537, 6);
+            searchIssueBooksButton.Margin = new Padding(4, 6, 4, 6);
+            searchIssueBooksButton.MouseState = MaterialSkin.MouseState.HOVER;
+            searchIssueBooksButton.Name = "searchIssueBooksButton";
+            searchIssueBooksButton.NoAccentTextColor = Color.Empty;
+            searchIssueBooksButton.Size = new Size(72, 44);
+            searchIssueBooksButton.TabIndex = 1;
+            searchIssueBooksButton.Text = "Поиск";
+            searchIssueBooksButton.Type = MaterialButton.MaterialButtonType.Contained;
+            searchIssueBooksButton.UseAccentColor = false;
+            searchIssueBooksButton.UseVisualStyleBackColor = true;
             // 
             // tabControl
             // 
@@ -540,6 +663,15 @@ namespace Bookful.forms.main
             booksToolBar.PerformLayout();
             searchBooksLayout.ResumeLayout(false);
             searchBooksLayout.PerformLayout();
+            issuedBooksTab.ResumeLayout(false);
+            issuedBooksTab.PerformLayout();
+            issuedBooksTableLayout.ResumeLayout(false);
+            issuedBooksTableLayout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)issuedBooksDataGrid).EndInit();
+            issuedBooksToolBar.ResumeLayout(false);
+            issuedBooksToolBar.PerformLayout();
+            searchIssueBooksTableLayout.ResumeLayout(false);
+            searchIssueBooksTableLayout.PerformLayout();
             tabControl.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -576,5 +708,13 @@ namespace Bookful.forms.main
         private TableLayoutPanel tableLayoutPanel1;
         private MaterialButton searchReadersButton;
         private MaterialTextBox searchReadersInput;
+        private TableLayoutPanel issuedBooksTableLayout;
+        private DataGridView issuedBooksDataGrid;
+        private MenuStrip issuedBooksToolBar;
+        private ToolStripMenuItem addIssueBookButton;
+        private ToolStripMenuItem refreshIssueBooksButton;
+        private TableLayoutPanel searchIssueBooksTableLayout;
+        private MaterialTextBox searchIssueBooksInput;
+        private MaterialButton searchIssueBooksButton;
     }
 }

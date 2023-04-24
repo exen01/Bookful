@@ -48,6 +48,16 @@ namespace Bookful.service.reader
             return reader;
         }
 
+        public string GetReaderFullNameById(int id)
+        {
+            string fullName = readerDao.GetReaderFullNameById(id);
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return "Читатель не найден.";
+            }
+            return fullName;
+        }
+
         public bool UpdateReader(Reader reader)
         {
             return readerDao.UpdateReader(reader);

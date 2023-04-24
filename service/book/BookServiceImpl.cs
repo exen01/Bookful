@@ -52,5 +52,16 @@ namespace Bookful.service.book
         {
             return bookDao.SearchBooks(searchText);
         }
+
+        public string GetBookNameAndYearById(int id)
+        {
+            string bookName = bookDao.GetBookNameAndYearById(id);
+            if (string.IsNullOrEmpty(bookName))
+            {
+                return string.Format("Книга с id: {0} не найдена.", id);
+            }
+
+            return bookName;
+        }
     }
 }

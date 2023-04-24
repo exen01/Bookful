@@ -1,13 +1,14 @@
-﻿using Bookful.domain.dto;
+﻿using Bookful.dao.issuedBook;
+using Bookful.domain.dto;
 using Bookful.forms.edit;
 using Bookful.forms.edit.reader;
 using Bookful.service.book;
+using Bookful.service.issuedBook;
 using Bookful.service.reader;
 using Bookful.service.readingRoom;
 using Bookful.util.db;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
@@ -16,6 +17,7 @@ namespace Bookful.forms.main
         private IBookService bookService;
         private IReadingRoomService readingRoomService;
         private IReaderService readerService;
+        private IIssuedBookService issuedBookService;
         private DBConnection connection = DBConnection.Instance();
         private MaterialSkinManager materialSkinManager;
 
@@ -26,6 +28,7 @@ namespace Bookful.forms.main
             bookService = new BookServiceImpl(connection);
             readingRoomService = new ReadingRoomServiceImpl(connection);
             readerService = new ReaderServiceImpl(connection);
+            issuedBookService = new IssuedBookServiceImpl(new IssuedBookDaoImpl(connection));
 
             var books = bookService.GetAllBooks();
             booksDataGrid.DataSource = books;
@@ -41,6 +44,9 @@ namespace Bookful.forms.main
                 Accent.LightBlue200, // Акцентный цвет (Accent)
                 TextShade.WHITE // Цвет текста (TextShade)
             );
+
+            var issuedBooks = issuedBookService.GetAll();
+            issuedBooksDataGrid.DataSource = issuedBooks;
 
             /*var readers = readerService.GetAllReaders();
             readersDataGrid.DataSource = readers;*/
@@ -402,6 +408,72 @@ namespace Bookful.forms.main
                         // Вывести сообщение об ошибке или выполнить другие действия
                     }
 
+                }
+            }
+        }
+
+        private void issuedBooksDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var idColumn = issuedBooksDataGrid.Columns["Id"];
+            if (idColumn != null)
+            {
+                idColumn.Visible = false;
+            }
+
+            issuedBooksDataGrid.Columns["ReaderId"].HeaderText = "Читатель";
+            issuedBooksDataGrid.Columns["BookId"].HeaderText = "Книга";
+            issuedBooksDataGrid.Columns["IssueDate"].HeaderText = "Дата выдачи книги";
+            issuedBooksDataGrid.Columns["ReturnDate"].HeaderText = "Дата возврата книги";
+            issuedBooksDataGrid.Columns["ExpectedReturnDate"].HeaderText = "Ожидаемая дата возврата книги";
+
+            if (!issuedBooksDataGrid.Columns.Contains("EditButton"))
+            {
+                // Создаем колонку с кнопками редактирования
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+                editButtonColumn.HeaderText = "Изменить";
+                editButtonColumn.Name = "EditButton";
+                editButtonColumn.UseColumnTextForButtonValue = true;
+                editButtonColumn.Text = "Изменить";
+                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+                // Добавляем колонку в DataGridView
+                issuedBooksDataGrid.Columns.Add(editButtonColumn);
+            }
+
+            if (!issuedBooksDataGrid.Columns.Contains("DeleteButton"))
+            {
+                // Создаем колонку с кнопками удаления
+                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+                deleteButtonColumn.HeaderText = "Удалить";
+                deleteButtonColumn.Name = "DeleteButton";
+                deleteButtonColumn.UseColumnTextForButtonValue = true;
+                deleteButtonColumn.Text = "Удалить";
+                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+                // Добавляем колонку в DataGridView
+                issuedBooksDataGrid.Columns.Add(deleteButtonColumn);
+            }
+        }
+
+        private void issuedBooksDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "ReaderId")
+            {
+                int readerId = Convert.ToInt32(e.Value);
+                e.Value = readerService.GetReaderFullNameById(readerId);
+            }
+
+            if (issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "BookId")
+            {
+                int bookId = Convert.ToInt32(e.Value);
+                e.Value = bookService.GetBookNameAndYearById(bookId);
+            }
+
+            if(issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "ReturnDate")
+            {
+                if (e.Value == null)
+                {
+                    e.Value = "Книга ещё не возвращена.";
                 }
             }
         }

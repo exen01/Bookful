@@ -104,6 +104,29 @@ namespace Bookful.dao.book
             return null;
         }
 
+        public string GetBookNameAndYearById(int id)
+        {
+            string bookName = "";
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT title, publication_date FROM book WHERE id = @id";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+
+                command.Parameters.AddWithValue("@id", id);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        bookName = string.Format("{0} ({1})", reader.GetString("title"), reader.GetDateTime("publication_date").Year);
+                    }
+                }
+            }
+
+            return bookName;
+        }
+
         public List<Book> SearchBooks(string searchText)
         {
             List<Book> books = new List<Book>();
