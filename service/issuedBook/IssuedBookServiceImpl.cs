@@ -26,7 +26,7 @@ namespace Bookful.service.issuedBook
             }
         }
 
-        public bool DeleteIssueBook(int id)
+        public bool DeleteIssueBookById(int id)
         {
             try
             {

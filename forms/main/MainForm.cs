@@ -1,6 +1,7 @@
 ﻿using Bookful.dao.issuedBook;
 using Bookful.domain.dto;
 using Bookful.forms.edit;
+using Bookful.forms.edit.issuedBook;
 using Bookful.forms.edit.reader;
 using Bookful.service.book;
 using Bookful.service.issuedBook;
@@ -96,11 +97,12 @@ namespace Bookful.forms.main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //booksDataGrid.Columns["Id"].HeaderText = "ID книги";
             var idColumn = booksDataGrid.Columns["Id"];
-            if (idColumn != null)
+            var fullTitleColumn = booksDataGrid.Columns["DisplayTitleYear"];
+            if (idColumn != null && fullTitleColumn != null)
             {
                 idColumn.Visible = false;
+                fullTitleColumn.Visible = false;
             }
 
             booksDataGrid.Columns["Title"].HeaderText = "Название";
@@ -254,7 +256,6 @@ namespace Bookful.forms.main
 
         private void readingRoomsDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            //readingRoomsDataGrid.Columns["Id"].HeaderText = "ID зала";
             var idColumn = readingRoomsDataGrid.Columns["Id"];
             if (idColumn != null)
             {
@@ -303,9 +304,11 @@ namespace Bookful.forms.main
         private void readersDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             var idColumn = readersDataGrid.Columns["Id"];
-            if (idColumn != null)
+            var fullNameColumn = readersDataGrid.Columns["DisplayFullNameCardNumber"];
+            if (idColumn != null && fullNameColumn != null)
             {
                 idColumn.Visible = false;
+                fullNameColumn.Visible = false;
             }
 
             readersDataGrid.Columns["FirstName"].HeaderText = "Имя";
@@ -469,12 +472,72 @@ namespace Bookful.forms.main
                 e.Value = bookService.GetBookNameAndYearById(bookId);
             }
 
-            if(issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "ReturnDate")
+            if (issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "ReturnDate")
             {
                 if (e.Value == null)
                 {
                     e.Value = "Книга ещё не возвращена.";
                 }
+            }
+        }
+
+        private void issuedBooksDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Проверяем, что нажата кнопка в колонке "Удалить"
+            if (e.ColumnIndex == issuedBooksDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
+            {
+                int issuedBookId = (int)issuedBooksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
+                bool result = issuedBookService.DeleteIssueBookById(issuedBookId);
+
+                if (result)
+                {
+                    issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка при удалении выданной книги.", "Ошибка удаления");
+                    // Вывести сообщение об ошибке или выполнить другие действия
+                }
+            }
+
+            // Проверяем, что нажата кнопка в колонке "Изменить"
+            if (e.ColumnIndex == issuedBooksDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
+            {
+                int issuedBookId = (int)issuedBooksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
+
+                IssuedBook issuedBook = issuedBookService.GetById(issuedBookId);
+
+                EditIssuedBookForm editIssuedBookForm = new EditIssuedBookForm(issuedBook, false, bookService, readerService);
+
+                // Если пользователь нажал "Сохранить"
+                if (editIssuedBookForm.ShowDialog() == DialogResult.OK)
+                {
+                    bool result = issuedBookService.UpdateIssueBook(issuedBook);
+
+                    if (result)
+                    {
+                        issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка при обновлении выданной книги.", "Ошибка обновления");
+                        // Вывести сообщение об ошибке или выполнить другие действия
+                    }
+
+                }
+            }
+        }
+
+        private void addIssueBookButton_Click(object sender, EventArgs e)
+        {
+            IssuedBook issuedBook = new IssuedBook();
+
+            EditIssuedBookForm editIssuedBookForm = new EditIssuedBookForm(issuedBook, true, bookService, readerService);
+            if (editIssuedBookForm.ShowDialog() == DialogResult.OK)
+            {
+                issuedBookService.AddIssueBook(issuedBook);
+
+                issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
             }
         }
     }

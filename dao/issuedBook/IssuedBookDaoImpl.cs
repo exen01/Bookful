@@ -23,8 +23,8 @@ namespace Bookful.dao.issuedBook
 
                 command.Parameters.AddWithValue("@reader_id", issuedBook.ReaderId);
                 command.Parameters.AddWithValue("@book_id", issuedBook.BookId);
-                command.Parameters.AddWithValue("@issue_date", issuedBook.IssueDate);
-                command.Parameters.AddWithValue("@expected_return_date", issuedBook.ExpectedReturnDate);
+                command.Parameters.AddWithValue("@issue_date", issuedBook.IssueDate.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@expected_return_date", issuedBook.ExpectedReturnDate.ToString("yyyy-MM-dd"));
 
                 command.ExecuteNonQuery();
             }
@@ -58,9 +58,9 @@ namespace Bookful.dao.issuedBook
 
                 command.Parameters.AddWithValue("@reader_id", issuedBook.ReaderId);
                 command.Parameters.AddWithValue("@book_id", issuedBook.BookId);
-                command.Parameters.AddWithValue("@issue_date", issuedBook.IssueDate);
-                command.Parameters.AddWithValue("@return_date", issuedBook.ReturnDate);
-                command.Parameters.AddWithValue("@expected_return_date", issuedBook.ExpectedReturnDate);
+                command.Parameters.AddWithValue("@issue_date", issuedBook.IssueDate.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@return_date", issuedBook.ReturnDate.HasValue ? issuedBook.ReturnDate.Value.ToString("yyyy-MM-dd") : null);
+                command.Parameters.AddWithValue("@expected_return_date", issuedBook.ExpectedReturnDate.ToString("yyyy-MM-dd"));
                 command.Parameters.AddWithValue("@id", issuedBook.Id);
 
                 command.ExecuteNonQuery();

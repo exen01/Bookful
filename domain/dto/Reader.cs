@@ -8,5 +8,6 @@
         public int LibraryCardNumber { get; set; }
         public int ReadingRoomId { get; set; }
         public DateOnly RegistrationDate { get; set; }
+        public string DisplayFullNameCardNumber => $"{FirstName} {LastName} - {LibraryCardNumber}";
     }
 }

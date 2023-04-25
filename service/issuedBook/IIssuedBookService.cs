@@ -10,6 +10,6 @@ namespace Bookful.service.issuedBook
         List<IssuedBook> GetByBookId(int bookId);
         bool AddIssueBook(IssuedBook issuedBook);
         bool UpdateIssueBook(IssuedBook issuedBook);
-        bool DeleteIssueBook(int id);
+        bool DeleteIssueBookById(int id);
     }
 }

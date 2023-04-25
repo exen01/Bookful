@@ -514,10 +514,12 @@ namespace Bookful.forms.main
             issuedBooksDataGrid.Dock = DockStyle.Fill;
             issuedBooksDataGrid.Location = new Point(3, 93);
             issuedBooksDataGrid.Name = "issuedBooksDataGrid";
+            issuedBooksDataGrid.ReadOnly = true;
             issuedBooksDataGrid.RowHeadersWidth = 51;
             issuedBooksDataGrid.RowTemplate.Height = 29;
             issuedBooksDataGrid.Size = new Size(613, 248);
             issuedBooksDataGrid.TabIndex = 0;
+            issuedBooksDataGrid.CellContentClick += issuedBooksDataGrid_CellContentClick;
             issuedBooksDataGrid.CellFormatting += issuedBooksDataGrid_CellFormatting;
             issuedBooksDataGrid.DataBindingComplete += issuedBooksDataGrid_DataBindingComplete;
             // 
@@ -536,6 +538,7 @@ namespace Bookful.forms.main
             addIssueBookButton.Name = "addIssueBookButton";
             addIssueBookButton.Size = new Size(90, 24);
             addIssueBookButton.Text = "Добавить";
+            addIssueBookButton.Click += addIssueBookButton_Click;
             // 
             // refreshIssueBooksButton
             // 
