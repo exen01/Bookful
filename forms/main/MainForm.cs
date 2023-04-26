@@ -556,5 +556,37 @@ namespace Bookful.forms.main
             var issuedBooks = issuedBookService.GetAll();
             issuedBooksDataGrid.DataSource = issuedBooks;
         }
+
+        private void searchReadersButton_Click(object sender, EventArgs e)
+        {
+            string searchText = searchReadersInput.Text;
+            List<Reader> readers = readerService.SearchReaders(searchText);
+            readersDataGrid.DataSource = readers;
+        }
+
+        private void searchReadersInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Вызываем метод поиска при нажатии клавиши Enter
+                searchReadersButton_Click(sender, e);
+            }
+        }
+
+        private void searchIssueBooksButton_Click(object sender, EventArgs e)
+        {
+            string searchText = searchIssueBooksInput.Text;
+            List<IssuedBook> issuedBooks = issuedBookService.SearchIssuedBooks(searchText);
+            issuedBooksDataGrid.DataSource = issuedBooks;
+        }
+
+        private void searchIssueBooksInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Вызываем метод поиска при нажатии клавиши Enter
+                searchIssueBooksButton_Click(sender, e);
+            }
+        }
     }
 }

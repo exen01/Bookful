@@ -11,5 +11,6 @@ namespace Bookful.service.issuedBook
         bool AddIssueBook(IssuedBook issuedBook);
         bool UpdateIssueBook(IssuedBook issuedBook);
         bool DeleteIssueBookById(int id);
+        List<IssuedBook> SearchIssuedBooks(string searchText);
     }
 }

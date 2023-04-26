@@ -72,6 +72,7 @@ namespace Bookful.forms.edit.issuedBook
             bookInput.DataSource = books;
             bookInput.DisplayMember = "DisplayTitleYear";
             bookInput.ValueMember = "Id";
+            SetDropDownWidth(bookInput);
         }
 
         private void InitializeReadersList()
@@ -79,6 +80,7 @@ namespace Bookful.forms.edit.issuedBook
             readerInput.DataSource = readers;
             readerInput.DisplayMember = "DisplayFullNameCardNumber";
             readerInput.ValueMember = "Id";
+            SetDropDownWidth(readerInput);
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -110,6 +112,18 @@ namespace Bookful.forms.edit.issuedBook
         private void isBookReturned_CheckedChanged(object sender, EventArgs e)
         {
             returnDateInput.Enabled = !returnDateInput.Enabled;
+        }
+
+        // Установка ширины выпадающего списка ComboBox на основе самого широкого элемента
+        private void SetDropDownWidth(MaterialComboBox comboBox)
+        {
+            int maxWidth = 0;
+            foreach (var item in comboBox.Items)
+            {
+                int itemWidth = TextRenderer.MeasureText(comboBox.GetItemText(item), comboBox.Font).Width;
+                maxWidth = Math.Max(maxWidth, itemWidth);
+            }
+            comboBox.DropDownWidth = maxWidth + SystemInformation.VerticalScrollBarWidth;
         }
     }
 }

@@ -192,7 +192,11 @@ namespace Bookful.dao.readingRoom
             List<ReadingRoom> readingRooms = new List<ReadingRoom>();
             if (connection.IsConnect())
             {
-                string query = "SELECT * FROM reading_room WHERE room_number LIKE @searchText";
+                string query = "SELECT * FROM reading_room WHERE " +
+                    "room_number LIKE @searchText OR " +
+                    "specialization LIKE @searchText OR " +
+                    "number_of_seats LIKE @searchText";
+
                 MySqlCommand command = new MySqlCommand(query, connection.Connection);
 
                 command.Parameters.AddWithValue("@searchText", "%" + searchText + "%");

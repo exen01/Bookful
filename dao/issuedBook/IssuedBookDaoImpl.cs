@@ -222,5 +222,53 @@ namespace Bookful.dao.issuedBook
 
             return issuedBooks;
         }
+
+        public List<IssuedBook> SearchIssuedBooks(string searchText)
+        {
+            List<IssuedBook> issuedBooks = new List<IssuedBook>();
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT i.id, i.reader_id, i.book_id, i.issue_date, i.return_date, i.expected_return_date " +
+                    "FROM issued_books i " +
+                    "LEFT JOIN book b ON i.book_id = b.id " +
+                    "LEFT JOIN reader r ON i.reader_id = r.id " +
+                    "WHERE r.first_name LIKE @searchText OR " +
+                    "r.last_name LIKE @searchText OR " +
+                    "b.title LIKE @searchText OR " +
+                    "i.issue_date LIKE @searchText OR " +
+                    "i.return_date LIKE @searchText OR " +
+                    "i.expected_return_date LIKE @searchText";
+
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        DateOnly? returnDate = null;
+                        if (!reader.IsDBNull(reader.GetOrdinal("return_date")))
+                        {
+                            returnDate = DateOnly.FromDateTime(reader.GetDateTime("return_date"));
+                        }
+
+                        IssuedBook issuedBook = new IssuedBook()
+                        {
+                            Id = reader.GetInt32("id"),
+                            ReaderId = reader.GetInt32("reader_id"),
+                            BookId = reader.GetInt32("book_id"),
+                            IssueDate = DateOnly.FromDateTime(reader.GetDateTime("issue_date")),
+                            ReturnDate = returnDate,
+                            ExpectedReturnDate = DateOnly.FromDateTime(reader.GetDateTime("expected_return_date"))
+                        };
+
+                        issuedBooks.Add(issuedBook);
+                    }
+                }
+            }
+
+            return issuedBooks;
+        }
     }
 }

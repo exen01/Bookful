@@ -178,6 +178,45 @@ namespace Bookful.dao.reader
             return fullName;
         }
 
+        public List<Reader> SearchReaders(string searchText)
+        {
+            List<Reader> readers = new List<Reader>();
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT id, first_name, last_name, library_card_number, reading_room_id, registration_date " +
+                    "FROM reader WHERE " +
+                    "first_name LIKE @searchText OR " +
+                    "last_name LIKE @searchText OR " +
+                    "library_card_number LIKE @searchText OR " +
+                    "reading_room_id LIKE @searchText OR " +
+                    "registration_date LIKE @searchText";
+
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
+
+                using (MySqlDataReader mysqlReader = command.ExecuteReader())
+                {
+                    while (mysqlReader.Read())
+                    {
+                        Reader reader = new Reader()
+                        {
+                            Id = mysqlReader.GetInt32("id"),
+                            FirstName = mysqlReader.GetString("first_name"),
+                            LastName = mysqlReader.GetString("last_name"),
+                            LibraryCardNumber = mysqlReader.GetInt32("library_card_number"),
+                            ReadingRoomId = mysqlReader.GetInt32("reading_room_id"),
+                            RegistrationDate = DateOnly.FromDateTime(mysqlReader.GetDateTime("registration_date"))
+                        };
+
+                        readers.Add(reader);
+                    }
+                }
+            }
+
+            return readers;
+        }
+
         public bool UpdateReader(Reader reader)
         {
             bool result = false;

@@ -336,6 +336,7 @@ namespace Bookful.forms.main
             searchReadersButton.Type = MaterialButton.MaterialButtonType.Contained;
             searchReadersButton.UseAccentColor = false;
             searchReadersButton.UseVisualStyleBackColor = true;
+            searchReadersButton.Click += searchReadersButton_Click;
             // 
             // searchReadersInput
             // 
@@ -354,6 +355,7 @@ namespace Bookful.forms.main
             searchReadersInput.TabIndex = 1;
             searchReadersInput.Text = "";
             searchReadersInput.TrailingIcon = null;
+            searchReadersInput.KeyDown += searchReadersInput_KeyDown;
             // 
             // booksListTab
             // 
@@ -583,6 +585,7 @@ namespace Bookful.forms.main
             searchIssueBooksInput.TabIndex = 0;
             searchIssueBooksInput.Text = "";
             searchIssueBooksInput.TrailingIcon = null;
+            searchIssueBooksInput.KeyDown += searchIssueBooksInput_KeyDown;
             // 
             // searchIssueBooksButton
             // 
@@ -603,6 +606,7 @@ namespace Bookful.forms.main
             searchIssueBooksButton.Type = MaterialButton.MaterialButtonType.Contained;
             searchIssueBooksButton.UseAccentColor = false;
             searchIssueBooksButton.UseVisualStyleBackColor = true;
+            searchIssueBooksButton.Click += searchIssueBooksButton_Click;
             // 
             // tabControl
             // 

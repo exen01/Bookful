@@ -58,6 +58,11 @@ namespace Bookful.service.reader
             return fullName;
         }
 
+        public List<Reader> SearchReaders(string searchText)
+        {
+            return readerDao.SearchReaders(searchText);
+        }
+
         public bool UpdateReader(Reader reader)
         {
             return readerDao.UpdateReader(reader);

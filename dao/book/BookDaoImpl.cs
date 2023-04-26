@@ -132,7 +132,13 @@ namespace Bookful.dao.book
             List<Book> books = new List<Book>();
             if (this.connection.IsConnect())
             {
-                string query = "SELECT * FROM book WHERE title LIKE @searchText";
+                string query = "SELECT id, title, author, description, publishing_house, publication_date FROM book WHERE " +
+                    "title LIKE @searchText OR " +
+                    "author LIKE @searchText OR " +
+                    "description LIKE @searchText OR " +
+                    "publishing_house LIKE @searchText OR " +
+                    "publication_date LIKE @searchText";
+
                 var cmd = new MySqlCommand(query, connection.Connection);
 
                 cmd.Parameters.AddWithValue("@searchText", "%" + searchText + "%");

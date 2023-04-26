@@ -14,7 +14,7 @@ namespace Bookful.domain.dto
         public string Description { get; set; }
         public string PublishingHouse { get; set; }
         public DateOnly PublicationDate { get; set; }
-        public string DisplayTitleYear => $"{Title} ({PublicationDate})";
+        public string DisplayTitleYear => $"{Title} ({PublicationDate.Year})";
 
         public Book() { }
 

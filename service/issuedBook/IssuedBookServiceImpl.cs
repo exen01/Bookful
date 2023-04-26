@@ -79,5 +79,10 @@ namespace Bookful.service.issuedBook
         {
             return issuedBookDao.GetByReaderId(readerId);
         }
+
+        public List<IssuedBook> SearchIssuedBooks(string searchText)
+        {
+            return issuedBookDao.SearchIssuedBooks(searchText);
+        }
     }
 }
