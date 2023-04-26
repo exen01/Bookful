@@ -396,6 +396,8 @@ namespace Bookful.forms.main
             booksDataGrid.RowTemplate.Height = 29;
             booksDataGrid.Size = new Size(613, 342);
             booksDataGrid.TabIndex = 0;
+            booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
+            booksDataGrid.DataBindingComplete += booksDataGrid_DataBindingComplete;
             // 
             // booksToolBar
             // 
@@ -545,6 +547,7 @@ namespace Bookful.forms.main
             refreshIssueBooksButton.Name = "refreshIssueBooksButton";
             refreshIssueBooksButton.Size = new Size(144, 24);
             refreshIssueBooksButton.Text = "Обновить список";
+            refreshIssueBooksButton.Click += refreshIssueBooksButton_Click;
             // 
             // searchIssueBooksTableLayout
             // 

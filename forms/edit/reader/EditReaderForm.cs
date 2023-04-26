@@ -49,16 +49,15 @@ namespace Bookful.forms.edit.reader
             nameInput.Text = reader.FirstName;
             lastNameInput.Text = reader.LastName;
             libraryCardNumberInput.Value = reader.LibraryCardNumber;
-            readingRoomInput.SelectedItem = readingRoomService.GetReadingRoomNumberById(reader.ReadingRoomId);
+            readingRoomInput.SelectedValue = reader.ReadingRoomId;
             registrationDateInput.Value = DateTime.Parse(reader.RegistrationDate.ToString());
         }
 
         private void InitializeReadingRoomsList()
         {
-            foreach (var room in rooms)
-            {
-                readingRoomInput.Items.Add(room.Number);
-            }
+            readingRoomInput.DataSource = rooms;
+            readingRoomInput.ValueMember = "Id";
+            readingRoomInput.DisplayMember = "Number";
             readingRoomInput.SelectedItem = readingRoomInput.Items[0];
         }
 
@@ -67,7 +66,7 @@ namespace Bookful.forms.edit.reader
             reader.FirstName = nameInput.Text;
             reader.LastName = lastNameInput.Text;
             reader.LibraryCardNumber = (int)libraryCardNumberInput.Value;
-            reader.ReadingRoomId = rooms.Find(r => r.Number == int.Parse(readingRoomInput.SelectedItem.ToString())).Id;
+            reader.ReadingRoomId = int.Parse(readingRoomInput.SelectedValue.ToString());
             reader.RegistrationDate = DateOnly.FromDateTime(registrationDateInput.Value);
 
             DialogResult = DialogResult.OK;

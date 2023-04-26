@@ -31,10 +31,6 @@ namespace Bookful.forms.main
             readerService = new ReaderServiceImpl(connection);
             issuedBookService = new IssuedBookServiceImpl(new IssuedBookDaoImpl(connection));
 
-            var books = bookService.GetAllBooks();
-            booksDataGrid.DataSource = books;
-            booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
-
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
@@ -48,6 +44,9 @@ namespace Bookful.forms.main
 
             var issuedBooks = issuedBookService.GetAll();
             issuedBooksDataGrid.DataSource = issuedBooks;
+
+            /*var books = bookService.GetAllBooks();
+            booksDataGrid.DataSource = books;*/
 
             /*var readers = readerService.GetAllReaders();
             readersDataGrid.DataSource = readers;*/
@@ -97,41 +96,7 @@ namespace Bookful.forms.main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            var idColumn = booksDataGrid.Columns["Id"];
-            var fullTitleColumn = booksDataGrid.Columns["DisplayTitleYear"];
-            if (idColumn != null && fullTitleColumn != null)
-            {
-                idColumn.Visible = false;
-                fullTitleColumn.Visible = false;
-            }
 
-            booksDataGrid.Columns["Title"].HeaderText = "Название";
-            booksDataGrid.Columns["Author"].HeaderText = "Автор";
-            booksDataGrid.Columns["Description"].HeaderText = "Описание";
-            booksDataGrid.Columns["PublishingHouse"].HeaderText = "Издательство";
-            booksDataGrid.Columns["PublicationDate"].HeaderText = "Дата публикации";
-
-            // Создаем колонку с кнопками редактирования
-            DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-            editButtonColumn.HeaderText = "Изменить";
-            editButtonColumn.Name = "EditButton";
-            editButtonColumn.UseColumnTextForButtonValue = true;
-            editButtonColumn.Text = "Изменить";
-            editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-            // Добавляем колонку в DataGridView
-            booksDataGrid.Columns.Add(editButtonColumn);
-
-            // Создаем колонку с кнопками удаления
-            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-            deleteButtonColumn.HeaderText = "Удалить";
-            deleteButtonColumn.Name = "DeleteButton";
-            deleteButtonColumn.UseColumnTextForButtonValue = true;
-            deleteButtonColumn.Text = "Удалить";
-            deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-            // Добавляем колонку в DataGridView
-            booksDataGrid.Columns.Add(deleteButtonColumn);
         }
 
         private void refreshBooksButton_Click(object sender, EventArgs e)
@@ -539,6 +504,51 @@ namespace Bookful.forms.main
 
                 issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
             }
+        }
+
+        private void booksDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            var idColumn = booksDataGrid.Columns["Id"];
+            var fullTitleColumn = booksDataGrid.Columns["DisplayTitleYear"];
+            if (idColumn != null && fullTitleColumn != null)
+            {
+                idColumn.Visible = false;
+                fullTitleColumn.Visible = false;
+            }
+
+            booksDataGrid.Columns["Title"].HeaderText = "Название";
+            booksDataGrid.Columns["Author"].HeaderText = "Автор";
+            booksDataGrid.Columns["Description"].HeaderText = "Описание";
+            booksDataGrid.Columns["PublishingHouse"].HeaderText = "Издательство";
+            booksDataGrid.Columns["PublicationDate"].HeaderText = "Дата публикации";
+
+            // Создаем колонку с кнопками редактирования
+            DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+            editButtonColumn.HeaderText = "Изменить";
+            editButtonColumn.Name = "EditButton";
+            editButtonColumn.UseColumnTextForButtonValue = true;
+            editButtonColumn.Text = "Изменить";
+            editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+            // Добавляем колонку в DataGridView
+            booksDataGrid.Columns.Add(editButtonColumn);
+
+            // Создаем колонку с кнопками удаления
+            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+            deleteButtonColumn.HeaderText = "Удалить";
+            deleteButtonColumn.Name = "DeleteButton";
+            deleteButtonColumn.UseColumnTextForButtonValue = true;
+            deleteButtonColumn.Text = "Удалить";
+            deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+
+            // Добавляем колонку в DataGridView
+            booksDataGrid.Columns.Add(deleteButtonColumn);
+        }
+
+        private void refreshIssueBooksButton_Click(object sender, EventArgs e)
+        {
+            var issuedBooks = issuedBookService.GetAll();
+            issuedBooksDataGrid.DataSource = issuedBooks;
         }
     }
 }
