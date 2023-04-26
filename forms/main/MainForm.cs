@@ -522,27 +522,33 @@ namespace Bookful.forms.main
             booksDataGrid.Columns["PublishingHouse"].HeaderText = "Издательство";
             booksDataGrid.Columns["PublicationDate"].HeaderText = "Дата публикации";
 
-            // Создаем колонку с кнопками редактирования
-            DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-            editButtonColumn.HeaderText = "Изменить";
-            editButtonColumn.Name = "EditButton";
-            editButtonColumn.UseColumnTextForButtonValue = true;
-            editButtonColumn.Text = "Изменить";
-            editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            if (!booksDataGrid.Columns.Contains("EditButton"))
+            {
+                // Создаем колонку с кнопками редактирования
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
+                editButtonColumn.HeaderText = "Изменить";
+                editButtonColumn.Name = "EditButton";
+                editButtonColumn.UseColumnTextForButtonValue = true;
+                editButtonColumn.Text = "Изменить";
+                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
-            // Добавляем колонку в DataGridView
-            booksDataGrid.Columns.Add(editButtonColumn);
+                // Добавляем колонку в DataGridView
+                booksDataGrid.Columns.Add(editButtonColumn);
+            }
 
-            // Создаем колонку с кнопками удаления
-            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-            deleteButtonColumn.HeaderText = "Удалить";
-            deleteButtonColumn.Name = "DeleteButton";
-            deleteButtonColumn.UseColumnTextForButtonValue = true;
-            deleteButtonColumn.Text = "Удалить";
-            deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            if (!booksDataGrid.Columns.Contains("DeleteButton"))
+            {
+                // Создаем колонку с кнопками удаления
+                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
+                deleteButtonColumn.HeaderText = "Удалить";
+                deleteButtonColumn.Name = "DeleteButton";
+                deleteButtonColumn.UseColumnTextForButtonValue = true;
+                deleteButtonColumn.Text = "Удалить";
+                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
-            // Добавляем колонку в DataGridView
-            booksDataGrid.Columns.Add(deleteButtonColumn);
+                // Добавляем колонку в DataGridView
+                booksDataGrid.Columns.Add(deleteButtonColumn);
+            }
         }
 
         private void refreshIssueBooksButton_Click(object sender, EventArgs e)

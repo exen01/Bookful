@@ -41,7 +41,7 @@ namespace Bookful.forms.edit
             authorInput.Text = book.Author;
             descriptionInput.Text = book.Description;
             publishingHouseInput.Text = book.PublishingHouse;
-            publicationDateInput.Value = DateTime.Parse(book.PublicationDate);
+            publicationDateInput.Value = DateTime.Parse(book.PublicationDate.ToString());
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace Bookful.forms.edit
             book.Author = authorInput.Text;
             book.Description = descriptionInput.Text;
             book.PublishingHouse = publishingHouseInput.Text;
-            book.PublicationDate = publicationDateInput.Value.ToString("yyyy-MM-dd");
+            book.PublicationDate = DateOnly.FromDateTime(publicationDateInput.Value);
 
             DialogResult = DialogResult.OK;
             Close();

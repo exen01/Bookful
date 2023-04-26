@@ -25,7 +25,7 @@ namespace Bookful.dao.book
                 command.Parameters.AddWithValue("@author", book.Author);
                 command.Parameters.AddWithValue("@description", book.Description);
                 command.Parameters.AddWithValue("@publishingHouse", book.PublishingHouse);
-                command.Parameters.AddWithValue("@publicationDate", book.PublicationDate);
+                command.Parameters.AddWithValue("@publicationDate", book.PublicationDate.ToString("yyyy-MM-dd"));
 
                 command.ExecuteNonQuery();
             }
@@ -62,7 +62,7 @@ namespace Bookful.dao.book
                         Author = reader.GetString("author"),
                         Description = reader.GetString("description"),
                         PublishingHouse = reader.GetString("publishing_house"),
-                        PublicationDate = reader.GetString("publication_date")
+                        PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date"))
                     };
 
                     list.Add(book);
@@ -92,7 +92,7 @@ namespace Bookful.dao.book
                         Author = reader.GetString("author"),
                         Description = reader.GetString("description"),
                         PublishingHouse = reader.GetString("publishing_house"),
-                        PublicationDate = reader.GetString("publication_date")
+                        PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date"))
                     };
 
                     reader.Close();
@@ -147,7 +147,7 @@ namespace Bookful.dao.book
                             Author = reader.GetString("author"),
                             Description = reader.GetString("description"),
                             PublishingHouse = reader.GetString("publishing_house"),
-                            PublicationDate = reader.GetString("publication_date")
+                            PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date"))
                         };
 
                         books.Add(book);
@@ -171,7 +171,7 @@ namespace Bookful.dao.book
                 cmd.Parameters.AddWithValue("@author", book.Author);
                 cmd.Parameters.AddWithValue("@description", book.Description);
                 cmd.Parameters.AddWithValue("@publishingHouse", book.PublishingHouse);
-                cmd.Parameters.AddWithValue("@publicationDate", book.PublicationDate);
+                cmd.Parameters.AddWithValue("@publicationDate", book.PublicationDate.ToString("yyyy-MM-dd"));
                 cmd.Parameters.AddWithValue("@id", book.Id);
 
                 cmd.ExecuteNonQuery();
