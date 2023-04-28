@@ -1,5 +1,7 @@
-﻿using Bookful.dao.readingRoom;
+﻿using Bookful.dao.reader;
+using Bookful.dao.readingRoom;
 using Bookful.domain.dto;
+using Bookful.domain.exception;
 using Bookful.util.db;
 
 namespace Bookful.service.readingRoom
@@ -7,10 +9,12 @@ namespace Bookful.service.readingRoom
     public class ReadingRoomServiceImpl : IReadingRoomService
     {
         private readonly IReadingRoomDao readingRoomDao;
+        private readonly IReaderDao readerDao;
 
-        public ReadingRoomServiceImpl(DBConnection connection)
+        public ReadingRoomServiceImpl(IReadingRoomDao readingRoomDao, IReaderDao readerDao)
         {
-            this.readingRoomDao = new ReadingRoomDaoImpl(connection);
+            this.readerDao = readerDao;
+            this.readingRoomDao = readingRoomDao;
         }
 
         public bool AddReadingRoom(ReadingRoom readingRoom)
@@ -25,7 +29,16 @@ namespace Bookful.service.readingRoom
 
         public bool DeleteReadingRoomById(int id)
         {
-            return readingRoomDao.DeleteReadingRoomById(id);
+            bool result = false;
+            if (HasReadingRoomReaders(id))
+            {
+                throw new CommonException(domain.constant.Code.READING_ROOM_HAS_READERS, "Невозможно удалить данный читальный зал, так как в нем зарегистрированы читатели. Перед удалением необходимо удалить всех читателей, зарегистрированных в данном зале.");
+            }
+            else
+            {
+                result = readingRoomDao.DeleteReadingRoomById(id);
+            }
+            return result;
         }
 
         public List<ReadingRoom> GetAllReadingRooms()
@@ -51,6 +64,19 @@ namespace Bookful.service.readingRoom
         public int GetReadingRoomNumberById(int id)
         {
             return readingRoomDao.GetReadingRoomNumberById(id);
+        }
+
+        public bool HasReadingRoomReaders(int readingRoomId)
+        {
+            List<Reader> readers = readerDao.GetReadersByReadingRoomId(readingRoomId);
+            if (readers.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public bool IsReadingRoomNumberUnique(int number)

@@ -1,9 +1,4 @@
 ﻿using Bookful.domain.dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bookful.service.book
 {
@@ -16,5 +11,6 @@ namespace Bookful.service.book
         void DeleteBook(int id);
         List<Book> SearchBooks(string searchText);
         string GetBookNameAndYearById(int id);
+        bool IsBookReturned(int bookId);
     }
 }

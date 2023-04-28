@@ -12,5 +12,6 @@ namespace Bookful.service.reader
         bool UpdateReader(Reader reader);
         string GetReaderFullNameById(int id);
         List<Reader> SearchReaders(string searchText);
+        bool HasReaderUnreturnedBooks(int id);
     }
 }

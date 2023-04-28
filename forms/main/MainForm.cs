@@ -1,5 +1,9 @@
-﻿using Bookful.dao.issuedBook;
+﻿using Bookful.dao.book;
+using Bookful.dao.issuedBook;
+using Bookful.dao.reader;
+using Bookful.dao.readingRoom;
 using Bookful.domain.dto;
+using Bookful.domain.exception;
 using Bookful.forms.edit;
 using Bookful.forms.edit.issuedBook;
 using Bookful.forms.edit.reader;
@@ -10,6 +14,8 @@ using Bookful.service.readingRoom;
 using Bookful.util.db;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
@@ -19,16 +25,16 @@ namespace Bookful.forms.main
         private IReadingRoomService readingRoomService;
         private IReaderService readerService;
         private IIssuedBookService issuedBookService;
-        private DBConnection connection = DBConnection.Instance();
+        private DBConnection connection;
         private MaterialSkinManager materialSkinManager;
 
         public MainForm()
         {
             InitializeComponent();
-
-            bookService = new BookServiceImpl(connection);
-            readingRoomService = new ReadingRoomServiceImpl(connection);
-            readerService = new ReaderServiceImpl(connection);
+            connection = DBConnection.Instance();
+            bookService = new BookServiceImpl(new BookDaoImpl(connection), new IssuedBookDaoImpl(connection));
+            readingRoomService = new ReadingRoomServiceImpl(new ReadingRoomDaoImpl(connection), new ReaderDaoImpl(connection));
+            readerService = new ReaderServiceImpl(new ReaderDaoImpl(connection), new IssuedBookDaoImpl(connection));
             issuedBookService = new IssuedBookServiceImpl(new IssuedBookDaoImpl(connection));
 
             materialSkinManager = MaterialSkinManager.Instance;
@@ -42,7 +48,7 @@ namespace Bookful.forms.main
                 TextShade.WHITE // Цвет текста (TextShade)
             );
 
-            var issuedBooks = issuedBookService.GetAll();
+            List<IssuedBook> issuedBooks = issuedBookService.GetAll();
             issuedBooksDataGrid.DataSource = issuedBooks;
 
             /*var books = bookService.GetAllBooks();
@@ -63,8 +69,19 @@ namespace Bookful.forms.main
                 // Получаем id книги из выделенной строки
                 int bookId = (int)booksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
 
-                // Удаляем книгу из источника данных
-                bookService.DeleteBook(bookId);
+                try
+                {
+                    DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        bookService.DeleteBook(bookId);
+                    }
+                }
+                catch (CommonException exception)
+                {
+                    MessageBox.Show(exception.UserMessage, "Ошибка удаления книги");
+                }
+
 
                 // Обновляем отображение списка книг в DataGridView
                 booksDataGrid.DataSource = bookService.GetAllBooks();
@@ -176,18 +193,21 @@ namespace Bookful.forms.main
             if (e.ColumnIndex == readingRoomsDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
             {
                 int readingRoomId = (int)readingRoomsDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-                bool result = readingRoomService.DeleteReadingRoomById(readingRoomId);
 
-                if (result)
+                try
                 {
-                    //MessageBox.Show("Читальный зал удален успешно.", "Успешное удаление");
-                    readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                    DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        bool deleteResult = readingRoomService.DeleteReadingRoomById(readingRoomId);
+                    }
                 }
-                else
+                catch (CommonException exception)
                 {
-                    MessageBox.Show("Ошибка при удалении читального зала.", "Ошибка удаления");
-                    // Вывести сообщение об ошибке или выполнить другие действия
+                    MessageBox.Show(exception.UserMessage, "Ошибка удаления");
                 }
+
+                readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
             }
 
             // Проверяем, что нажата кнопка в колонке "Изменить"
@@ -339,17 +359,21 @@ namespace Bookful.forms.main
             if (e.ColumnIndex == readersDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
             {
                 int readerId = (int)readersDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-                bool result = readerService.DeleteReaderById(readerId);
 
-                if (result)
+                try
                 {
-                    readersDataGrid.DataSource = readerService.GetAllReaders();
+                    DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        readerService.DeleteReaderById(readerId);
+                    }
                 }
-                else
+                catch (CommonException exception)
                 {
-                    MessageBox.Show("Ошибка при удалении читателя.", "Ошибка удаления");
-                    // Вывести сообщение об ошибке или выполнить другие действия
+                    MessageBox.Show(exception.UserMessage, "Ошибка удаления");
                 }
+
+                readersDataGrid.DataSource = readerService.GetAllReaders();
             }
 
             // Проверяем, что нажата кнопка в колонке "Изменить"
@@ -452,17 +476,14 @@ namespace Bookful.forms.main
             if (e.ColumnIndex == issuedBooksDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
             {
                 int issuedBookId = (int)issuedBooksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-                bool result = issuedBookService.DeleteIssueBookById(issuedBookId);
 
-                if (result)
+                DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
                 {
-                    issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                    bool deleteResult = issuedBookService.DeleteIssueBookById(issuedBookId);
                 }
-                else
-                {
-                    MessageBox.Show("Ошибка при удалении выданной книги.", "Ошибка удаления");
-                    // Вывести сообщение об ошибке или выполнить другие действия
-                }
+
+                issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
             }
 
             // Проверяем, что нажата кнопка в колонке "Изменить"
@@ -553,7 +574,7 @@ namespace Bookful.forms.main
 
         private void refreshIssueBooksButton_Click(object sender, EventArgs e)
         {
-            var issuedBooks = issuedBookService.GetAll();
+            List<IssuedBook> issuedBooks = issuedBookService.GetAll();
             issuedBooksDataGrid.DataSource = issuedBooks;
         }
 

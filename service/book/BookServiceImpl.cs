@@ -1,21 +1,19 @@
 ﻿using Bookful.dao.book;
+using Bookful.dao.issuedBook;
 using Bookful.domain.dto;
-using Bookful.util.db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Bookful.domain.exception;
 
 namespace Bookful.service.book
 {
     public class BookServiceImpl : IBookService
     {
         private readonly IBookDao bookDao;
+        private readonly IIssuedBookDao issuedBookDao;
 
-        public BookServiceImpl(DBConnection connection)
+        public BookServiceImpl(IBookDao bookDao, IIssuedBookDao issuedBookDao)
         {
-            bookDao = new BookDaoImpl(connection);
+            this.bookDao = bookDao;
+            this.issuedBookDao = issuedBookDao;
         }
 
         public void AddBook(Book book)
@@ -45,7 +43,30 @@ namespace Bookful.service.book
 
         public void DeleteBook(int id)
         {
-            bookDao.DeleteBook(id);
+            if (IsBookReturned(id))
+            {
+                bookDao.DeleteBook(id);
+            }
+            else
+            {
+                throw new CommonException(domain.constant.Code.BOOK_IS_NOT_RETURNED, "Книга еще не возвращена");
+            }
+            
+        }
+
+        public bool IsBookReturned(int bookId)
+        {
+            bool result = true;
+            List<IssuedBook> issuedBooks = issuedBookDao.GetByBookId(bookId);
+            foreach(var issuedBookItem in issuedBooks)
+            {
+                if(issuedBookItem.ReturnDate == null)
+                {
+                    result = false;
+                }
+            }
+
+            return result;
         }
 
         public List<Book> SearchBooks(string searchText)

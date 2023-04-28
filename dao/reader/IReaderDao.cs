@@ -12,5 +12,6 @@ namespace Bookful.dao.reader
         bool UpdateReader(Reader reader);
         string GetReaderFullNameById(int id);
         List<Reader> SearchReaders(string searchText);
+        List<Reader> GetReadersByReadingRoomId(int readingRoomId);
     }
 }
