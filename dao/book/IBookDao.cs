@@ -11,5 +11,7 @@ namespace Bookful.dao.book
         void UpdateBook(Book book);
         List<Book> SearchBooks(string searchText);
         string GetBookNameAndYearById(int id);
+        public void DecrementBookCount(int bookId);
+        void IncreaseBookCount(int bookId);
     }
 }

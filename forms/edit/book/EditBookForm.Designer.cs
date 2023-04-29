@@ -43,7 +43,10 @@ namespace Bookful.forms.edit
             publicationDateLabel = new MaterialLabel();
             saveButton = new MaterialButton();
             cancelButton = new MaterialButton();
+            quantityLabel = new MaterialLabel();
+            quantityInput = new NumericUpDown();
             tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)quantityInput).BeginInit();
             SuspendLayout();
             // 
             // titleLabel
@@ -52,7 +55,7 @@ namespace Bookful.forms.edit
             titleLabel.Depth = 0;
             titleLabel.Dock = DockStyle.Fill;
             titleLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            titleLabel.Location = new Point(221, 38);
+            titleLabel.Location = new Point(221, 21);
             titleLabel.MouseState = MaterialSkin.MouseState.HOVER;
             titleLabel.Name = "titleLabel";
             titleLabel.Size = new Size(136, 56);
@@ -68,7 +71,7 @@ namespace Bookful.forms.edit
             titleInput.Dock = DockStyle.Fill;
             titleInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             titleInput.LeadingIcon = null;
-            titleInput.Location = new Point(363, 41);
+            titleInput.Location = new Point(363, 24);
             titleInput.MaxLength = 50;
             titleInput.MouseState = MaterialSkin.MouseState.OUT;
             titleInput.Multiline = false;
@@ -86,7 +89,7 @@ namespace Bookful.forms.edit
             authorInput.Dock = DockStyle.Fill;
             authorInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             authorInput.LeadingIcon = null;
-            authorInput.Location = new Point(363, 97);
+            authorInput.Location = new Point(363, 80);
             authorInput.MaxLength = 50;
             authorInput.MouseState = MaterialSkin.MouseState.OUT;
             authorInput.Multiline = false;
@@ -102,7 +105,7 @@ namespace Bookful.forms.edit
             authorLabel.Depth = 0;
             authorLabel.Dock = DockStyle.Fill;
             authorLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            authorLabel.Location = new Point(221, 94);
+            authorLabel.Location = new Point(221, 77);
             authorLabel.MouseState = MaterialSkin.MouseState.HOVER;
             authorLabel.Name = "authorLabel";
             authorLabel.Size = new Size(136, 56);
@@ -116,7 +119,7 @@ namespace Bookful.forms.edit
             descriptionLabel.Depth = 0;
             descriptionLabel.Dock = DockStyle.Fill;
             descriptionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            descriptionLabel.Location = new Point(221, 150);
+            descriptionLabel.Location = new Point(221, 133);
             descriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             descriptionLabel.Name = "descriptionLabel";
             descriptionLabel.Size = new Size(136, 161);
@@ -132,7 +135,7 @@ namespace Bookful.forms.edit
             descriptionInput.Dock = DockStyle.Fill;
             descriptionInput.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             descriptionInput.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            descriptionInput.Location = new Point(363, 153);
+            descriptionInput.Location = new Point(363, 136);
             descriptionInput.MouseState = MaterialSkin.MouseState.HOVER;
             descriptionInput.Name = "descriptionInput";
             descriptionInput.Size = new Size(210, 155);
@@ -145,7 +148,7 @@ namespace Bookful.forms.edit
             publishingHouseLabel.Depth = 0;
             publishingHouseLabel.Dock = DockStyle.Fill;
             publishingHouseLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            publishingHouseLabel.Location = new Point(221, 311);
+            publishingHouseLabel.Location = new Point(221, 294);
             publishingHouseLabel.MouseState = MaterialSkin.MouseState.HOVER;
             publishingHouseLabel.Name = "publishingHouseLabel";
             publishingHouseLabel.Size = new Size(136, 56);
@@ -161,7 +164,7 @@ namespace Bookful.forms.edit
             publishingHouseInput.Dock = DockStyle.Fill;
             publishingHouseInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             publishingHouseInput.LeadingIcon = null;
-            publishingHouseInput.Location = new Point(363, 314);
+            publishingHouseInput.Location = new Point(363, 297);
             publishingHouseInput.MaxLength = 50;
             publishingHouseInput.MouseState = MaterialSkin.MouseState.OUT;
             publishingHouseInput.Multiline = false;
@@ -189,13 +192,16 @@ namespace Bookful.forms.edit
             tableLayoutPanel1.Controls.Add(descriptionInput, 2, 3);
             tableLayoutPanel1.Controls.Add(titleInput, 2, 1);
             tableLayoutPanel1.Controls.Add(titleLabel, 1, 1);
-            tableLayoutPanel1.Controls.Add(saveButton, 1, 6);
-            tableLayoutPanel1.Controls.Add(cancelButton, 2, 6);
+            tableLayoutPanel1.Controls.Add(saveButton, 1, 7);
+            tableLayoutPanel1.Controls.Add(cancelButton, 2, 7);
+            tableLayoutPanel1.Controls.Add(quantityLabel, 1, 6);
+            tableLayoutPanel1.Controls.Add(quantityInput, 2, 6);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(3, 64);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 8;
+            tableLayoutPanel1.RowCount = 9;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
@@ -211,7 +217,7 @@ namespace Bookful.forms.edit
             publicationDateInput.CustomFormat = "dd.MM.yyyy";
             publicationDateInput.Dock = DockStyle.Fill;
             publicationDateInput.Format = DateTimePickerFormat.Custom;
-            publicationDateInput.Location = new Point(363, 370);
+            publicationDateInput.Location = new Point(363, 353);
             publicationDateInput.Name = "publicationDateInput";
             publicationDateInput.Size = new Size(210, 27);
             publicationDateInput.TabIndex = 9;
@@ -222,7 +228,7 @@ namespace Bookful.forms.edit
             publicationDateLabel.Depth = 0;
             publicationDateLabel.Dock = DockStyle.Fill;
             publicationDateLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            publicationDateLabel.Location = new Point(221, 367);
+            publicationDateLabel.Location = new Point(221, 350);
             publicationDateLabel.MouseState = MaterialSkin.MouseState.HOVER;
             publicationDateLabel.Name = "publicationDateLabel";
             publicationDateLabel.Size = new Size(136, 33);
@@ -238,7 +244,7 @@ namespace Bookful.forms.edit
             saveButton.Depth = 0;
             saveButton.HighEmphasis = true;
             saveButton.Icon = null;
-            saveButton.Location = new Point(222, 406);
+            saveButton.Location = new Point(222, 422);
             saveButton.Margin = new Padding(4, 6, 4, 6);
             saveButton.MouseState = MaterialSkin.MouseState.HOVER;
             saveButton.Name = "saveButton";
@@ -259,7 +265,7 @@ namespace Bookful.forms.edit
             cancelButton.Depth = 0;
             cancelButton.HighEmphasis = true;
             cancelButton.Icon = null;
-            cancelButton.Location = new Point(364, 406);
+            cancelButton.Location = new Point(364, 422);
             cancelButton.Margin = new Padding(4, 6, 4, 6);
             cancelButton.MouseState = MaterialSkin.MouseState.HOVER;
             cancelButton.Name = "cancelButton";
@@ -272,6 +278,28 @@ namespace Bookful.forms.edit
             cancelButton.UseVisualStyleBackColor = true;
             cancelButton.Click += button1_Click;
             // 
+            // quantityLabel
+            // 
+            quantityLabel.AutoSize = true;
+            quantityLabel.Depth = 0;
+            quantityLabel.Dock = DockStyle.Fill;
+            quantityLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            quantityLabel.Location = new Point(221, 383);
+            quantityLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            quantityLabel.Name = "quantityLabel";
+            quantityLabel.Size = new Size(136, 33);
+            quantityLabel.TabIndex = 12;
+            quantityLabel.Text = "Количество:";
+            quantityLabel.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // quantityInput
+            // 
+            quantityInput.Dock = DockStyle.Fill;
+            quantityInput.Location = new Point(363, 386);
+            quantityInput.Name = "quantityInput";
+            quantityInput.Size = new Size(210, 27);
+            quantityInput.TabIndex = 13;
+            // 
             // EditBookForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -283,6 +311,7 @@ namespace Bookful.forms.edit
             Text = "Редактировать книгу";
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)quantityInput).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -302,5 +331,7 @@ namespace Bookful.forms.edit
         private MaterialLabel publicationDateLabel;
         private MaterialButton saveButton;
         private MaterialButton cancelButton;
+        private MaterialLabel quantityLabel;
+        private NumericUpDown quantityInput;
     }
 }

@@ -15,10 +15,10 @@ namespace Bookful.dao.book
 
         public void AddBook(Book book)
         {
-            if (this.connection.IsConnect())
+            if (connection.IsConnect())
             {
-                string query = "INSERT INTO book(title, author, description, publishing_house, publication_date) " +
-                "VALUES (@title, @author, @description, @publishingHouse, @publicationDate)";
+                string query = "INSERT INTO book(title, author, description, publishing_house, publication_date, quantity) " +
+                "VALUES (@title, @author, @description, @publishingHouse, @publicationDate, @quantity)";
                 var command = new MySqlCommand(query, connection.Connection);
 
                 command.Parameters.AddWithValue("@title", book.Title);
@@ -26,14 +26,26 @@ namespace Bookful.dao.book
                 command.Parameters.AddWithValue("@description", book.Description);
                 command.Parameters.AddWithValue("@publishingHouse", book.PublishingHouse);
                 command.Parameters.AddWithValue("@publicationDate", book.PublicationDate.ToString("yyyy-MM-dd"));
+                command.Parameters.AddWithValue("@quantity", book.Quantity);
 
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void DecrementBookCount(int bookId)
+        {
+            if (connection.IsConnect())
+            {
+                string query = "UPDATE book SET quantity = quantity - 1 WHERE id = @bookId";
+                var command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@bookId", bookId);
                 command.ExecuteNonQuery();
             }
         }
 
         public void DeleteBook(int id)
         {
-            if (this.connection.IsConnect())
+            if (connection.IsConnect())
             {
                 string query = "DELETE FROM book WHERE id = @id";
                 var cmd = new MySqlCommand(query, connection.Connection);
@@ -46,29 +58,31 @@ namespace Bookful.dao.book
         {
             List<Book> list = new List<Book>();
 
-            if (this.connection.IsConnect())
+            if (connection.IsConnect())
             {
-                string query = string.Format("SELECT id, title, author, description, publishing_house, publication_date FROM book;");
+                string query = string.Format("SELECT id, title, author, description, publishing_house, publication_date, quantity FROM book;");
                 var cmd = new MySqlCommand(query, connection.Connection);
 
-                var reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    var book = new Book()
+
+                    while (reader.Read())
                     {
-                        Id = reader.GetInt32("id"),
-                        Title = reader.GetString("title"),
-                        Author = reader.GetString("author"),
-                        Description = reader.GetString("description"),
-                        PublishingHouse = reader.GetString("publishing_house"),
-                        PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date"))
-                    };
+                        var book = new Book()
+                        {
+                            Id = reader.GetInt32("id"),
+                            Title = reader.GetString("title"),
+                            Author = reader.GetString("author"),
+                            Description = reader.GetString("description"),
+                            PublishingHouse = reader.GetString("publishing_house"),
+                            PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date")),
+                            Quantity = reader.GetInt32("quantity")
+                        };
 
-                    list.Add(book);
+                        list.Add(book);
+                    }
+
                 }
-
-                reader.Close();
             }
 
             return list;
@@ -76,28 +90,30 @@ namespace Bookful.dao.book
 
         public Book? GetBookById(int id)
         {
-            if (this.connection.IsConnect())
+            if (connection.IsConnect())
             {
-                string query = string.Format("SELECT id, title, author, description, publishing_house, publication_date FROM book WHERE id = @id;");
+                string query = string.Format("SELECT id, title, author, description, publishing_house, publication_date, quantity " +
+                    "FROM book WHERE id = @id;");
                 var cmd = new MySqlCommand(query, connection.Connection);
                 cmd.Parameters.AddWithValue("@id", id);
 
-                var reader = cmd.ExecuteReader();
-                if (reader.Read())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    var book = new Book()
+                    if (reader.Read())
                     {
-                        Id = reader.GetInt32("id"),
-                        Title = reader.GetString("title"),
-                        Author = reader.GetString("author"),
-                        Description = reader.GetString("description"),
-                        PublishingHouse = reader.GetString("publishing_house"),
-                        PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date"))
-                    };
+                        var book = new Book()
+                        {
+                            Id = reader.GetInt32("id"),
+                            Title = reader.GetString("title"),
+                            Author = reader.GetString("author"),
+                            Description = reader.GetString("description"),
+                            PublishingHouse = reader.GetString("publishing_house"),
+                            PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date")),
+                            Quantity = reader.GetInt32("quantity")
+                        };
 
-                    reader.Close();
-
-                    return book;
+                        return book;
+                    }
                 }
             }
 
@@ -127,12 +143,23 @@ namespace Bookful.dao.book
             return bookName;
         }
 
+        public void IncreaseBookCount(int bookId)
+        {
+            if (connection.IsConnect())
+            {
+                string query = "UPDATE book SET quantity = quantity + 1 WHERE id = @bookId";
+                MySqlCommand command = new MySqlCommand( query, connection.Connection);
+                command.Parameters.AddWithValue("@bookId", bookId);
+                command.ExecuteNonQuery();
+            }
+        }
+
         public List<Book> SearchBooks(string searchText)
         {
             List<Book> books = new List<Book>();
-            if (this.connection.IsConnect())
+            if (connection.IsConnect())
             {
-                string query = "SELECT id, title, author, description, publishing_house, publication_date FROM book WHERE " +
+                string query = "SELECT id, title, author, description, publishing_house, publication_date, quantity FROM book WHERE " +
                     "title LIKE @searchText OR " +
                     "author LIKE @searchText OR " +
                     "description LIKE @searchText OR " +
@@ -153,7 +180,8 @@ namespace Bookful.dao.book
                             Author = reader.GetString("author"),
                             Description = reader.GetString("description"),
                             PublishingHouse = reader.GetString("publishing_house"),
-                            PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date"))
+                            PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date")),
+                            Quantity = reader.GetInt32("quantity")
                         };
 
                         books.Add(book);
@@ -166,10 +194,10 @@ namespace Bookful.dao.book
 
         public void UpdateBook(Book book)
         {
-            if (this.connection.IsConnect())
+            if (connection.IsConnect())
             {
                 string query = "UPDATE book SET title = @title, author = @author, description = @description, " +
-                "publishing_house = @publishingHouse, publication_date = @publicationDate " +
+                "publishing_house = @publishingHouse, publication_date = @publicationDate, quantity = @quantity " +
                 "WHERE id = @id;";
                 var cmd = new MySqlCommand(query, connection.Connection);
 
@@ -178,6 +206,7 @@ namespace Bookful.dao.book
                 cmd.Parameters.AddWithValue("@description", book.Description);
                 cmd.Parameters.AddWithValue("@publishingHouse", book.PublishingHouse);
                 cmd.Parameters.AddWithValue("@publicationDate", book.PublicationDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("@quantity", book.Quantity);
                 cmd.Parameters.AddWithValue("@id", book.Id);
 
                 cmd.ExecuteNonQuery();

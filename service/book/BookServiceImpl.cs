@@ -84,5 +84,12 @@ namespace Bookful.service.book
 
             return bookName;
         }
+
+        public bool CheckBookAvailability(int bookId, int quantity)
+        {
+            Book book = GetBookById(bookId); // Получаем книгу по id
+            int availableQuantity = book.Quantity - issuedBookDao.GetIssuedBookQuantity(bookId); // Вычисляем остаток книг
+            return quantity <= availableQuantity; // Сравниваем запрашиваемое количество с остатком
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace Bookful.dao.issuedBook
         void UpdateIssueBook(IssuedBook issuedBook);
         void DeleteIssueBook(int id);
         List<IssuedBook> SearchIssuedBooks(string searchText);
+        int GetIssuedBookQuantity(int bookId);
     }
 }

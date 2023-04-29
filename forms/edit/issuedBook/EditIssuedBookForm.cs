@@ -99,8 +99,15 @@ namespace Bookful.forms.edit.issuedBook
             issuedBook.IssueDate = DateOnly.FromDateTime(issueDateInput.Value);
             issuedBook.ExpectedReturnDate = DateOnly.FromDateTime(expectedReturnDateInput.Value);
 
-            DialogResult = DialogResult.OK;
-            Close();
+            if (issuedBook.ReturnDate == null && !bookService.CheckBookAvailability(issuedBook.BookId, 1))
+            {
+                MaterialMessageBox.Show("Выбранной книги больше нет в наличии.", "Ошибка", false);
+            }
+            else
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

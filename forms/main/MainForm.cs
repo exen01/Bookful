@@ -32,10 +32,16 @@ namespace Bookful.forms.main
         {
             InitializeComponent();
             connection = DBConnection.Instance();
-            bookService = new BookServiceImpl(new BookDaoImpl(connection), new IssuedBookDaoImpl(connection));
-            readingRoomService = new ReadingRoomServiceImpl(new ReadingRoomDaoImpl(connection), new ReaderDaoImpl(connection));
-            readerService = new ReaderServiceImpl(new ReaderDaoImpl(connection), new IssuedBookDaoImpl(connection));
-            issuedBookService = new IssuedBookServiceImpl(new IssuedBookDaoImpl(connection));
+
+            var bookDao = new BookDaoImpl(connection);
+            var issuedBookDao = new IssuedBookDaoImpl(connection);
+            var readingRoomDao = new ReadingRoomDaoImpl(connection);
+            var readerDao = new ReaderDaoImpl(connection);
+
+            bookService = new BookServiceImpl(bookDao, issuedBookDao);
+            readingRoomService = new ReadingRoomServiceImpl(readingRoomDao, readerDao);
+            readerService = new ReaderServiceImpl(readerDao, issuedBookDao);
+            issuedBookService = new IssuedBookServiceImpl(issuedBookDao, bookDao);
 
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
@@ -71,7 +77,7 @@ namespace Bookful.forms.main
 
                 try
                 {
-                    DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
                     if (result == DialogResult.Yes)
                     {
                         bookService.DeleteBook(bookId);
@@ -79,7 +85,7 @@ namespace Bookful.forms.main
                 }
                 catch (CommonException exception)
                 {
-                    MessageBox.Show(exception.UserMessage, "Ошибка удаления книги");
+                    MaterialMessageBox.Show(exception.UserMessage, "Ошибка удаления книги", false);
                 }
 
 
@@ -196,7 +202,7 @@ namespace Bookful.forms.main
 
                 try
                 {
-                    DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
                     if (result == DialogResult.Yes)
                     {
                         bool deleteResult = readingRoomService.DeleteReadingRoomById(readingRoomId);
@@ -204,7 +210,7 @@ namespace Bookful.forms.main
                 }
                 catch (CommonException exception)
                 {
-                    MessageBox.Show(exception.UserMessage, "Ошибка удаления");
+                    MaterialMessageBox.Show(exception.UserMessage, "Ошибка удаления", false);
                 }
 
                 readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
@@ -362,7 +368,7 @@ namespace Bookful.forms.main
 
                 try
                 {
-                    DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
                     if (result == DialogResult.Yes)
                     {
                         readerService.DeleteReaderById(readerId);
@@ -370,7 +376,7 @@ namespace Bookful.forms.main
                 }
                 catch (CommonException exception)
                 {
-                    MessageBox.Show(exception.UserMessage, "Ошибка удаления");
+                    MaterialMessageBox.Show(exception.UserMessage, "Ошибка удаления", false);
                 }
 
                 readersDataGrid.DataSource = readerService.GetAllReaders();
@@ -477,7 +483,7 @@ namespace Bookful.forms.main
             {
                 int issuedBookId = (int)issuedBooksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
 
-                DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
                 if (result == DialogResult.Yes)
                 {
                     bool deleteResult = issuedBookService.DeleteIssueBookById(issuedBookId);
@@ -542,6 +548,7 @@ namespace Bookful.forms.main
             booksDataGrid.Columns["Description"].HeaderText = "Описание";
             booksDataGrid.Columns["PublishingHouse"].HeaderText = "Издательство";
             booksDataGrid.Columns["PublicationDate"].HeaderText = "Дата публикации";
+            booksDataGrid.Columns["Quantity"].HeaderText = "Количество";
 
             if (!booksDataGrid.Columns.Contains("EditButton"))
             {

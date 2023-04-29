@@ -270,5 +270,25 @@ namespace Bookful.dao.issuedBook
 
             return issuedBooks;
         }
+
+        /// <summary>
+        /// Возвращает количество выданных экземпляров книги с заданным идентификатором. 
+        /// </summary>
+        /// <param name="bookId">Идентификатор книги</param>
+        /// <returns>Количество выданных экземпляров</returns>
+        public int GetIssuedBookQuantity(int bookId)
+        {
+            int quantity = 0;
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT COUNT(*) FROM issued_books WHERE book_id = @bookId AND return_date = null";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+                command.Parameters.AddWithValue("@bookId", bookId);
+                quantity = Convert.ToInt32(command.ExecuteScalar());
+            }
+
+            return quantity;
+        }
     }
 }

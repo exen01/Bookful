@@ -1,4 +1,5 @@
-﻿using Bookful.dao.issuedBook;
+﻿using Bookful.dao.book;
+using Bookful.dao.issuedBook;
 using Bookful.domain.dto;
 
 namespace Bookful.service.issuedBook
@@ -6,10 +7,12 @@ namespace Bookful.service.issuedBook
     public class IssuedBookServiceImpl : IIssuedBookService
     {
         private readonly IIssuedBookDao issuedBookDao;
+        private readonly IBookDao bookDao;
 
-        public IssuedBookServiceImpl(IIssuedBookDao issuedBookDao)
+        public IssuedBookServiceImpl(IIssuedBookDao issuedBookDao, IBookDao bookDao)
         {
             this.issuedBookDao = issuedBookDao;
+            this.bookDao = bookDao;
         }
 
         public bool AddIssueBook(IssuedBook issuedBook)
@@ -17,6 +20,11 @@ namespace Bookful.service.issuedBook
             try
             {
                 issuedBookDao.AddIssueBook(issuedBook);
+                if (issuedBook.ReturnDate == null)
+                {
+                    bookDao.DecrementBookCount(issuedBook.BookId);
+                }
+
                 return true;
             }
             catch (Exception ex)
@@ -45,6 +53,14 @@ namespace Bookful.service.issuedBook
             try
             {
                 issuedBookDao.UpdateIssueBook(issuedBook);
+                if (issuedBook.ReturnDate != null)
+                {
+                    bookDao.IncreaseBookCount(issuedBook.BookId);
+                }
+                else
+                {
+                    bookDao.DecrementBookCount(issuedBook.BookId);
+                }
                 return true;
             }
             catch (Exception ex)
