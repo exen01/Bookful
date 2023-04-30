@@ -119,7 +119,7 @@ namespace Bookful.forms.main
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+            this.KeyPreview = true;
         }
 
         private void refreshBooksButton_Click(object sender, EventArgs e)
@@ -614,6 +614,46 @@ namespace Bookful.forms.main
             {
                 // Вызываем метод поиска при нажатии клавиши Enter
                 searchIssueBooksButton_Click(sender, e);
+            }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                UpdateDataGridView(); // вызываем метод обновления DataGridView
+            }
+        }
+
+        private void UpdateDataGridView()
+        {
+            switch (tabControl.SelectedIndex) // получаем индекс активной вкладки
+            {
+                case 0:
+                    issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                    break;
+                case 1:
+                    booksDataGrid.DataSource = bookService.GetAllBooks();
+                    break;
+                case 2:
+                    readersDataGrid.DataSource = readerService.GetAllReaders();
+                    break;
+                case 3:
+                    readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                    break;
+            }
+        }
+
+        private void tabControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+            {
+                int index = e.KeyCode - Keys.D0;
+                if (index == 0) index = 10; // переключение на последнюю вкладку
+                if (index <= tabControl.TabCount)
+                {
+                    tabControl.SelectedIndex = index - 1;
+                }
             }
         }
     }
