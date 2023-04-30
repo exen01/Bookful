@@ -1,4 +1,5 @@
 ﻿using Bookful.domain.dto;
+using Bookful.service.reader;
 using Bookful.service.readingRoom;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -11,13 +12,16 @@ namespace Bookful.forms.edit.reader
         private Reader reader;
         private IReadingRoomService readingRoomService;
         private List<ReadingRoom> rooms;
+        private IReaderService readerService;
 
-        public EditReaderForm(Reader reader, bool isNewReader, IReadingRoomService readingRoomService)
+        public EditReaderForm(Reader reader, bool isNewReader, IReadingRoomService readingRoomService, IReaderService readerService)
         {
             InitializeComponent();
 
             this.readingRoomService = readingRoomService;
-            this.rooms = readingRoomService.GetAllReadingRooms();
+            this.readerService = readerService;
+            
+            rooms = readingRoomService.GetAllReadingRooms();
 
             if (isNewReader)
             {
@@ -69,8 +73,15 @@ namespace Bookful.forms.edit.reader
             reader.ReadingRoomId = int.Parse(readingRoomInput.SelectedValue.ToString());
             reader.RegistrationDate = DateOnly.FromDateTime(registrationDateInput.Value);
 
-            DialogResult = DialogResult.OK;
-            Close();
+            if(readerService.GetReaderByLibraryCardNumber(reader.LibraryCardNumber).FirstName == null)
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            else
+            {
+                MaterialMessageBox.Show("Читатель с таким номером читательского билета уже существует", "Ошибка", false);
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

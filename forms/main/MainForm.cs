@@ -350,7 +350,7 @@ namespace Bookful.forms.main
         {
             Reader reader = new Reader();
 
-            EditReaderForm editReaderForm = new EditReaderForm(reader, true, readingRoomService);
+            EditReaderForm editReaderForm = new EditReaderForm(reader, true, readingRoomService, readerService);
             if (editReaderForm.ShowDialog() == DialogResult.OK)
             {
                 readerService.AddReader(reader);
@@ -389,7 +389,7 @@ namespace Bookful.forms.main
 
                 Reader reader = readerService.GetReaderById(readerId);
 
-                EditReaderForm editReaderForm = new EditReaderForm(reader, false, readingRoomService);
+                EditReaderForm editReaderForm = new EditReaderForm(reader, false, readingRoomService, readerService);
 
                 // Если пользователь нажал "Сохранить"
                 if (editReaderForm.ShowDialog() == DialogResult.OK)
