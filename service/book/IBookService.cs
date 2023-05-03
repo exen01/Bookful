@@ -13,5 +13,7 @@ namespace Bookful.service.book
         string GetBookNameAndYearById(int id);
         bool IsBookReturned(int bookId);
         bool CheckBookAvailability(int bookId, int quantity);
+        List<string> GetAllAuthors();
+        List<string> GetAllPublishingHouses();
     }
 }

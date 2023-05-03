@@ -103,7 +103,7 @@ namespace Bookful.forms.main
                 Book book = bookService.GetBookById(bookId);
 
                 // Открываем форму для изменения книги
-                EditBookForm editBookForm = new EditBookForm(book, false);
+                EditBookForm editBookForm = new EditBookForm(book, false, bookService);
 
                 // Если пользователь нажал "Сохранить"
                 if (editBookForm.ShowDialog() == DialogResult.OK)
@@ -132,7 +132,7 @@ namespace Bookful.forms.main
         {
             Book book = new Book();
             // Открываем форму для создания книги
-            EditBookForm editBookForm = new EditBookForm(book, true);
+            EditBookForm editBookForm = new EditBookForm(book, true, bookService);
             // Если пользователь нажал "Добавить"
             if (editBookForm.ShowDialog() == DialogResult.OK)
             {

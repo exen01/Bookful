@@ -13,5 +13,7 @@ namespace Bookful.dao.book
         string GetBookNameAndYearById(int id);
         public void DecrementBookCount(int bookId);
         void IncreaseBookCount(int bookId);
+        List<string> GetAllAuthors();
+        List<string> GetAllPublishingHouses();
     }
 }

@@ -91,5 +91,15 @@ namespace Bookful.service.book
             int availableQuantity = book.Quantity - issuedBookDao.GetIssuedBookQuantity(bookId); // Вычисляем остаток книг
             return quantity <= availableQuantity; // Сравниваем запрашиваемое количество с остатком
         }
+
+        public List<string> GetAllAuthors()
+        {
+            return bookDao.GetAllAuthors();
+        }
+
+        public List<string> GetAllPublishingHouses()
+        {
+            return bookDao.GetAllPublishingHouses();
+        }
     }
 }

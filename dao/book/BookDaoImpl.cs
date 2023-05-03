@@ -54,6 +54,26 @@ namespace Bookful.dao.book
             }
         }
 
+        public List<string> GetAllAuthors()
+        {
+            List<string> result = new List<string>();
+            if (connection.IsConnect())
+            {
+                string query = "SELECT author FROM book";
+                var command = new MySqlCommand(query, connection.Connection);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public List<Book> GetAllBooks()
         {
             List<Book> list = new List<Book>();
@@ -86,6 +106,26 @@ namespace Bookful.dao.book
             }
 
             return list;
+        }
+
+        public List<string> GetAllPublishingHouses()
+        {
+            List<string> result = new List<string>();
+            if (connection.IsConnect())
+            {
+                string query = "SELECT publishing_house FROM book";
+                var command = new MySqlCommand(query, connection.Connection);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+                }
+            }
+
+            return result;
         }
 
         public Book? GetBookById(int id)
@@ -148,7 +188,7 @@ namespace Bookful.dao.book
             if (connection.IsConnect())
             {
                 string query = "UPDATE book SET quantity = quantity + 1 WHERE id = @bookId";
-                MySqlCommand command = new MySqlCommand( query, connection.Connection);
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
                 command.Parameters.AddWithValue("@bookId", bookId);
                 command.ExecuteNonQuery();
             }

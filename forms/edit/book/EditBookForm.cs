@@ -1,4 +1,5 @@
 ﻿using Bookful.domain.dto;
+using Bookful.service.book;
 using MaterialSkin;
 using MaterialSkin.Controls;
 
@@ -8,16 +9,22 @@ namespace Bookful.forms.edit
     {
         private MaterialSkinManager materialSkinManager;
         private Book book;
+        private IBookService bookService;
+        private List<string> authorsList;
+        private List<string> publishingHousesList;
 
-        public EditBookForm(Book book, bool isNewBook)
+        public EditBookForm(Book book, bool isNewBook, IBookService bookService)
         {
             InitializeComponent();
+
+            this.bookService = bookService;
 
             if (isNewBook)
             {
                 this.book = book;
                 Text = "Добавить книгу";
                 saveButton.Text = "Добавить";
+                InitializeLists();
             }
             else
             {
@@ -34,13 +41,30 @@ namespace Bookful.forms.edit
             materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
+        private void InitializeLists()
+        {
+            authorsList = bookService.GetAllAuthors();
+            authorsList.Add("Добавить нового автора...");
+
+            authorInput.DataSource = authorsList;
+
+            publishingHousesList = bookService.GetAllPublishingHouses();
+            publishingHousesList.Add("Добавить новое издательство...");
+
+            publishingHouseInput.DataSource = publishingHousesList;
+
+            SetDropDownWidth(authorInput);
+            SetDropDownWidth(publishingHouseInput);
+        }
+
         private void InitializeForm()
         {
             // Заполнение полей формы данными о книге
             titleInput.Text = book.Title;
-            authorInput.Text = book.Author;
+            InitializeLists();
+            authorInput.SelectedItem = book.Author;
             descriptionInput.Text = book.Description;
-            publishingHouseInput.Text = book.PublishingHouse;
+            publishingHouseInput.SelectedItem = book.PublishingHouse;
             publicationDateInput.Value = DateTime.Parse(book.PublicationDate.ToString());
             quantityInput.Value = book.Quantity;
         }
@@ -61,8 +85,63 @@ namespace Bookful.forms.edit
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void authorInput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (authorInput.SelectedIndex == authorInput.Items.Count - 1)
+            {
+                string author = Microsoft.VisualBasic.Interaction.InputBox("Введите имя автора:", "Добавить автора");
+                if (!string.IsNullOrEmpty(author))
+                {
+                    authorsList.Remove("Добавить нового автора...");
+                    authorsList.Add(author);
+                    authorsList.Add("Добавить нового автора...");
+                    authorInput.DataSource = null;
+                    authorInput.DataSource = authorsList;
+                    authorInput.SelectedItem = author;
+                }
+                else
+                {
+                    authorInput.SelectedItem = authorInput.Items[0];
+                }
+            }
+        }
+
+        // Установка ширины выпадающего списка ComboBox на основе самого широкого элемента
+        private void SetDropDownWidth(MaterialComboBox comboBox)
+        {
+            int maxWidth = 0;
+            foreach (var item in comboBox.Items)
+            {
+                int itemWidth = TextRenderer.MeasureText(comboBox.GetItemText(item), comboBox.Font).Width;
+                maxWidth = Math.Max(maxWidth, itemWidth);
+            }
+            comboBox.DropDownWidth = maxWidth + SystemInformation.VerticalScrollBarWidth;
+        }
+
+        private void publishingHouseInput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (publishingHouseInput.SelectedIndex == publishingHouseInput.Items.Count - 1)
+            {
+                string publishingHouse = Microsoft.VisualBasic.Interaction.InputBox("Введите название издательства:", "Добавить издательство");
+                if (!string.IsNullOrEmpty(publishingHouse))
+                {
+                    publishingHousesList.Remove("Добавить новое издательство...");
+                    publishingHousesList.Add(publishingHouse);
+                    publishingHousesList.Add("Добавить новое издательство...");
+                    publishingHouseInput.DataSource = null;
+                    publishingHouseInput.DataSource = publishingHousesList;
+                    publishingHouseInput.SelectedItem = publishingHouse;
+                }
+                else
+                {
+                    publishingHouseInput.SelectedItem = publishingHouseInput.Items[0];
+                }
+            }
         }
     }
 }
