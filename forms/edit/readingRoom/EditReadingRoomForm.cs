@@ -1,4 +1,6 @@
 ﻿using Bookful.domain.dto;
+using Bookful.domain.exception;
+using Bookful.util;
 using MaterialSkin;
 using MaterialSkin.Controls;
 
@@ -47,8 +49,18 @@ namespace Bookful.forms.edit
             readingRoom.Specialization = specializationInput.Text;
             readingRoom.SeatsCount = (int)numberOfSeatsInput.Value;
 
-            DialogResult = DialogResult.OK;
-            Close();
+            try
+            {
+                ValidationUtils.ValidateSpecialization(readingRoom.Specialization);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (CommonException exception)
+            {
+                MaterialMessageBox.Show(exception.UserMessage, "Ошибка", false);
+            }
+
+
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

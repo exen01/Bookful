@@ -1,7 +1,10 @@
 ﻿using Bookful.domain.dto;
+using Bookful.domain.exception;
 using Bookful.service.book;
+using Bookful.util;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System;
 
 namespace Bookful.forms.edit
 {
@@ -79,8 +82,11 @@ namespace Bookful.forms.edit
             book.PublicationDate = DateOnly.FromDateTime(publicationDateInput.Value);
             book.Quantity = (int)quantityInput.Value;
 
-            DialogResult = DialogResult.OK;
-            Close();
+            if (ValidateBook(book))
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -142,6 +148,23 @@ namespace Bookful.forms.edit
                     publishingHouseInput.SelectedItem = publishingHouseInput.Items[0];
                 }
             }
+        }
+
+        private bool ValidateBook(Book book)
+        {
+            bool result = false;
+            try
+            {
+                result = ValidationUtils.ValidateBookTitle(book.Title) &&
+                ValidationUtils.ValidateBookAuthor(book.Author) &&
+                ValidationUtils.ValidateBookPublicationHouse(book.PublishingHouse);
+            }
+            catch (CommonException exception)
+            {
+                MaterialMessageBox.Show(exception.UserMessage, "Ошибка", false);
+            }
+
+            return result;
         }
     }
 }

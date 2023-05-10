@@ -1,6 +1,8 @@
 ﻿using Bookful.domain.dto;
+using Bookful.domain.exception;
 using Bookful.service.reader;
 using Bookful.service.readingRoom;
+using Bookful.util;
 using MaterialSkin;
 using MaterialSkin.Controls;
 
@@ -20,7 +22,7 @@ namespace Bookful.forms.edit.reader
 
             this.readingRoomService = readingRoomService;
             this.readerService = readerService;
-            
+
             rooms = readingRoomService.GetAllReadingRooms();
 
             if (isNewReader)
@@ -73,14 +75,10 @@ namespace Bookful.forms.edit.reader
             reader.ReadingRoomId = int.Parse(readingRoomInput.SelectedValue.ToString());
             reader.RegistrationDate = DateOnly.FromDateTime(registrationDateInput.Value);
 
-            if(readerService.GetReaderByLibraryCardNumber(reader.LibraryCardNumber).FirstName == null)
+            if (ValidateReader(reader))
             {
                 DialogResult = DialogResult.OK;
                 Close();
-            }
-            else
-            {
-                MaterialMessageBox.Show("Читатель с таким номером читательского билета уже существует", "Ошибка", false);
             }
         }
 
@@ -88,6 +86,28 @@ namespace Bookful.forms.edit.reader
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private bool ValidateReader(Reader reader)
+        {
+            bool result = false;
+            try
+            {
+                result = ValidationUtils.ValidateFirstName(reader.FirstName) &&
+                    ValidationUtils.ValidateLastName(reader.LastName);
+            }
+            catch (CommonException exception)
+            {
+                MaterialMessageBox.Show(exception.UserMessage, "Ошибка", false);
+            }
+
+            if (!string.IsNullOrEmpty(readerService.GetReaderByLibraryCardNumber(reader.LibraryCardNumber).FirstName))
+            {
+                MaterialMessageBox.Show("Читатель с таким номером читательского билета уже существует", "Ошибка", false);
+                return false;
+            }
+
+            return result;
         }
     }
 }
