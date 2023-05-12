@@ -402,6 +402,7 @@ namespace Bookful.forms.main
             booksDataGrid.Dock = DockStyle.Fill;
             booksDataGrid.Location = new Point(3, 93);
             booksDataGrid.Name = "booksDataGrid";
+            booksDataGrid.ReadOnly = true;
             booksDataGrid.RowHeadersWidth = 51;
             booksDataGrid.RowTemplate.Height = 29;
             booksDataGrid.Size = new Size(774, 342);

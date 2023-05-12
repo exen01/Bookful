@@ -59,7 +59,7 @@ namespace Bookful.dao.book
             List<string> result = new List<string>();
             if (connection.IsConnect())
             {
-                string query = "SELECT author FROM book";
+                string query = "SELECT DISTINCT author FROM book";
                 var command = new MySqlCommand(query, connection.Connection);
 
                 using (var reader = command.ExecuteReader())
@@ -113,7 +113,7 @@ namespace Bookful.dao.book
             List<string> result = new List<string>();
             if (connection.IsConnect())
             {
-                string query = "SELECT publishing_house FROM book";
+                string query = "SELECT DISTINCT publishing_house FROM book";
                 var command = new MySqlCommand(query, connection.Connection);
 
                 using (var reader = command.ExecuteReader())
