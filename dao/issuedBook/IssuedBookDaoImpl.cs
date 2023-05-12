@@ -17,13 +17,25 @@ namespace Bookful.dao.issuedBook
         {
             if (connection.IsConnect())
             {
-                string query = "INSERT INTO issued_books(reader_id, book_id, issue_date, expected_return_date) " +
-                    "VALUES (@reader_id, @book_id, @issue_date, @expected_return_date)";
+                
+
+                string query = "INSERT INTO issued_books(reader_id, book_id, issue_date, return_date, expected_return_date) " +
+                    "VALUES (@reader_id, @book_id, @issue_date, @return_date, @expected_return_date)";
                 MySqlCommand command = new MySqlCommand(query, connection.Connection);
 
                 command.Parameters.AddWithValue("@reader_id", issuedBook.ReaderId);
                 command.Parameters.AddWithValue("@book_id", issuedBook.BookId);
                 command.Parameters.AddWithValue("@issue_date", issuedBook.IssueDate.ToString("yyyy-MM-dd"));
+
+                if (issuedBook.ReturnDate != null)
+                {
+                    command.Parameters.AddWithValue("@return_date", issuedBook.ReturnDate.Value.ToString("yyyy-MM-dd"));
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@return_date", null);
+                }
+
                 command.Parameters.AddWithValue("@expected_return_date", issuedBook.ExpectedReturnDate.ToString("yyyy-MM-dd"));
 
                 command.ExecuteNonQuery();
