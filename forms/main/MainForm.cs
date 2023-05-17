@@ -13,6 +13,7 @@ using Bookful.service.readingRoom;
 using Bookful.util.db;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.Data;
 
 namespace Bookful.forms.main
 {
@@ -67,6 +68,18 @@ namespace Bookful.forms.main
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
+
+            var readers = readerService.GetAllReaders();
+            foreach (var reader in readers)
+            {
+                issuedBookReaderFilterBox.Items.Add(reader.DisplayFullNameCardNumber);
+            }
+
+            var books = bookService.GetAllBooks();
+            foreach (var book in books)
+            {
+                issuedBookBookFilterBox.Items.Add(book.DisplayTitleYear);
+            }
         }
 
         private void refreshBooksButton_Click(object sender, EventArgs e)
@@ -641,6 +654,170 @@ namespace Bookful.forms.main
                     }
                 }
             }
+        }
+
+        private void issuedBookFilterApplyButton_Click(object sender, EventArgs e)
+        {
+            CheckedListBox.CheckedItemCollection checkedReaders = issuedBookReaderFilterBox.CheckedItems;
+            CheckedListBox.CheckedItemCollection checkedBooks = issuedBookBookFilterBox.CheckedItems;
+
+            List<int> readersId = new List<int>();
+            List<int> booksId = new List<int>();
+            List<int> unreturnedBooksId = new List<int>();
+
+            if (checkedReaders.Count > 0)
+            {
+                foreach (var item in checkedReaders)
+                {
+                    int readerCardNumber = int.Parse(item.ToString().Split(' ').Last());
+                    readersId.Add(readerService.GetReaderByLibraryCardNumber(readerCardNumber).Id);
+                }
+            }
+
+            if (checkedBooks.Count > 0)
+            {
+                foreach (var item in checkedBooks)
+                {
+                    string[] titleAndYear = item.ToString().Split(" (");
+                    string bookTitle = titleAndYear[0];
+                    int bookYear = int.Parse(titleAndYear[1].Replace(")", ""));
+                    booksId.Add(bookService.GetBookByTitleAndYear(bookTitle, bookYear).Id);
+                }
+            }
+
+            if (issuedBookUnreturnedBookFilter.Checked)
+            {
+                foreach (var item in issuedBookService.GetUreturnedBooks())
+                {
+                    unreturnedBooksId.Add(item.BookId);
+                }
+            }
+
+            if (booksId.Count > 0 && unreturnedBooksId.Count > 0)
+            {
+                var intersectionBooksId = unreturnedBooksId.Intersect(booksId).ToList();
+
+                ApplyFilters(readersId, intersectionBooksId);
+            }
+            else if (booksId.Count > 0)
+            {
+                ApplyFilters(readersId, booksId);
+            }
+            else
+            {
+                ApplyFilters(readersId, unreturnedBooksId);
+            }
+
+
+        }
+
+        private void ApplyFilters(List<int> readersId, List<int> booksId)
+        {
+            List<IssuedBook> dataList = issuedBookService.GetAll();
+            List<IssuedBook> filteredList;
+
+            if (!readersId.Any() && !booksId.Any())
+            {
+                filteredList = new List<IssuedBook>();
+            }
+            else if (readersId.Any() && booksId.Any())
+            {
+                filteredList = dataList.Where(item =>
+                    readersId.Contains(item.ReaderId) &&
+                    booksId.Contains(item.BookId)
+                   ).ToList();
+            }
+            else if (readersId.Any())
+            {
+                filteredList = dataList.Where(item => readersId.Contains(item.ReaderId)).ToList();
+            }
+            else
+            {
+                filteredList = dataList.Where(item => booksId.Contains(item.BookId)).ToList();
+            }
+
+            issuedBooksDataGrid.DataSource = filteredList;
+        }
+
+        private void issuedBookReadersFilterSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = issuedBookReadersFilterSearch.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                for (int i = 0; i < issuedBookReaderFilterBox.Items.Count; i++)
+                {
+                    issuedBookReaderFilterBox.SetItemChecked(i, false);
+                }
+            }
+            else
+            {
+                // Фильтруем элементы в соответствии с текстом поиска
+                for (int i = 0; i < issuedBookReaderFilterBox.Items.Count; i++)
+                {
+                    string itemText = issuedBookReaderFilterBox.GetItemText(issuedBookReaderFilterBox.Items[i]);
+                    bool isVisible = itemText.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+                    issuedBookReaderFilterBox.SetItemChecked(i, isVisible);
+                }
+            }
+        }
+
+        private void issuedBookSelectAllReadersFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < issuedBookReaderFilterBox.Items.Count; i++)
+            {
+                issuedBookReaderFilterBox.SetItemChecked(i, issuedBookSelectAllReadersFilter.Checked);
+            }
+        }
+
+        private void issuedBookBooksFilterSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = issuedBookBooksFilterSearch.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                for (int i = 0; i < issuedBookBookFilterBox.Items.Count; i++)
+                {
+                    issuedBookBookFilterBox.SetItemChecked(i, false);
+                }
+            }
+            else
+            {
+                // Фильтруем элементы в соответствии с текстом поиска
+                for (int i = 0; i < issuedBookBookFilterBox.Items.Count; i++)
+                {
+                    string itemText = issuedBookBookFilterBox.GetItemText(issuedBookBookFilterBox.Items[i]);
+                    bool isVisible = itemText.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+                    issuedBookBookFilterBox.SetItemChecked(i, isVisible);
+                }
+            }
+        }
+
+        private void issuedBookSelectAllBooksFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < issuedBookBookFilterBox.Items.Count; i++)
+            {
+                issuedBookBookFilterBox.SetItemChecked(i, issuedBookSelectAllBooksFilter.Checked);
+            }
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < issuedBookReaderFilterBox.Items.Count; i++)
+            {
+                issuedBookReaderFilterBox.SetItemChecked(i, false);
+            }
+
+            for (int i = 0; i < issuedBookBookFilterBox.Items.Count; i++)
+            {
+                issuedBookBookFilterBox.SetItemChecked(i, false);
+            }
+
+            issuedBookUnreturnedBookFilter.Checked = false;
+            issuedBookSelectAllBooksFilter.Checked = false;
+            issuedBookSelectAllReadersFilter.Checked = false;
+
+            issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
         }
     }
 }

@@ -101,5 +101,15 @@ namespace Bookful.service.book
         {
             return bookDao.GetAllPublishingHouses();
         }
+
+        public Book GetBookByTitleAndYear(string title, int year)
+        {
+            var result = bookDao.GetBookByTitleAndYear(title, year);
+            if (result == null)
+            {
+                return new Book();
+            }
+            return result;
+        }
     }
 }

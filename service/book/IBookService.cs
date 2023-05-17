@@ -7,6 +7,7 @@ namespace Bookful.service.book
         void AddBook(Book book);
         List<Book> GetAllBooks();
         Book GetBookById(int id);
+        Book GetBookByTitleAndYear(string title, int year);
         void UpdateBook(Book book);
         void DeleteBook(int id);
         List<Book> SearchBooks(string searchText);

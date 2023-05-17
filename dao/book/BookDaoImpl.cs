@@ -160,6 +160,40 @@ namespace Bookful.dao.book
             return null;
         }
 
+        public Book? GetBookByTitleAndYear(string title, int year)
+        {
+            if (connection.IsConnect())
+            {
+                string query = "SELECT id, title, author, description, publishing_house, publication_date, quantity " +
+                    "FROM book WHERE title LIKE @title AND publication_date LIKE @year";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+
+                command.Parameters.AddWithValue("@title", "%" + title + "%");
+                command.Parameters.AddWithValue("@year", "%" + year + "%");
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var book = new Book()
+                        {
+                            Id = reader.GetInt32("id"),
+                            Title = reader.GetString("title"),
+                            Author = reader.GetString("author"),
+                            Description = reader.GetString("description"),
+                            PublishingHouse = reader.GetString("publishing_house"),
+                            PublicationDate = DateOnly.FromDateTime(reader.GetDateTime("publication_date")),
+                            Quantity = reader.GetInt32("quantity")
+                        };
+
+                        return book;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public string GetBookNameAndYearById(int id)
         {
             string bookName = "";

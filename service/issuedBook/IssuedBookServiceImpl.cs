@@ -100,5 +100,10 @@ namespace Bookful.service.issuedBook
         {
             return issuedBookDao.SearchIssuedBooks(searchText);
         }
+
+        public List<IssuedBook> GetUreturnedBooks()
+        {
+            return issuedBookDao.GetUreturnedBooks();
+        }
     }
 }

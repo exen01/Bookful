@@ -8,6 +8,7 @@ namespace Bookful.dao.issuedBook
         List<IssuedBook> GetAll();
         List<IssuedBook> GetByReaderId(int readerId);
         List<IssuedBook> GetByBookId(int bookId);
+        List<IssuedBook> GetUreturnedBooks();
         void AddIssueBook(IssuedBook issuedBook);
         void UpdateIssueBook(IssuedBook issuedBook);
         void DeleteIssueBook(int id);

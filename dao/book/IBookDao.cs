@@ -8,6 +8,7 @@ namespace Bookful.dao.book
         void DeleteBook(int bookId);
         List<Book> GetAllBooks();
         Book? GetBookById(int id);
+        Book? GetBookByTitleAndYear(string title, int year);
         void UpdateBook(Book book);
         List<Book> SearchBooks(string searchText);
         string GetBookNameAndYearById(int id);

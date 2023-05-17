@@ -302,5 +302,36 @@ namespace Bookful.dao.issuedBook
 
             return quantity;
         }
+
+        public List<IssuedBook> GetUreturnedBooks()
+        {
+            List<IssuedBook> issuedBooks = new List<IssuedBook>();
+
+            if (connection.IsConnect())
+            {
+                string query = "SELECT id, reader_id, book_id, issue_date, return_date, expected_return_date " +
+                    "FROM issued_books WHERE return_date IS NULL";
+                MySqlCommand command = new MySqlCommand(query, connection.Connection);
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        IssuedBook issuedBook = new IssuedBook()
+                        {
+                            Id = reader.GetInt32("id"),
+                            ReaderId = reader.GetInt32("reader_id"),
+                            BookId = reader.GetInt32("book_id"),
+                            IssueDate = DateOnly.FromDateTime(reader.GetDateTime("issue_date")),
+                            ExpectedReturnDate = DateOnly.FromDateTime(reader.GetDateTime("expected_return_date"))
+                        };
+
+                        issuedBooks.Add(issuedBook);
+                    }
+                }
+            }
+
+            return issuedBooks;
+        }
     }
 }
