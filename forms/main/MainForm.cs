@@ -656,5 +656,11 @@ namespace Bookful.forms.main
                 }
             }
         }
+
+        private void showUnreturnedBooks_Click(object sender, EventArgs e)
+        {
+            var unreturnedBooks = issuedBookService.GetUnreturnedBooks();
+            issuedBooksDataGrid.DataSource = unreturnedBooks;
+        }
     }
 }
