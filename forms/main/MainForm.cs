@@ -3,7 +3,6 @@ using Bookful.dao.issuedBook;
 using Bookful.dao.reader;
 using Bookful.dao.readingRoom;
 using Bookful.domain.dto;
-using Bookful.domain.exception;
 using Bookful.forms.edit;
 using Bookful.forms.edit.issuedBook;
 using Bookful.forms.edit.reader;
@@ -14,8 +13,6 @@ using Bookful.service.readingRoom;
 using Bookful.util.db;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
@@ -65,56 +62,6 @@ namespace Bookful.forms.main
 
             /*var readingRooms = readingRoomService.GetAllReadingRooms();
             readingRoomsDataGrid.DataSource = readingRooms;*/
-        }
-
-        private void BooksDataGrid_CellContentClick(object? sender, DataGridViewCellEventArgs e)
-        {
-            // Проверяем, что нажата кнопка в колонке "Удалить"
-            if (e.ColumnIndex == booksDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
-            {
-                // Получаем id книги из выделенной строки
-                int bookId = (int)booksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                try
-                {
-                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
-                    if (result == DialogResult.Yes)
-                    {
-                        bookService.DeleteBook(bookId);
-                    }
-                }
-                catch (CommonException exception)
-                {
-                    MaterialMessageBox.Show(exception.UserMessage, "Ошибка удаления книги", false);
-                }
-
-
-                // Обновляем отображение списка книг в DataGridView
-                booksDataGrid.DataSource = bookService.GetAllBooks();
-            }
-
-            // Проверяем, что нажата кнопка в колонке "Изменить"
-            if (e.ColumnIndex == booksDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
-            {
-                // Получаем id книги из выделенной строки
-                int bookId = (int)booksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                // Получаем книгу из источника данных
-                Book book = bookService.GetBookById(bookId);
-
-                // Открываем форму для изменения книги
-                EditBookForm editBookForm = new EditBookForm(book, false, bookService);
-
-                // Если пользователь нажал "Сохранить"
-                if (editBookForm.ShowDialog() == DialogResult.OK)
-                {
-                    // Обновляем книгу в источнике данных
-                    bookService.UpdateBook(book);
-
-                    // Обновляем отображение списка книг в DataGridView
-                    booksDataGrid.DataSource = bookService.GetAllBooks();
-                }
-            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -193,58 +140,6 @@ namespace Bookful.forms.main
             }
         }
 
-        private void readingRoomsDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Проверяем, что нажата кнопка в колонке "Удалить"
-            if (e.ColumnIndex == readingRoomsDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
-            {
-                int readingRoomId = (int)readingRoomsDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                try
-                {
-                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
-                    if (result == DialogResult.Yes)
-                    {
-                        bool deleteResult = readingRoomService.DeleteReadingRoomById(readingRoomId);
-                    }
-                }
-                catch (CommonException exception)
-                {
-                    MaterialMessageBox.Show(exception.UserMessage, "Ошибка удаления", false);
-                }
-
-                readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
-            }
-
-            // Проверяем, что нажата кнопка в колонке "Изменить"
-            if (e.ColumnIndex == readingRoomsDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
-            {
-                int readingRoomId = (int)readingRoomsDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                ReadingRoom readingRoom = readingRoomService.GetReadingRoomById(readingRoomId);
-
-                EditReadingRoomForm editReadingRoomForm = new EditReadingRoomForm(readingRoom, false);
-
-                // Если пользователь нажал "Сохранить"
-                if (editReadingRoomForm.ShowDialog() == DialogResult.OK)
-                {
-                    bool result = readingRoomService.UpdateReadingRoom(readingRoom);
-
-                    if (result)
-                    {
-                        //MessageBox.Show("Читальный зал обновлен успешно.", "Успешное обновление");
-                        readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ошибка при обновлении читального зала.", "Ошибка обновления");
-                        // Вывести сообщение об ошибке или выполнить другие действия
-                    }
-
-                }
-            }
-        }
-
         private void readingRoomsDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             var idColumn = readingRoomsDataGrid.Columns["Id"];
@@ -256,34 +151,6 @@ namespace Bookful.forms.main
             readingRoomsDataGrid.Columns["Number"].HeaderText = "Номер";
             readingRoomsDataGrid.Columns["Specialization"].HeaderText = "Специализация";
             readingRoomsDataGrid.Columns["SeatsCount"].HeaderText = "Кол-во мест";
-
-            if (!readingRoomsDataGrid.Columns.Contains("EditButton"))
-            {
-                // Создаем колонку с кнопками редактирования
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.HeaderText = "Изменить";
-                editButtonColumn.Name = "EditButton";
-                editButtonColumn.UseColumnTextForButtonValue = true;
-                editButtonColumn.Text = "Изменить";
-                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                readingRoomsDataGrid.Columns.Add(editButtonColumn);
-            }
-
-            if (!readingRoomsDataGrid.Columns.Contains("DeleteButton"))
-            {
-                // Создаем колонку с кнопками удаления
-                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-                deleteButtonColumn.HeaderText = "Удалить";
-                deleteButtonColumn.Name = "DeleteButton";
-                deleteButtonColumn.UseColumnTextForButtonValue = true;
-                deleteButtonColumn.Text = "Удалить";
-                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                readingRoomsDataGrid.Columns.Add(deleteButtonColumn);
-            }
         }
 
         private void refreshReadersButton_Click(object sender, EventArgs e)
@@ -307,34 +174,6 @@ namespace Bookful.forms.main
             readersDataGrid.Columns["LibraryCardNumber"].HeaderText = "Номер читательского билета";
             readersDataGrid.Columns["ReadingRoomId"].HeaderText = "Номер читального зала";
             readersDataGrid.Columns["RegistrationDate"].HeaderText = "Дата регистрации";
-
-            if (!readersDataGrid.Columns.Contains("EditButton"))
-            {
-                // Создаем колонку с кнопками редактирования
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.HeaderText = "Изменить";
-                editButtonColumn.Name = "EditButton";
-                editButtonColumn.UseColumnTextForButtonValue = true;
-                editButtonColumn.Text = "Изменить";
-                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                readersDataGrid.Columns.Add(editButtonColumn);
-            }
-
-            if (!readersDataGrid.Columns.Contains("DeleteButton"))
-            {
-                // Создаем колонку с кнопками удаления
-                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-                deleteButtonColumn.HeaderText = "Удалить";
-                deleteButtonColumn.Name = "DeleteButton";
-                deleteButtonColumn.UseColumnTextForButtonValue = true;
-                deleteButtonColumn.Text = "Удалить";
-                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                readersDataGrid.Columns.Add(deleteButtonColumn);
-            }
         }
 
         private void readersDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -359,57 +198,6 @@ namespace Bookful.forms.main
             }
         }
 
-        private void readersDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Проверяем, что нажата кнопка в колонке "Удалить"
-            if (e.ColumnIndex == readersDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
-            {
-                int readerId = (int)readersDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                try
-                {
-                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
-                    if (result == DialogResult.Yes)
-                    {
-                        readerService.DeleteReaderById(readerId);
-                    }
-                }
-                catch (CommonException exception)
-                {
-                    MaterialMessageBox.Show(exception.UserMessage, "Ошибка удаления", false);
-                }
-
-                readersDataGrid.DataSource = readerService.GetAllReaders();
-            }
-
-            // Проверяем, что нажата кнопка в колонке "Изменить"
-            if (e.ColumnIndex == readersDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
-            {
-                int readerId = (int)readersDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                Reader reader = readerService.GetReaderById(readerId);
-
-                EditReaderForm editReaderForm = new EditReaderForm(reader, false, readingRoomService, readerService);
-
-                // Если пользователь нажал "Сохранить"
-                if (editReaderForm.ShowDialog() == DialogResult.OK)
-                {
-                    bool result = readerService.UpdateReader(reader);
-
-                    if (result)
-                    {
-                        readersDataGrid.DataSource = readerService.GetAllReaders();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ошибка при обновлении читального зала.", "Ошибка обновления");
-                        // Вывести сообщение об ошибке или выполнить другие действия
-                    }
-
-                }
-            }
-        }
-
         private void issuedBooksDataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             var idColumn = issuedBooksDataGrid.Columns["Id"];
@@ -423,34 +211,6 @@ namespace Bookful.forms.main
             issuedBooksDataGrid.Columns["IssueDate"].HeaderText = "Дата выдачи книги";
             issuedBooksDataGrid.Columns["ReturnDate"].HeaderText = "Дата возврата книги";
             issuedBooksDataGrid.Columns["ExpectedReturnDate"].HeaderText = "Ожидаемая дата возврата книги";
-
-            if (!issuedBooksDataGrid.Columns.Contains("EditButton"))
-            {
-                // Создаем колонку с кнопками редактирования
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.HeaderText = "Изменить";
-                editButtonColumn.Name = "EditButton";
-                editButtonColumn.UseColumnTextForButtonValue = true;
-                editButtonColumn.Text = "Изменить";
-                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                issuedBooksDataGrid.Columns.Add(editButtonColumn);
-            }
-
-            if (!issuedBooksDataGrid.Columns.Contains("DeleteButton"))
-            {
-                // Создаем колонку с кнопками удаления
-                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-                deleteButtonColumn.HeaderText = "Удалить";
-                deleteButtonColumn.Name = "DeleteButton";
-                deleteButtonColumn.UseColumnTextForButtonValue = true;
-                deleteButtonColumn.Text = "Удалить";
-                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                issuedBooksDataGrid.Columns.Add(deleteButtonColumn);
-            }
         }
 
         private void issuedBooksDataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -472,50 +232,6 @@ namespace Bookful.forms.main
                 if (e.Value == null)
                 {
                     e.Value = "Книга ещё не возвращена.";
-                }
-            }
-        }
-
-        private void issuedBooksDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // Проверяем, что нажата кнопка в колонке "Удалить"
-            if (e.ColumnIndex == issuedBooksDataGrid.Columns["DeleteButton"].Index && e.RowIndex >= 0)
-            {
-                int issuedBookId = (int)issuedBooksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
-                if (result == DialogResult.Yes)
-                {
-                    bool deleteResult = issuedBookService.DeleteIssueBookById(issuedBookId);
-                }
-
-                issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
-            }
-
-            // Проверяем, что нажата кнопка в колонке "Изменить"
-            if (e.ColumnIndex == issuedBooksDataGrid.Columns["EditButton"].Index && e.RowIndex >= 0)
-            {
-                int issuedBookId = (int)issuedBooksDataGrid.Rows[e.RowIndex].Cells["Id"].Value;
-
-                IssuedBook issuedBook = issuedBookService.GetById(issuedBookId);
-
-                EditIssuedBookForm editIssuedBookForm = new EditIssuedBookForm(issuedBook, false, bookService, readerService);
-
-                // Если пользователь нажал "Сохранить"
-                if (editIssuedBookForm.ShowDialog() == DialogResult.OK)
-                {
-                    bool result = issuedBookService.UpdateIssueBook(issuedBook);
-
-                    if (result)
-                    {
-                        issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ошибка при обновлении выданной книги.", "Ошибка обновления");
-                        // Вывести сообщение об ошибке или выполнить другие действия
-                    }
-
                 }
             }
         }
@@ -549,34 +265,6 @@ namespace Bookful.forms.main
             booksDataGrid.Columns["PublishingHouse"].HeaderText = "Издательство";
             booksDataGrid.Columns["PublicationDate"].HeaderText = "Дата публикации";
             booksDataGrid.Columns["Quantity"].HeaderText = "Количество";
-
-            if (!booksDataGrid.Columns.Contains("EditButton"))
-            {
-                // Создаем колонку с кнопками редактирования
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn();
-                editButtonColumn.HeaderText = "Изменить";
-                editButtonColumn.Name = "EditButton";
-                editButtonColumn.UseColumnTextForButtonValue = true;
-                editButtonColumn.Text = "Изменить";
-                editButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                booksDataGrid.Columns.Add(editButtonColumn);
-            }
-
-            if (!booksDataGrid.Columns.Contains("DeleteButton"))
-            {
-                // Создаем колонку с кнопками удаления
-                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-                deleteButtonColumn.HeaderText = "Удалить";
-                deleteButtonColumn.Name = "DeleteButton";
-                deleteButtonColumn.UseColumnTextForButtonValue = true;
-                deleteButtonColumn.Text = "Удалить";
-                deleteButtonColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-
-                // Добавляем колонку в DataGridView
-                booksDataGrid.Columns.Add(deleteButtonColumn);
-            }
         }
 
         private void refreshIssueBooksButton_Click(object sender, EventArgs e)
@@ -621,7 +309,76 @@ namespace Bookful.forms.main
         {
             if (e.KeyCode == Keys.F5)
             {
-                UpdateDataGridView(); // вызываем метод обновления DataGridView
+                UpdateDataGridView();
+            }
+            if (e.KeyCode == Keys.Insert)
+            {
+                InsertEntity(sender, e);
+            }
+            if (e.KeyCode == Keys.Delete)
+            {
+                DeleteEntity(sender, e);
+            }
+            if (e.Control && e.KeyCode == Keys.E)
+            {
+                EditEntity(sender, e);
+            }
+        }
+
+        private void EditEntity(object sender, KeyEventArgs e)
+        {
+            switch (tabControl.SelectedIndex) // получаем индекс активной вкладки
+            {
+                case 0:
+                    editIssuedBookButton_Click(sender, e);
+                    break;
+                case 1:
+                    editBookButton_Click(sender, e);
+                    break;
+                case 2:
+                    editReaderButton_Click(sender, e);
+                    break;
+                case 3:
+                    editReadingRoomButton_Click(sender, e);
+                    break;
+            }
+        }
+
+        private void DeleteEntity(object sender, KeyEventArgs e)
+        {
+            switch (tabControl.SelectedIndex) // получаем индекс активной вкладки
+            {
+                case 0:
+                    deleteIssuedBookButton_Click(sender, e);
+                    break;
+                case 1:
+                    deleteBookButton_Click(sender, e);
+                    break;
+                case 2:
+                    deleteReaderButton_Click(sender, e);
+                    break;
+                case 3:
+                    deleteReadingRoomButton_Click(sender, e);
+                    break;
+            }
+        }
+
+        private void InsertEntity(object sender, EventArgs e)
+        {
+            switch (tabControl.SelectedIndex) // получаем индекс активной вкладки
+            {
+                case 0:
+                    addIssueBookButton_Click(sender, e);
+                    break;
+                case 1:
+                    addBookButton_Click(sender, e);
+                    break;
+                case 2:
+                    addReaderButton_Click(sender, e);
+                    break;
+                case 3:
+                    addReadingRoomButton_Click(sender, e);
+                    break;
             }
         }
 
@@ -657,10 +414,233 @@ namespace Bookful.forms.main
             }
         }
 
-        private void showUnreturnedBooks_Click(object sender, EventArgs e)
+        private void editIssuedBookButton_Click(object sender, EventArgs e)
         {
-            var unreturnedBooks = issuedBookService.GetUnreturnedBooks();
-            issuedBooksDataGrid.DataSource = unreturnedBooks;
+            if (issuedBooksDataGrid.SelectedRows.Count > 0)
+            {
+                int issuedBookId = (int)issuedBooksDataGrid.SelectedRows[0].Cells["Id"].Value;
+
+                IssuedBook issuedBook = issuedBookService.GetById(issuedBookId);
+
+                EditIssuedBookForm editIssuedBookForm = new EditIssuedBookForm(issuedBook, false, bookService, readerService);
+
+                // Если пользователь нажал "Сохранить"
+                if (editIssuedBookForm.ShowDialog() == DialogResult.OK)
+                {
+                    bool result = issuedBookService.UpdateIssueBook(issuedBook);
+
+                    if (result)
+                    {
+                        issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка при обновлении выданной книги.", "Ошибка обновления");
+                        // Вывести сообщение об ошибке или выполнить другие действия
+                    }
+                }
+            }
+        }
+
+        private void deleteIssuedBookButton_Click(object sender, EventArgs e)
+        {
+            if (issuedBooksDataGrid.SelectedRows.Count > 0)
+            {
+                List<int> idToDelete = new List<int>();
+
+                foreach (DataGridViewRow row in issuedBooksDataGrid.SelectedRows)
+                {
+                    int id = (int)row.Cells["Id"].Value;
+                    idToDelete.Add(id);
+                }
+
+                if (idToDelete.Count > 1)
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        foreach (var id in idToDelete)
+                        {
+                            bool deleteResult = issuedBookService.DeleteIssueBookById(id);
+                        }
+                        issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                    }
+                }
+                else
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        bool deleteResult = issuedBookService.DeleteIssueBookById(idToDelete[0]);
+                        issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
+                    }
+                }
+            }
+        }
+
+        private void editBookButton_Click(object sender, EventArgs e)
+        {
+            if (booksDataGrid.SelectedRows.Count > 0)
+            {
+                int bookId = (int)booksDataGrid.SelectedRows[0].Cells["Id"].Value;
+
+                Book book = bookService.GetBookById(bookId);
+
+                EditBookForm editBookForm = new EditBookForm(book, false, bookService);
+
+                // Если пользователь нажал "Сохранить"
+                if (editBookForm.ShowDialog() == DialogResult.OK)
+                {
+                    bookService.UpdateBook(book);
+                    booksDataGrid.DataSource = bookService.GetAllBooks();
+                }
+            }
+        }
+
+        private void deleteBookButton_Click(object sender, EventArgs e)
+        {
+            if (booksDataGrid.SelectedRows.Count > 0)
+            {
+                List<int> idToDelete = new List<int>();
+
+                foreach (DataGridViewRow row in booksDataGrid.SelectedRows)
+                {
+                    int id = (int)row.Cells["Id"].Value;
+                    idToDelete.Add(id);
+                }
+
+                if (idToDelete.Count > 1)
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        foreach (var id in idToDelete)
+                        {
+                            bookService.DeleteBook(id);
+                        }
+                        booksDataGrid.DataSource = bookService.GetAllBooks();
+                    }
+                }
+                else
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        bookService.DeleteBook(idToDelete[0]);
+                        booksDataGrid.DataSource = bookService.GetAllBooks();
+                    }
+                }
+            }
+        }
+
+        private void editReaderButton_Click(object sender, EventArgs e)
+        {
+            if (readersDataGrid.SelectedRows.Count > 0)
+            {
+                int readerId = (int)readersDataGrid.SelectedRows[0].Cells["Id"].Value;
+
+                Reader reader = readerService.GetReaderById(readerId);
+
+                EditReaderForm editReaderForm = new EditReaderForm(reader, false, readingRoomService, readerService);
+
+                // Если пользователь нажал "Сохранить"
+                if (editReaderForm.ShowDialog() == DialogResult.OK)
+                {
+                    readerService.UpdateReader(reader);
+                    readersDataGrid.DataSource = readerService.GetAllReaders();
+                }
+            }
+        }
+
+        private void deleteReaderButton_Click(object sender, EventArgs e)
+        {
+            if (readersDataGrid.SelectedRows.Count > 0)
+            {
+                List<int> idToDelete = new List<int>();
+
+                foreach (DataGridViewRow row in readersDataGrid.SelectedRows)
+                {
+                    int id = (int)row.Cells["Id"].Value;
+                    idToDelete.Add(id);
+                }
+
+                if (idToDelete.Count > 1)
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        foreach (var id in idToDelete)
+                        {
+                            readerService.DeleteReaderById(id);
+                        }
+                        readersDataGrid.DataSource = readerService.GetAllReaders();
+                    }
+                }
+                else
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        readerService.DeleteReaderById(idToDelete[0]);
+                        readersDataGrid.DataSource = readerService.GetAllReaders();
+                    }
+                }
+            }
+        }
+
+        private void editReadingRoomButton_Click(object sender, EventArgs e)
+        {
+            if (readingRoomsDataGrid.SelectedRows.Count > 0)
+            {
+                int readingRoomId = (int)readingRoomsDataGrid.SelectedRows[0].Cells["Id"].Value;
+
+                ReadingRoom readingRoom = readingRoomService.GetReadingRoomById(readingRoomId);
+
+                EditReadingRoomForm editReadingRoomForm = new EditReadingRoomForm(readingRoom, false);
+
+                // Если пользователь нажал "Сохранить"
+                if (editReadingRoomForm.ShowDialog() == DialogResult.OK)
+                {
+                    readingRoomService.UpdateReadingRoom(readingRoom);
+                    readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                }
+            }
+        }
+
+        private void deleteReadingRoomButton_Click(object sender, EventArgs e)
+        {
+            if (readingRoomsDataGrid.SelectedRows.Count > 0)
+            {
+                List<int> idToDelete = new List<int>();
+
+                foreach (DataGridViewRow row in readingRoomsDataGrid.SelectedRows)
+                {
+                    int id = (int)row.Cells["Id"].Value;
+                    idToDelete.Add(id);
+                }
+
+                if (idToDelete.Count > 1)
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить записи?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        foreach (var id in idToDelete)
+                        {
+                            readingRoomService.DeleteReadingRoomById(id);
+                        }
+                        readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                    }
+                }
+                else
+                {
+                    DialogResult result = MaterialMessageBox.Show(this, "Вы действительно хотите удалить запись?", "Подтверждение удаления", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, false);
+                    if (result == DialogResult.Yes)
+                    {
+                        readingRoomService.DeleteReadingRoomById(idToDelete[0]);
+                        readingRoomsDataGrid.DataSource = readingRoomService.GetAllReadingRooms();
+                    }
+                }
+            }
         }
     }
 }

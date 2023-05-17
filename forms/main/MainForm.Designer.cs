@@ -63,6 +63,8 @@ namespace Bookful.forms.main
             readingRoomsToolBar = new MenuStrip();
             addReadingRoomButton = new ToolStripMenuItem();
             refreshReadingRoomsButton = new ToolStripMenuItem();
+            editReadingRoomButton = new ToolStripMenuItem();
+            deleteReadingRoomButton = new ToolStripMenuItem();
             searchReadingRoomsLayout = new TableLayoutPanel();
             searchReadingRoomsButton = new MaterialButton();
             searchReadingRoomsInput = new MaterialTextBox();
@@ -75,6 +77,8 @@ namespace Bookful.forms.main
             readersToolBar = new MenuStrip();
             addReaderButton = new MaterialToolStripMenuItem();
             refreshReadersButton = new MaterialToolStripMenuItem();
+            editReaderButton = new ToolStripMenuItem();
+            deleteReaderButton = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
             searchReadersButton = new MaterialButton();
             searchReadersInput = new MaterialTextBox();
@@ -86,6 +90,8 @@ namespace Bookful.forms.main
             booksToolBar = new MenuStrip();
             addBookButton = new ToolStripMenuItem();
             refreshBooksButton = new ToolStripMenuItem();
+            editBookButton = new ToolStripMenuItem();
+            deleteBookButton = new ToolStripMenuItem();
             searchBooksLayout = new TableLayoutPanel();
             searchBooksInput = new MaterialTextBox();
             searchBooksButton = new MaterialButton();
@@ -97,7 +103,8 @@ namespace Bookful.forms.main
             issuedBooksToolBar = new MenuStrip();
             addIssueBookButton = new MaterialToolStripMenuItem();
             refreshIssueBooksButton = new ToolStripMenuItem();
-            showUnreturnedBooks = new ToolStripMenuItem();
+            editIssuedBookButton = new ToolStripMenuItem();
+            deleteIssuedBookButton = new ToolStripMenuItem();
             searchIssueBooksTableLayout = new TableLayoutPanel();
             searchIssueBooksInput = new MaterialTextBox();
             searchIssueBooksButton = new MaterialButton();
@@ -213,14 +220,13 @@ namespace Bookful.forms.main
             readingRoomsDataGrid.RowTemplate.Height = 29;
             readingRoomsDataGrid.Size = new Size(780, 383);
             readingRoomsDataGrid.TabIndex = 0;
-            readingRoomsDataGrid.CellContentClick += readingRoomsDataGrid_CellContentClick;
             readingRoomsDataGrid.DataBindingComplete += readingRoomsDataGrid_DataBindingComplete;
             // 
             // readingRoomsToolBar
             // 
             readingRoomsToolBar.Dock = DockStyle.Fill;
             readingRoomsToolBar.ImageScalingSize = new Size(20, 20);
-            readingRoomsToolBar.Items.AddRange(new ToolStripItem[] { addReadingRoomButton, refreshReadingRoomsButton });
+            readingRoomsToolBar.Items.AddRange(new ToolStripItem[] { addReadingRoomButton, refreshReadingRoomsButton, editReadingRoomButton, deleteReadingRoomButton });
             readingRoomsToolBar.Location = new Point(216, 62);
             readingRoomsToolBar.Name = "readingRoomsToolBar";
             readingRoomsToolBar.Size = new Size(786, 28);
@@ -240,6 +246,20 @@ namespace Bookful.forms.main
             refreshReadingRoomsButton.Size = new Size(144, 24);
             refreshReadingRoomsButton.Text = "Обновить список";
             refreshReadingRoomsButton.Click += refreshReadingRoomsButton_Click;
+            // 
+            // editReadingRoomButton
+            // 
+            editReadingRoomButton.Name = "editReadingRoomButton";
+            editReadingRoomButton.Size = new Size(92, 24);
+            editReadingRoomButton.Text = "Изменить";
+            editReadingRoomButton.Click += editReadingRoomButton_Click;
+            // 
+            // deleteReadingRoomButton
+            // 
+            deleteReadingRoomButton.Name = "deleteReadingRoomButton";
+            deleteReadingRoomButton.Size = new Size(79, 24);
+            deleteReadingRoomButton.Text = "Удалить";
+            deleteReadingRoomButton.Click += deleteReadingRoomButton_Click;
             // 
             // searchReadingRoomsLayout
             // 
@@ -394,7 +414,6 @@ namespace Bookful.forms.main
             readersDataGrid.RowTemplate.Height = 29;
             readersDataGrid.Size = new Size(774, 383);
             readersDataGrid.TabIndex = 1;
-            readersDataGrid.CellContentClick += readersDataGrid_CellContentClick;
             readersDataGrid.CellFormatting += readersDataGrid_CellFormatting;
             readersDataGrid.DataBindingComplete += readersDataGrid_DataBindingComplete;
             // 
@@ -402,7 +421,7 @@ namespace Bookful.forms.main
             // 
             readersToolBar.Dock = DockStyle.Fill;
             readersToolBar.ImageScalingSize = new Size(20, 20);
-            readersToolBar.Items.AddRange(new ToolStripItem[] { addReaderButton, refreshReadersButton });
+            readersToolBar.Items.AddRange(new ToolStripItem[] { addReaderButton, refreshReadersButton, editReaderButton, deleteReaderButton });
             readersToolBar.Location = new Point(216, 62);
             readersToolBar.Name = "readersToolBar";
             readersToolBar.Size = new Size(780, 28);
@@ -424,6 +443,20 @@ namespace Bookful.forms.main
             refreshReadersButton.Size = new Size(144, 24);
             refreshReadersButton.Text = "Обновить список";
             refreshReadersButton.Click += refreshReadersButton_Click;
+            // 
+            // editReaderButton
+            // 
+            editReaderButton.Name = "editReaderButton";
+            editReaderButton.Size = new Size(92, 24);
+            editReaderButton.Text = "Изменить";
+            editReaderButton.Click += editReaderButton_Click;
+            // 
+            // deleteReaderButton
+            // 
+            deleteReaderButton.Name = "deleteReaderButton";
+            deleteReaderButton.Size = new Size(79, 24);
+            deleteReaderButton.Text = "Удалить";
+            deleteReaderButton.Click += deleteReaderButton_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -567,14 +600,13 @@ namespace Bookful.forms.main
             booksDataGrid.RowTemplate.Height = 29;
             booksDataGrid.Size = new Size(774, 383);
             booksDataGrid.TabIndex = 0;
-            booksDataGrid.CellContentClick += BooksDataGrid_CellContentClick;
             booksDataGrid.DataBindingComplete += booksDataGrid_DataBindingComplete;
             // 
             // booksToolBar
             // 
             booksToolBar.Dock = DockStyle.Fill;
             booksToolBar.ImageScalingSize = new Size(20, 20);
-            booksToolBar.Items.AddRange(new ToolStripItem[] { addBookButton, refreshBooksButton });
+            booksToolBar.Items.AddRange(new ToolStripItem[] { addBookButton, refreshBooksButton, editBookButton, deleteBookButton });
             booksToolBar.Location = new Point(216, 62);
             booksToolBar.Name = "booksToolBar";
             booksToolBar.Size = new Size(780, 28);
@@ -594,6 +626,20 @@ namespace Bookful.forms.main
             refreshBooksButton.Size = new Size(144, 24);
             refreshBooksButton.Text = "Обновить список";
             refreshBooksButton.Click += refreshBooksButton_Click;
+            // 
+            // editBookButton
+            // 
+            editBookButton.Name = "editBookButton";
+            editBookButton.Size = new Size(92, 24);
+            editBookButton.Text = "Изменить";
+            editBookButton.Click += editBookButton_Click;
+            // 
+            // deleteBookButton
+            // 
+            deleteBookButton.Name = "deleteBookButton";
+            deleteBookButton.Size = new Size(79, 24);
+            deleteBookButton.Text = "Удалить";
+            deleteBookButton.Click += deleteBookButton_Click;
             // 
             // searchBooksLayout
             // 
@@ -737,14 +783,13 @@ namespace Bookful.forms.main
             issuedBooksDataGrid.RowTemplate.Height = 29;
             issuedBooksDataGrid.Size = new Size(558, 383);
             issuedBooksDataGrid.TabIndex = 0;
-            issuedBooksDataGrid.CellContentClick += issuedBooksDataGrid_CellContentClick;
             issuedBooksDataGrid.CellFormatting += issuedBooksDataGrid_CellFormatting;
             issuedBooksDataGrid.DataBindingComplete += issuedBooksDataGrid_DataBindingComplete;
             // 
             // issuedBooksToolBar
             // 
             issuedBooksToolBar.ImageScalingSize = new Size(20, 20);
-            issuedBooksToolBar.Items.AddRange(new ToolStripItem[] { addIssueBookButton, refreshIssueBooksButton, showUnreturnedBooks });
+            issuedBooksToolBar.Items.AddRange(new ToolStripItem[] { addIssueBookButton, refreshIssueBooksButton, editIssuedBookButton, deleteIssuedBookButton });
             issuedBooksToolBar.Location = new Point(216, 62);
             issuedBooksToolBar.Name = "issuedBooksToolBar";
             issuedBooksToolBar.Size = new Size(564, 28);
@@ -766,12 +811,19 @@ namespace Bookful.forms.main
             refreshIssueBooksButton.Text = "Обновить список";
             refreshIssueBooksButton.Click += refreshIssueBooksButton_Click;
             // 
-            // showUnreturnedBooks
+            // editIssuedBookButton
             // 
-            showUnreturnedBooks.Name = "showUnreturnedBooks";
-            showUnreturnedBooks.Size = new Size(258, 24);
-            showUnreturnedBooks.Text = "Показать невозвращенные книги";
-            showUnreturnedBooks.Click += showUnreturnedBooks_Click;
+            editIssuedBookButton.Name = "editIssuedBookButton";
+            editIssuedBookButton.Size = new Size(92, 24);
+            editIssuedBookButton.Text = "Изменить";
+            editIssuedBookButton.Click += editIssuedBookButton_Click;
+            // 
+            // deleteIssuedBookButton
+            // 
+            deleteIssuedBookButton.Name = "deleteIssuedBookButton";
+            deleteIssuedBookButton.Size = new Size(79, 24);
+            deleteIssuedBookButton.Text = "Удалить";
+            deleteIssuedBookButton.Click += deleteIssuedBookButton_Click;
             // 
             // searchIssueBooksTableLayout
             // 
@@ -942,7 +994,7 @@ namespace Bookful.forms.main
         private TableLayoutPanel searchIssueBooksTableLayout;
         private MaterialTextBox searchIssueBooksInput;
         private MaterialButton searchIssueBooksButton;
-        private ToolStripMenuItem showUnreturnedBooks;
+        private ToolStripMenuItem editIssuedBookButton;
         private MaterialToolStripMenuItem addIssueBookButton;
         private GroupBox quickActionsBox;
         private ListView listView1;
@@ -952,5 +1004,12 @@ namespace Bookful.forms.main
         private ListView listView4;
         private GroupBox groupBox2;
         private ListView listView3;
+        private ToolStripMenuItem deleteIssuedBookButton;
+        private ToolStripMenuItem editBookButton;
+        private ToolStripMenuItem deleteBookButton;
+        private ToolStripMenuItem editReaderButton;
+        private ToolStripMenuItem deleteReaderButton;
+        private ToolStripMenuItem editReadingRoomButton;
+        private ToolStripMenuItem deleteReadingRoomButton;
     }
 }
