@@ -14,6 +14,7 @@ using Bookful.util.db;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using System.Data;
+using System.Windows.Forms;
 
 namespace Bookful.forms.main
 {
@@ -231,7 +232,7 @@ namespace Bookful.forms.main
             if (issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "ReaderId")
             {
                 int readerId = Convert.ToInt32(e.Value);
-                e.Value = readerService.GetReaderFullNameById(readerId);
+                e.Value = readerService.GetReaderById(readerId).DisplayFullNameCardNumber;
             }
 
             if (issuedBooksDataGrid.Columns[e.ColumnIndex].Name == "BookId")
@@ -284,6 +285,20 @@ namespace Bookful.forms.main
         {
             List<IssuedBook> issuedBooks = issuedBookService.GetAll();
             issuedBooksDataGrid.DataSource = issuedBooks;
+
+            var readers = readerService.GetAllReaders();
+            issuedBookReaderFilterBox.Items.Clear();
+            foreach (var reader in readers)
+            {
+                issuedBookReaderFilterBox.Items.Add(reader.DisplayFullNameCardNumber);
+            }
+
+            var books = bookService.GetAllBooks();
+            issuedBookBookFilterBox.Items.Clear();
+            foreach (var book in books)
+            {
+                issuedBookBookFilterBox.Items.Add(book.DisplayTitleYear);
+            }
         }
 
         private void searchReadersButton_Click(object sender, EventArgs e)
@@ -816,6 +831,9 @@ namespace Bookful.forms.main
             issuedBookUnreturnedBookFilter.Checked = false;
             issuedBookSelectAllBooksFilter.Checked = false;
             issuedBookSelectAllReadersFilter.Checked = false;
+
+            issuedBookReadersFilterSearch.Text = string.Empty;
+            issuedBookBooksFilterSearch.Text = string.Empty;
 
             issuedBooksDataGrid.DataSource = issuedBookService.GetAll();
         }

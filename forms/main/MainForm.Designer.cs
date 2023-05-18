@@ -31,28 +31,47 @@ namespace Bookful.forms.main
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewGroup listViewGroup10 = new ListViewGroup("Обновить список", HorizontalAlignment.Center);
-            ListViewGroup listViewGroup11 = new ListViewGroup("Переключение вкладок", HorizontalAlignment.Center);
-            ListViewGroup listViewGroup12 = new ListViewGroup("Поиск", HorizontalAlignment.Center);
-            ListViewItem listViewItem10 = new ListViewItem("F5");
-            ListViewItem listViewItem11 = new ListViewItem("Ctrl + цифра");
-            ListViewItem listViewItem12 = new ListViewItem("Enter");
+            ListViewGroup listViewGroup1 = new ListViewGroup("Обновить список", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup2 = new ListViewGroup("Переключение вкладок", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup3 = new ListViewGroup("Поиск", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup4 = new ListViewGroup("Добавить новую запись", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup5 = new ListViewGroup("Редактировать запись", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup6 = new ListViewGroup("Удалить запись", HorizontalAlignment.Left);
+            ListViewItem listViewItem1 = new ListViewItem("F5");
+            ListViewItem listViewItem2 = new ListViewItem("Ctrl + цифра");
+            ListViewItem listViewItem3 = new ListViewItem("Enter");
+            ListViewItem listViewItem4 = new ListViewItem("Delete");
+            ListViewItem listViewItem5 = new ListViewItem("Insert");
+            ListViewItem listViewItem6 = new ListViewItem("Ctrl + E");
+            ListViewGroup listViewGroup7 = new ListViewGroup("Обновить список", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup8 = new ListViewGroup("Переключение вкладок", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup9 = new ListViewGroup("Поиск", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup10 = new ListViewGroup("Добавить новую запись", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup11 = new ListViewGroup("Редактировать запись", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup12 = new ListViewGroup("Удалить запись", HorizontalAlignment.Left);
+            ListViewItem listViewItem7 = new ListViewItem("F5");
+            ListViewItem listViewItem8 = new ListViewItem("Ctrl + цифра");
+            ListViewItem listViewItem9 = new ListViewItem("Enter");
+            ListViewItem listViewItem10 = new ListViewItem("Delete");
+            ListViewItem listViewItem11 = new ListViewItem("Insert");
+            ListViewItem listViewItem12 = new ListViewItem("Ctrl + E");
             ListViewGroup listViewGroup13 = new ListViewGroup("Обновить список", HorizontalAlignment.Center);
             ListViewGroup listViewGroup14 = new ListViewGroup("Переключение вкладок", HorizontalAlignment.Center);
             ListViewGroup listViewGroup15 = new ListViewGroup("Поиск", HorizontalAlignment.Center);
+            ListViewGroup listViewGroup16 = new ListViewGroup("Добавить новую запись", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup17 = new ListViewGroup("Редактировать запись", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup18 = new ListViewGroup("Удалить запись", HorizontalAlignment.Left);
             ListViewItem listViewItem13 = new ListViewItem("F5");
             ListViewItem listViewItem14 = new ListViewItem("Ctrl + цифра");
             ListViewItem listViewItem15 = new ListViewItem("Enter");
-            ListViewGroup listViewGroup16 = new ListViewGroup("Обновить список", HorizontalAlignment.Center);
-            ListViewGroup listViewGroup17 = new ListViewGroup("Переключение вкладок", HorizontalAlignment.Center);
-            ListViewGroup listViewGroup18 = new ListViewGroup("Поиск", HorizontalAlignment.Center);
-            ListViewItem listViewItem16 = new ListViewItem("F5");
-            ListViewItem listViewItem17 = new ListViewItem("Ctrl + цифра");
-            ListViewItem listViewItem18 = new ListViewItem("Enter");
+            ListViewItem listViewItem16 = new ListViewItem("Delete");
+            ListViewItem listViewItem17 = new ListViewItem("Insert");
+            ListViewItem listViewItem18 = new ListViewItem("Ctrl + E");
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             readingRoomsListTab = new TabPage();
             readingRoomsTableLayout = new TableLayoutPanel();
             groupBox3 = new GroupBox();
-            listView4 = new ListView();
+            listView3 = new ListView();
             readingRoomsDataGrid = new DataGridView();
             readingRoomsToolBar = new MenuStrip();
             addReadingRoomButton = new ToolStripMenuItem();
@@ -66,7 +85,7 @@ namespace Bookful.forms.main
             readersListTab = new TabPage();
             readersTableLayout = new TableLayoutPanel();
             groupBox2 = new GroupBox();
-            listView3 = new ListView();
+            listView1 = new ListView();
             readersDataGrid = new DataGridView();
             readersToolBar = new MenuStrip();
             addReaderButton = new MaterialToolStripMenuItem();
@@ -109,11 +128,11 @@ namespace Bookful.forms.main
             issuedBookSelectAllBooksFilter = new MaterialCheckbox();
             issuedBookBookFilterBox = new CheckedListBox();
             issuedBookUnreturnedBookFilter = new MaterialSwitch();
+            materialButton1 = new MaterialButton();
             tabControl = new TabControl();
             materialCheckbox1 = new MaterialCheckbox();
             materialCheckbox2 = new MaterialCheckbox();
             materialCheckbox3 = new MaterialCheckbox();
-            materialButton1 = new MaterialButton();
             readingRoomsListTab.SuspendLayout();
             readingRoomsTableLayout.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -146,7 +165,7 @@ namespace Bookful.forms.main
             readingRoomsListTab.Controls.Add(readingRoomsTableLayout);
             readingRoomsListTab.Location = new Point(4, 28);
             readingRoomsListTab.Name = "readingRoomsListTab";
-            readingRoomsListTab.Size = new Size(1236, 769);
+            readingRoomsListTab.Size = new Size(1236, 820);
             readingRoomsListTab.TabIndex = 3;
             readingRoomsListTab.Text = "Читальные залы";
             readingRoomsListTab.UseVisualStyleBackColor = true;
@@ -168,50 +187,59 @@ namespace Bookful.forms.main
             readingRoomsTableLayout.RowStyles.Add(new RowStyle());
             readingRoomsTableLayout.RowStyles.Add(new RowStyle());
             readingRoomsTableLayout.RowStyles.Add(new RowStyle());
-            readingRoomsTableLayout.Size = new Size(1236, 769);
+            readingRoomsTableLayout.Size = new Size(1236, 820);
             readingRoomsTableLayout.TabIndex = 0;
             // 
             // groupBox3
             // 
-            groupBox3.Controls.Add(listView4);
+            groupBox3.Controls.Add(listView3);
             groupBox3.Dock = DockStyle.Left;
             groupBox3.Location = new Point(3, 3);
             groupBox3.Name = "groupBox3";
             readingRoomsTableLayout.SetRowSpan(groupBox3, 3);
-            groupBox3.Size = new Size(210, 763);
+            groupBox3.Size = new Size(210, 814);
             groupBox3.TabIndex = 6;
             groupBox3.TabStop = false;
             groupBox3.Text = "Быстрые действия";
             // 
-            // listView4
+            // listView3
             // 
-            listView4.Alignment = ListViewAlignment.Left;
-            listView4.BorderStyle = BorderStyle.None;
-            listView4.Dock = DockStyle.Fill;
-            listView4.Enabled = false;
-            listView4.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            listViewGroup10.Header = "Обновить список";
-            listViewGroup10.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup10.Name = "listViewGroup1";
-            listViewGroup10.Tag = "";
-            listViewGroup11.Header = "Переключение вкладок";
-            listViewGroup11.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup11.Name = "listViewGroup2";
-            listViewGroup12.Header = "Поиск";
-            listViewGroup12.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup12.Name = "listViewGroup3";
-            listView4.Groups.AddRange(new ListViewGroup[] { listViewGroup10, listViewGroup11, listViewGroup12 });
-            listViewItem10.Group = listViewGroup10;
-            listViewItem10.UseItemStyleForSubItems = false;
-            listViewItem11.Group = listViewGroup11;
-            listViewItem12.Group = listViewGroup12;
-            listView4.Items.AddRange(new ListViewItem[] { listViewItem10, listViewItem11, listViewItem12 });
-            listView4.Location = new Point(3, 23);
-            listView4.Name = "listView4";
-            listView4.Size = new Size(204, 737);
-            listView4.TabIndex = 0;
-            listView4.UseCompatibleStateImageBehavior = false;
-            listView4.View = View.SmallIcon;
+            listView3.Alignment = ListViewAlignment.Left;
+            listView3.BorderStyle = BorderStyle.None;
+            listView3.Dock = DockStyle.Fill;
+            listView3.Enabled = false;
+            listView3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            listViewGroup1.Header = "Обновить список";
+            listViewGroup1.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup1.Name = "listViewGroup1";
+            listViewGroup1.Tag = "";
+            listViewGroup2.Header = "Переключение вкладок";
+            listViewGroup2.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup2.Name = "listViewGroup2";
+            listViewGroup3.Header = "Поиск";
+            listViewGroup3.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup3.Name = "listViewGroup3";
+            listViewGroup4.Header = "Добавить новую запись";
+            listViewGroup4.Name = "listViewGroup4";
+            listViewGroup5.Header = "Редактировать запись";
+            listViewGroup5.Name = "listViewGroup5";
+            listViewGroup6.Header = "Удалить запись";
+            listViewGroup6.Name = "listViewGroup6";
+            listView3.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2, listViewGroup3, listViewGroup4, listViewGroup5, listViewGroup6 });
+            listViewItem1.Group = listViewGroup1;
+            listViewItem1.UseItemStyleForSubItems = false;
+            listViewItem2.Group = listViewGroup2;
+            listViewItem3.Group = listViewGroup3;
+            listViewItem4.Group = listViewGroup6;
+            listViewItem5.Group = listViewGroup4;
+            listViewItem6.Group = listViewGroup5;
+            listView3.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6 });
+            listView3.Location = new Point(3, 23);
+            listView3.Name = "listView3";
+            listView3.Size = new Size(204, 788);
+            listView3.TabIndex = 1;
+            listView3.UseCompatibleStateImageBehavior = false;
+            listView3.View = View.SmallIcon;
             // 
             // readingRoomsDataGrid
             // 
@@ -223,7 +251,7 @@ namespace Bookful.forms.main
             readingRoomsDataGrid.ReadOnly = true;
             readingRoomsDataGrid.RowHeadersWidth = 51;
             readingRoomsDataGrid.RowTemplate.Height = 29;
-            readingRoomsDataGrid.Size = new Size(1014, 673);
+            readingRoomsDataGrid.Size = new Size(1014, 724);
             readingRoomsDataGrid.TabIndex = 0;
             readingRoomsDataGrid.DataBindingComplete += readingRoomsDataGrid_DataBindingComplete;
             // 
@@ -310,6 +338,7 @@ namespace Bookful.forms.main
             searchReadingRoomsInput.Depth = 0;
             searchReadingRoomsInput.Dock = DockStyle.Fill;
             searchReadingRoomsInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            searchReadingRoomsInput.Hint = "Поиск по имени, дате и т.д.";
             searchReadingRoomsInput.LeadingIcon = null;
             searchReadingRoomsInput.Location = new Point(3, 3);
             searchReadingRoomsInput.MaxLength = 50;
@@ -340,7 +369,7 @@ namespace Bookful.forms.main
             readersListTab.Location = new Point(4, 28);
             readersListTab.Name = "readersListTab";
             readersListTab.Padding = new Padding(3);
-            readersListTab.Size = new Size(1236, 769);
+            readersListTab.Size = new Size(1236, 820);
             readersListTab.TabIndex = 2;
             readersListTab.Text = "Читатели";
             readersListTab.UseVisualStyleBackColor = true;
@@ -362,50 +391,59 @@ namespace Bookful.forms.main
             readersTableLayout.RowStyles.Add(new RowStyle());
             readersTableLayout.RowStyles.Add(new RowStyle());
             readersTableLayout.RowStyles.Add(new RowStyle());
-            readersTableLayout.Size = new Size(1230, 763);
+            readersTableLayout.Size = new Size(1230, 814);
             readersTableLayout.TabIndex = 0;
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(listView3);
+            groupBox2.Controls.Add(listView1);
             groupBox2.Dock = DockStyle.Left;
             groupBox2.Location = new Point(3, 3);
             groupBox2.Name = "groupBox2";
             readersTableLayout.SetRowSpan(groupBox2, 3);
-            groupBox2.Size = new Size(210, 757);
+            groupBox2.Size = new Size(210, 808);
             groupBox2.TabIndex = 5;
             groupBox2.TabStop = false;
             groupBox2.Text = "Быстрые действия";
             // 
-            // listView3
+            // listView1
             // 
-            listView3.Alignment = ListViewAlignment.Left;
-            listView3.BorderStyle = BorderStyle.None;
-            listView3.Dock = DockStyle.Fill;
-            listView3.Enabled = false;
-            listView3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            listViewGroup13.Header = "Обновить список";
-            listViewGroup13.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup13.Name = "listViewGroup1";
-            listViewGroup13.Tag = "";
-            listViewGroup14.Header = "Переключение вкладок";
-            listViewGroup14.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup14.Name = "listViewGroup2";
-            listViewGroup15.Header = "Поиск";
-            listViewGroup15.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup15.Name = "listViewGroup3";
-            listView3.Groups.AddRange(new ListViewGroup[] { listViewGroup13, listViewGroup14, listViewGroup15 });
-            listViewItem13.Group = listViewGroup13;
-            listViewItem13.UseItemStyleForSubItems = false;
-            listViewItem14.Group = listViewGroup14;
-            listViewItem15.Group = listViewGroup15;
-            listView3.Items.AddRange(new ListViewItem[] { listViewItem13, listViewItem14, listViewItem15 });
-            listView3.Location = new Point(3, 23);
-            listView3.Name = "listView3";
-            listView3.Size = new Size(204, 731);
-            listView3.TabIndex = 0;
-            listView3.UseCompatibleStateImageBehavior = false;
-            listView3.View = View.SmallIcon;
+            listView1.Alignment = ListViewAlignment.Left;
+            listView1.BorderStyle = BorderStyle.None;
+            listView1.Dock = DockStyle.Fill;
+            listView1.Enabled = false;
+            listView1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            listViewGroup7.Header = "Обновить список";
+            listViewGroup7.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup7.Name = "listViewGroup1";
+            listViewGroup7.Tag = "";
+            listViewGroup8.Header = "Переключение вкладок";
+            listViewGroup8.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup8.Name = "listViewGroup2";
+            listViewGroup9.Header = "Поиск";
+            listViewGroup9.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup9.Name = "listViewGroup3";
+            listViewGroup10.Header = "Добавить новую запись";
+            listViewGroup10.Name = "listViewGroup4";
+            listViewGroup11.Header = "Редактировать запись";
+            listViewGroup11.Name = "listViewGroup5";
+            listViewGroup12.Header = "Удалить запись";
+            listViewGroup12.Name = "listViewGroup6";
+            listView1.Groups.AddRange(new ListViewGroup[] { listViewGroup7, listViewGroup8, listViewGroup9, listViewGroup10, listViewGroup11, listViewGroup12 });
+            listViewItem7.Group = listViewGroup7;
+            listViewItem7.UseItemStyleForSubItems = false;
+            listViewItem8.Group = listViewGroup8;
+            listViewItem9.Group = listViewGroup9;
+            listViewItem10.Group = listViewGroup12;
+            listViewItem11.Group = listViewGroup10;
+            listViewItem12.Group = listViewGroup11;
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12 });
+            listView1.Location = new Point(3, 23);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(204, 782);
+            listView1.TabIndex = 1;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.SmallIcon;
             // 
             // readersDataGrid
             // 
@@ -417,7 +455,7 @@ namespace Bookful.forms.main
             readersDataGrid.ReadOnly = true;
             readersDataGrid.RowHeadersWidth = 51;
             readersDataGrid.RowTemplate.Height = 29;
-            readersDataGrid.Size = new Size(1008, 667);
+            readersDataGrid.Size = new Size(1008, 718);
             readersDataGrid.TabIndex = 1;
             readersDataGrid.CellFormatting += readersDataGrid_CellFormatting;
             readersDataGrid.DataBindingComplete += readersDataGrid_DataBindingComplete;
@@ -507,6 +545,7 @@ namespace Bookful.forms.main
             searchReadersInput.Depth = 0;
             searchReadersInput.Dock = DockStyle.Fill;
             searchReadersInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            searchReadersInput.Hint = "Поиск по имени, дате и т.д.";
             searchReadersInput.LeadingIcon = null;
             searchReadersInput.Location = new Point(3, 3);
             searchReadersInput.MaxLength = 50;
@@ -525,7 +564,7 @@ namespace Bookful.forms.main
             booksListTab.Location = new Point(4, 28);
             booksListTab.Name = "booksListTab";
             booksListTab.Padding = new Padding(3);
-            booksListTab.Size = new Size(1236, 769);
+            booksListTab.Size = new Size(1236, 820);
             booksListTab.TabIndex = 1;
             booksListTab.Text = "Список книг";
             booksListTab.UseVisualStyleBackColor = true;
@@ -547,7 +586,7 @@ namespace Bookful.forms.main
             bookListLayout.RowStyles.Add(new RowStyle());
             bookListLayout.RowStyles.Add(new RowStyle());
             bookListLayout.RowStyles.Add(new RowStyle());
-            bookListLayout.Size = new Size(1230, 763);
+            bookListLayout.Size = new Size(1230, 814);
             bookListLayout.TabIndex = 0;
             // 
             // groupBox1
@@ -557,7 +596,7 @@ namespace Bookful.forms.main
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
             bookListLayout.SetRowSpan(groupBox1, 3);
-            groupBox1.Size = new Size(210, 757);
+            groupBox1.Size = new Size(210, 808);
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
             groupBox1.Text = "Быстрые действия";
@@ -569,25 +608,34 @@ namespace Bookful.forms.main
             listView2.Dock = DockStyle.Fill;
             listView2.Enabled = false;
             listView2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            listViewGroup16.Header = "Обновить список";
-            listViewGroup16.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup16.Name = "listViewGroup1";
-            listViewGroup16.Tag = "";
-            listViewGroup17.Header = "Переключение вкладок";
-            listViewGroup17.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup17.Name = "listViewGroup2";
-            listViewGroup18.Header = "Поиск";
-            listViewGroup18.HeaderAlignment = HorizontalAlignment.Center;
-            listViewGroup18.Name = "listViewGroup3";
-            listView2.Groups.AddRange(new ListViewGroup[] { listViewGroup16, listViewGroup17, listViewGroup18 });
-            listViewItem16.Group = listViewGroup16;
-            listViewItem16.UseItemStyleForSubItems = false;
-            listViewItem17.Group = listViewGroup17;
-            listViewItem18.Group = listViewGroup18;
-            listView2.Items.AddRange(new ListViewItem[] { listViewItem16, listViewItem17, listViewItem18 });
+            listViewGroup13.Header = "Обновить список";
+            listViewGroup13.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup13.Name = "listViewGroup1";
+            listViewGroup13.Tag = "";
+            listViewGroup14.Header = "Переключение вкладок";
+            listViewGroup14.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup14.Name = "listViewGroup2";
+            listViewGroup15.Header = "Поиск";
+            listViewGroup15.HeaderAlignment = HorizontalAlignment.Center;
+            listViewGroup15.Name = "listViewGroup3";
+            listViewGroup16.Header = "Добавить новую запись";
+            listViewGroup16.Name = "listViewGroup4";
+            listViewGroup17.Header = "Редактировать запись";
+            listViewGroup17.Name = "listViewGroup5";
+            listViewGroup18.Header = "Удалить запись";
+            listViewGroup18.Name = "listViewGroup6";
+            listView2.Groups.AddRange(new ListViewGroup[] { listViewGroup13, listViewGroup14, listViewGroup15, listViewGroup16, listViewGroup17, listViewGroup18 });
+            listViewItem13.Group = listViewGroup13;
+            listViewItem13.UseItemStyleForSubItems = false;
+            listViewItem14.Group = listViewGroup14;
+            listViewItem15.Group = listViewGroup15;
+            listViewItem16.Group = listViewGroup18;
+            listViewItem17.Group = listViewGroup16;
+            listViewItem18.Group = listViewGroup17;
+            listView2.Items.AddRange(new ListViewItem[] { listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18 });
             listView2.Location = new Point(3, 23);
             listView2.Name = "listView2";
-            listView2.Size = new Size(204, 731);
+            listView2.Size = new Size(204, 782);
             listView2.TabIndex = 0;
             listView2.UseCompatibleStateImageBehavior = false;
             listView2.View = View.SmallIcon;
@@ -595,7 +643,6 @@ namespace Bookful.forms.main
             // booksDataGrid
             // 
             booksDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            booksDataGrid.BackgroundColor = SystemColors.ActiveBorder;
             booksDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             booksDataGrid.Dock = DockStyle.Fill;
             booksDataGrid.Location = new Point(219, 93);
@@ -603,7 +650,7 @@ namespace Bookful.forms.main
             booksDataGrid.ReadOnly = true;
             booksDataGrid.RowHeadersWidth = 51;
             booksDataGrid.RowTemplate.Height = 29;
-            booksDataGrid.Size = new Size(1008, 667);
+            booksDataGrid.Size = new Size(1008, 718);
             booksDataGrid.TabIndex = 0;
             booksDataGrid.DataBindingComplete += booksDataGrid_DataBindingComplete;
             // 
@@ -669,6 +716,7 @@ namespace Bookful.forms.main
             searchBooksInput.Depth = 0;
             searchBooksInput.Dock = DockStyle.Fill;
             searchBooksInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            searchBooksInput.Hint = "Поиск по имени, дате и т.д.";
             searchBooksInput.LeadingIcon = null;
             searchBooksInput.Location = new Point(3, 3);
             searchBooksInput.MaxLength = 50;
@@ -738,6 +786,14 @@ namespace Bookful.forms.main
             // issuedBooksDataGrid
             // 
             issuedBooksDataGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            issuedBooksDataGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             issuedBooksDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             issuedBooksDataGrid.Dock = DockStyle.Fill;
             issuedBooksDataGrid.Location = new Point(259, 93);
@@ -813,6 +869,7 @@ namespace Bookful.forms.main
             searchIssueBooksInput.Depth = 0;
             searchIssueBooksInput.Dock = DockStyle.Fill;
             searchIssueBooksInput.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            searchIssueBooksInput.Hint = "Поиск по имени, дате и т.д.";
             searchIssueBooksInput.LeadingIcon = null;
             searchIssueBooksInput.Location = new Point(3, 3);
             searchIssueBooksInput.MaxLength = 50;
@@ -1014,6 +1071,27 @@ namespace Bookful.forms.main
             issuedBookUnreturnedBookFilter.Text = "Книга не возвращена";
             issuedBookUnreturnedBookFilter.UseVisualStyleBackColor = true;
             // 
+            // materialButton1
+            // 
+            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            materialButton1.Density = MaterialButton.MaterialButtonDensity.Default;
+            materialButton1.Depth = 0;
+            materialButton1.Dock = DockStyle.Fill;
+            materialButton1.HighEmphasis = true;
+            materialButton1.Icon = null;
+            materialButton1.Location = new Point(4, 634);
+            materialButton1.Margin = new Padding(4, 6, 4, 6);
+            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialButton1.Name = "materialButton1";
+            materialButton1.NoAccentTextColor = Color.Empty;
+            materialButton1.Size = new Size(242, 36);
+            materialButton1.TabIndex = 10;
+            materialButton1.Text = "Сбросить фильтр";
+            materialButton1.Type = MaterialButton.MaterialButtonType.Contained;
+            materialButton1.UseAccentColor = false;
+            materialButton1.UseVisualStyleBackColor = true;
+            materialButton1.Click += materialButton1_Click;
+            // 
             // tabControl
             // 
             tabControl.Controls.Add(issuedBooksTab);
@@ -1078,27 +1156,6 @@ namespace Bookful.forms.main
             materialCheckbox3.TabIndex = 0;
             materialCheckbox3.Text = "materialCheckbox3";
             materialCheckbox3.UseVisualStyleBackColor = true;
-            // 
-            // materialButton1
-            // 
-            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            materialButton1.Density = MaterialButton.MaterialButtonDensity.Default;
-            materialButton1.Depth = 0;
-            materialButton1.Dock = DockStyle.Fill;
-            materialButton1.HighEmphasis = true;
-            materialButton1.Icon = null;
-            materialButton1.Location = new Point(4, 634);
-            materialButton1.Margin = new Padding(4, 6, 4, 6);
-            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialButton1.Name = "materialButton1";
-            materialButton1.NoAccentTextColor = Color.Empty;
-            materialButton1.Size = new Size(242, 36);
-            materialButton1.TabIndex = 10;
-            materialButton1.Text = "Сбросить фильтр";
-            materialButton1.Type = MaterialButton.MaterialButtonType.Contained;
-            materialButton1.UseAccentColor = false;
-            materialButton1.UseVisualStyleBackColor = true;
-            materialButton1.Click += materialButton1_Click;
             // 
             // MainForm
             // 
@@ -1192,9 +1249,7 @@ namespace Bookful.forms.main
         private GroupBox groupBox1;
         private ListView listView2;
         private GroupBox groupBox3;
-        private ListView listView4;
         private GroupBox groupBox2;
-        private ListView listView3;
         private ToolStripMenuItem editBookButton;
         private ToolStripMenuItem deleteBookButton;
         private ToolStripMenuItem editReaderButton;
@@ -1224,5 +1279,7 @@ namespace Bookful.forms.main
         private CheckedListBox issuedBookBookFilterBox;
         private MaterialSwitch issuedBookUnreturnedBookFilter;
         private MaterialButton materialButton1;
+        private ListView listView3;
+        private ListView listView1;
     }
 }
