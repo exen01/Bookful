@@ -217,12 +217,13 @@ namespace Bookful.dao.reader
 
             if (connection.IsConnect())
             {
-                string query = "SELECT id, first_name, last_name, library_card_number, reading_room_id, registration_date " +
-                    "FROM reader WHERE " +
-                    "first_name LIKE @searchText OR " +
-                    "last_name LIKE @searchText OR " +
-                    "library_card_number LIKE @searchText OR " +
-                    "reading_room_id LIKE @searchText OR " +
+                string query = "SELECT r.id, r.first_name, r.last_name, r.library_card_number, r.reading_room_id, r.registration_date " +
+                    "FROM reader r " +
+                    "LEFT JOIN reading_room rm ON r.reading_room_id = rm.id " +
+                    "WHERE r.first_name LIKE @searchText OR " +
+                    "r.last_name LIKE @searchText OR " +
+                    "r.library_card_number LIKE @searchText OR " +
+                    "rm.room_number LIKE @searchText OR " +
                     "registration_date LIKE @searchText";
 
                 MySqlCommand command = new MySqlCommand(query, connection.Connection);
