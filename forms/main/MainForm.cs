@@ -733,7 +733,7 @@ namespace Bookful.forms.main
 
             if (!readersId.Any() && !booksId.Any())
             {
-                filteredList = new List<IssuedBook>();
+                filteredList = dataList;
             }
             else if (readersId.Any() && booksId.Any())
             {
