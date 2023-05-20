@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MaterialSkin.Controls;
+using MySql.Data.MySqlClient;
 
 namespace Bookful.util.db
 {
@@ -45,7 +46,17 @@ namespace Bookful.util.db
 
                 string connectionString = string.Format("server={0};database={1};uid={2};password={3}", Server, DatabaseName, UserName, Password);
                 Connection = new MySqlConnection(connectionString);
-                Connection.Open();
+
+                try
+                {
+                    Connection.Open();
+                }
+                catch (MySqlException e)
+                {
+                    MaterialMessageBox.Show(e.Message + '\n' + "Не удалось подключиться ни к одному из указанных хостов MySQL.", "Ошибка", false);
+                    Application.Exit();
+                }
+
             }
 
             return true;
